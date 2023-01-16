@@ -19,6 +19,7 @@ AMyPlayer::AMyPlayer()
 	SpringArm->TargetArmLength = 500.f;
 	Camera->SetRelativeRotation(FRotator(-35.f, 0.f, 0.f));
 	Camera->SetRelativeLocation(FVector(0.f, 0.f, 300.f));
+	
 
 	GetMesh()->SetRelativeLocationAndRotation(
 	FVector(0.f, -0.f, -88.f), FRotator(0.f, -90.f, 0.f));
