@@ -14,6 +14,15 @@ void UMyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	{
 		Speed = pawn->GetVelocity().Size();
 
+		auto Character = Cast<AMyPlayer>(pawn);
+
+		if (Character)
+		{
+
+			Horizontal = Character->Horizontal;
+			Vertical = Character->Vertical;
+
+		}
 	}
 	
 }

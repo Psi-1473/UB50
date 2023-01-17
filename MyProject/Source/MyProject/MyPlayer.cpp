@@ -63,17 +63,13 @@ void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AMyPlayer::MoveForward(float Value)
 {
-	if (Value == 0)
-		return;
-
+	Vertical = Value;
 	AddMovementInput(GetActorForwardVector(), Value);
 }
 
 void AMyPlayer::MoveRight(float Value)
 {
-	if (Value == 0)
-		return;
-
+	Horizontal = Value;
 	AddMovementInput(GetActorRightVector(), Value);
 }
 
