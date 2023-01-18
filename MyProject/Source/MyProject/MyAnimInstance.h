@@ -21,6 +21,12 @@ public:
 	void PlayAttackMontage();
 	void JumpToSection(int32 SectionIndex);
 
+	UFUNCTION()
+	void AnimNotify_CanCombo();
+
+	UFUNCTION()
+	void AnimNotify_EndCombo();
+
 	FName GetAttackMontageName(int32 SectionIndex);
 
 public:

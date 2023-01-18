@@ -64,7 +64,7 @@ void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	PlayerInputComponent->BindAction(TEXT("Sprint"), EInputEvent::IE_Pressed, this, &AMyPlayer::OnSprint);
 	PlayerInputComponent->BindAction(TEXT("Sprint"), EInputEvent::IE_Released, this, &AMyPlayer::OffSprint);
-	PlayerInputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &AMyPlayer::Attack);
+	PlayerInputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &AMyPlayer::ClickAttack);
 
 }
 
@@ -106,23 +106,61 @@ void AMyPlayer::OffSprint()
 	bIsSprint = false;
 }
 
+void AMyPlayer::ClickAttack()
+{
+	if (IsAttacking == false)
+	{
+		Attack();
+	}
+	else
+	{
+		bCombo = true;
+	}
+}
+
+
+
 void AMyPlayer::Attack()
 {
-	if (IsAttacking)
+	if (AttackIndex >= 3)
 		return;
 
-	AnimInst->PlayAttackMontage();
-
-	AnimInst->JumpToSection(AttackIndex);
-	AttackIndex = (AttackIndex + 1) % 3;
-
-
+	bCombo = false;
 	IsAttacking = true;
+
+	AnimInst->PlayAttackMontage();
+	AnimInst->JumpToSection(AttackIndex);
+	AttackIndex++;
+	//if (!AnimInst->Montage_IsPlaying(AnimInst->AttackMontage))
+	//{
+	//	AnimInst->PlayAttackMontage();
+	//}
+	//else if(AnimInst->Montage_IsPlaying(AnimInst->AttackMontage))
+	//{
+	//	
+	//	
+	//}
+	
+	
+}
+
+void AMyPlayer::EndAttack()
+{
+	IsAttacking = false;
+	bCombo = false;
+	AttackIndex = 0;
 }
 
 void AMyPlayer::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 {
-	IsAttacking = false;
+	//IsAttacking = false;
+	//bCombo = false;
+	//AttackIndex = 0;
+}
+
+void AMyPlayer::OnAttackMontageStarted(UAnimMontage* Montage, bool bInterrupted)
+{
+	bCombo = false;
 }
 
 

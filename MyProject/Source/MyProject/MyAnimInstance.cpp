@@ -50,6 +50,30 @@ void UMyAnimInstance::JumpToSection(int32 SectionIndex)
 	Montage_JumpToSection(Name, AttackMontage);
 }
 
+void UMyAnimInstance::AnimNotify_CanCombo()
+{
+	auto pawn = TryGetPawnOwner();
+	if (IsValid(pawn))
+	{
+		auto Character = Cast<AMyPlayer>(pawn);
+		
+		if (Character->bCombo == true)
+		{
+			Character->Attack();
+		}
+	}
+}
+
+void UMyAnimInstance::AnimNotify_EndCombo()
+{
+	auto pawn = TryGetPawnOwner();
+	if (IsValid(pawn))
+	{
+		auto Character = Cast<AMyPlayer>(pawn);
+		Character->EndAttack();
+	}
+}
+
 FName UMyAnimInstance::GetAttackMontageName(int32 SectionIndex)
 {
 	return FName(*FString::Printf(TEXT("Attack%d"), SectionIndex));

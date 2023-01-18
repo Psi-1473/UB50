@@ -24,6 +24,9 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	void Attack();
+	void SetCombo(bool Val) { bCombo = Val; }
+	void EndAttack();
 
 private:
 	void MoveForward(float Value);
@@ -33,10 +36,15 @@ private:
 
 	void OnSprint();
 	void OffSprint();
-	void Attack();
+	void ClickAttack();
+	
+	
 
 	UFUNCTION()
 	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
+
+	UFUNCTION()
+	void OnAttackMontageStarted(UAnimMontage* Montage, bool bInterrupted);
 
 public:
 	UPROPERTY(EditAnywhere)
@@ -47,6 +55,14 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	float Vertical;
+	UPROPERTY(EditAnywhere)
+	bool IsAttacking = false;
+
+	UPROPERTY(EditAnywhere)
+	bool bCombo = false;
+
+	UPROPERTY(EditAnywhere)
+	int32 AttackIndex = 0;
 
 private:
 	UPROPERTY(EditAnywhere)
@@ -55,13 +71,12 @@ private:
 	UPROPERTY(EditAnywhere)
 	UCameraComponent* Camera;
 
-	UPROPERTY(EditAnywhere)
-	bool IsAttacking = false;
+
 
 	UPROPERTY()
 	class UMyAnimInstance* AnimInst;
 
-	UPROPERTY()
-	int32 AttackIndex = 0;
+	
 
 };
+
