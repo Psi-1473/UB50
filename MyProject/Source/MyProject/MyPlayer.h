@@ -15,11 +15,9 @@ class MYPROJECT_API AMyPlayer : public ACharacter
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	AMyPlayer();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
@@ -33,7 +31,17 @@ private:
 	void Yaw(float Value);
 	void Pitch(float Value);
 
+	void OnSprint();
+	void OffSprint();
+	void Attack();
+
+	UFUNCTION()
+	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
+
 public:
+	UPROPERTY(EditAnywhere)
+	bool bIsSprint = false;
+
 	UPROPERTY(EditAnywhere)
 	float Horizontal;
 
@@ -44,9 +52,16 @@ private:
 	UPROPERTY(EditAnywhere)
 	USpringArmComponent* SpringArm;
 
-
 	UPROPERTY(EditAnywhere)
 	UCameraComponent* Camera;
 
+	UPROPERTY(EditAnywhere)
+	bool IsAttacking = false;
+
+	UPROPERTY()
+	class UMyAnimInstance* AnimInst;
+
+	UPROPERTY()
+	int32 AttackIndex = 0;
 
 };

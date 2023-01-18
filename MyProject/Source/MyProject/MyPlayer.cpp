@@ -3,6 +3,7 @@
 
 
 #include "MyPlayer.h"
+#include "MyAnimInstance.h"
 
 // Sets default values
 AMyPlayer::AMyPlayer()
@@ -39,6 +40,8 @@ AMyPlayer::AMyPlayer()
 void AMyPlayer::BeginPlay()
 {
 	Super::BeginPlay();
+	AnimInst = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
+	AnimInst->OnMontageEnded.AddDynamic(this, &AMyPlayer::OnAttackMontageEnded);
 	
 }
 
@@ -59,16 +62,26 @@ void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAxis(TEXT("Yaw"), this, &AMyPlayer::Yaw);
 	PlayerInputComponent->BindAxis(TEXT("Pitch"), this, &AMyPlayer::Pitch);
 
+	PlayerInputComponent->BindAction(TEXT("Sprint"), EInputEvent::IE_Pressed, this, &AMyPlayer::OnSprint);
+	PlayerInputComponent->BindAction(TEXT("Sprint"), EInputEvent::IE_Released, this, &AMyPlayer::OffSprint);
+	PlayerInputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &AMyPlayer::Attack);
+
 }
 
 void AMyPlayer::MoveForward(float Value)
 {
+	if (IsAttacking)
+		return;
+
 	Vertical = Value;
 	AddMovementInput(GetActorForwardVector(), Value);
 }
 
 void AMyPlayer::MoveRight(float Value)
 {
+	if (IsAttacking)
+		return;
+
 	Horizontal = Value;
 	AddMovementInput(GetActorRightVector(), Value);
 }
@@ -82,4 +95,34 @@ void AMyPlayer::Pitch(float Value)
 {
 	AddControllerPitchInput(Value);
 }
+
+void AMyPlayer::OnSprint()
+{
+	bIsSprint = true;
+}
+
+void AMyPlayer::OffSprint()
+{
+	bIsSprint = false;
+}
+
+void AMyPlayer::Attack()
+{
+	if (IsAttacking)
+		return;
+
+	AnimInst->PlayAttackMontage();
+
+	AnimInst->JumpToSection(AttackIndex);
+	AttackIndex = (AttackIndex + 1) % 3;
+
+
+	IsAttacking = true;
+}
+
+void AMyPlayer::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
+{
+	IsAttacking = false;
+}
+
 
