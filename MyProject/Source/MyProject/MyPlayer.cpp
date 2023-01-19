@@ -151,8 +151,6 @@ void AMyPlayer::EndAttack()
 
 void AMyPlayer::AttackCheck()
 {
-	UE_LOG(LogTemp, Log, TEXT("Attack!"));
-	// 여기서부터 문제
 	FHitResult HitResult;
 	FCollisionQueryParams Params(NAME_None, false, this);
 
