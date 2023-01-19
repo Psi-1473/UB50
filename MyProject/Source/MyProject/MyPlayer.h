@@ -20,6 +20,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	virtual void PostInitializeComponents() override;
 public:	
 
 	virtual void Tick(float DeltaTime) override;
@@ -27,6 +28,7 @@ public:
 	void Attack();
 	void SetCombo(bool Val) { bCombo = Val; }
 	void EndAttack();
+	void AttackCheck();
 
 private:
 	void MoveForward(float Value);

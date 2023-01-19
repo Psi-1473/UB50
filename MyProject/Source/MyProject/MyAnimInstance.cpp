@@ -74,6 +74,11 @@ void UMyAnimInstance::AnimNotify_EndCombo()
 	}
 }
 
+void UMyAnimInstance::AnimNotify_HitCheck()
+{
+	OnAttackHit.Broadcast();
+}
+
 FName UMyAnimInstance::GetAttackMontageName(int32 SectionIndex)
 {
 	return FName(*FString::Printf(TEXT("Attack%d"), SectionIndex));

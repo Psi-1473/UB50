@@ -40,9 +40,21 @@ AMyPlayer::AMyPlayer()
 void AMyPlayer::BeginPlay()
 {
 	Super::BeginPlay();
-	AnimInst = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
-	AnimInst->OnMontageEnded.AddDynamic(this, &AMyPlayer::OnAttackMontageEnded);
 	
+	
+}
+
+void AMyPlayer::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	AnimInst = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
+
+	if (AnimInst)
+	{
+		AnimInst->OnMontageEnded.AddDynamic(this, &AMyPlayer::OnAttackMontageEnded);
+		AnimInst->OnAttackHit.AddUObject(this, &AMyPlayer::AttackCheck);
+	}
 }
 
 // Called every frame
@@ -117,8 +129,6 @@ void AMyPlayer::ClickAttack()
 	}
 }
 
-
-
 void AMyPlayer::Attack()
 {
 	if (AttackIndex >= 3)
@@ -137,6 +147,46 @@ void AMyPlayer::EndAttack()
 	IsAttacking = false;
 	bCombo = false;
 	AttackIndex = 0;
+}
+
+void AMyPlayer::AttackCheck()
+{
+	UE_LOG(LogTemp, Log, TEXT("Attack!"));
+	// 여기서부터 문제
+	FHitResult HitResult;
+	FCollisionQueryParams Params(NAME_None, false, this);
+
+	float AttackRange = 100.f;
+	float AttackRadius = 50.f;
+
+	bool bResult = GetWorld()->SweepSingleByChannel(
+		OUT HitResult,
+		GetActorLocation(),
+		GetActorLocation() + GetActorForwardVector() * AttackRange,
+		FQuat::Identity,
+		ECollisionChannel::ECC_GameTraceChannel2,
+		FCollisionShape::MakeSphere(AttackRadius),
+		Params);
+
+	FVector Vec = GetActorForwardVector() * AttackRange;
+	FVector Center = GetActorLocation() + Vec * 0.5f;
+	float HalfHeight = AttackRange * 0.5f + AttackRadius;
+	FQuat Rotation = FRotationMatrix::MakeFromZ(Vec).ToQuat();
+	FColor DrawColor;
+
+	if (bResult)
+		DrawColor = FColor::Green;
+	else
+		DrawColor = FColor::Red;
+
+	DrawDebugCapsule(GetWorld(), Center, HalfHeight, AttackRadius, Rotation, DrawColor, false, 2.f);
+
+
+
+	if (bResult && HitResult.GetActor())
+	{
+		UE_LOG(LogTemp, Log, TEXT("Hit Actor : %s"), *HitResult.GetActor()->GetName());
+	}
 }
 
 void AMyPlayer::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)

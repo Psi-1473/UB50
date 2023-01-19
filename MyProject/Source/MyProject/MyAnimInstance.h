@@ -6,6 +6,7 @@
 #include "Animation/AnimInstance.h"
 #include "MyAnimInstance.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FonAttackHit);
 /**
  * 
  */
@@ -27,6 +28,9 @@ public:
 	UFUNCTION()
 	void AnimNotify_EndCombo();
 
+	UFUNCTION()
+	void AnimNotify_HitCheck();
+
 	FName GetAttackMontageName(int32 SectionIndex);
 
 public:
@@ -46,5 +50,6 @@ public:
 	UAnimMontage* AttackMontage;
 
 
-	
+public:
+	FonAttackHit OnAttackHit;
 };
