@@ -49,7 +49,6 @@ void AMyPlayer::BeginPlay()
 void AMyPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 // Called to bind functionality to input
@@ -131,17 +130,6 @@ void AMyPlayer::Attack()
 	AnimInst->PlayAttackMontage();
 	AnimInst->JumpToSection(AttackIndex);
 	AttackIndex++;
-	//if (!AnimInst->Montage_IsPlaying(AnimInst->AttackMontage))
-	//{
-	//	AnimInst->PlayAttackMontage();
-	//}
-	//else if(AnimInst->Montage_IsPlaying(AnimInst->AttackMontage))
-	//{
-	//	
-	//	
-	//}
-	
-	
 }
 
 void AMyPlayer::EndAttack()
