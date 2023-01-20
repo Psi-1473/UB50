@@ -2,6 +2,7 @@
 
 
 #include "EnemyCharKwang.h"
+#include "EnemyKwang.h"
 
 // Sets default values
 AEnemyCharKwang::AEnemyCharKwang()
@@ -19,6 +20,8 @@ AEnemyCharKwang::AEnemyCharKwang()
 		GetMesh()->SetSkeletalMesh(SM.Object);
 	}
 
+	AIControllerClass = AEnemyKwang::StaticClass();
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
 
 void AEnemyCharKwang::BeginPlay()

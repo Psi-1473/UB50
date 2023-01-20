@@ -16,4 +16,19 @@ class MYPROJECT_API AEnemyKwang : public AAIController
 	
 public:
 	AEnemyKwang();
+	
+	virtual void OnPossess(APawn* InPawn) override;
+	virtual void OnUnPossess() override;
+
+private:
+	void RandomMove();
+
+private:
+	FTimerHandle TimerHandle;
+
+	UPROPERTY()
+	class UBehaviorTree* BehaviorTree;
+
+	UPROPERTY()
+	class UBlackboardData* BlackboardData;
 };
