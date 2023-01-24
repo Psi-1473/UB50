@@ -13,6 +13,7 @@ class MYPROJECT_API AEnemyCharKwang : public ACharacter
 
 public:
 	AEnemyCharKwang();
+	void OnDamaged();
 
 protected:
 	virtual void BeginPlay() override;

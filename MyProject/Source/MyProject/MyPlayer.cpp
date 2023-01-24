@@ -4,6 +4,7 @@
 
 #include "MyPlayer.h"
 #include "MyAnimInstance.h"
+#include "EnemyCharKwang.h"
 
 // Sets default values
 AMyPlayer::AMyPlayer()
@@ -184,6 +185,10 @@ void AMyPlayer::AttackCheck()
 	if (bResult && HitResult.GetActor())
 	{
 		UE_LOG(LogTemp, Log, TEXT("Hit Actor : %s"), *HitResult.GetActor()->GetName());
+		AEnemyCharKwang* Enemy = Cast<AEnemyCharKwang>(HitResult.GetActor());
+
+		//
+		Enemy->OnDamaged();
 	}
 }
 

@@ -24,6 +24,11 @@ AEnemyCharKwang::AEnemyCharKwang()
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
 
+void AEnemyCharKwang::OnDamaged()
+{
+	UE_LOG(LogTemp, Log, TEXT("Damaged!!!!!"));
+}
+
 void AEnemyCharKwang::BeginPlay()
 {
 	Super::BeginPlay();
