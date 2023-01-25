@@ -14,9 +14,15 @@ class MYPROJECT_API UEnemyAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 public:
+	UEnemyAnimInstance();
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+	void PlayAttackMontage();
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
 	float Speed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
+	UAnimMontage* AttackMontage;
+	
 };

@@ -3,6 +3,15 @@
 
 #include "EnemyAnimInstance.h"
 
+UEnemyAnimInstance::UEnemyAnimInstance()
+{
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> AM(TEXT("AnimMontage'/Game/Blueprints/Animations/Enemy/AM_KwangAttack.AM_KwangAttack'"));
+	if (AM.Succeeded())
+	{
+		AttackMontage = AM.Object;
+	}
+}
+
 void UEnemyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
@@ -12,5 +21,13 @@ void UEnemyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	if (IsValid(pawn))
 	{
 		Speed = pawn->GetVelocity().Size();
+	}
+}
+
+void UEnemyAnimInstance::PlayAttackMontage()
+{
+	if (!Montage_IsPlaying(AttackMontage))
+	{
+		Montage_Play(AttackMontage, 1.f);
 	}
 }
