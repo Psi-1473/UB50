@@ -17,7 +17,9 @@ public:
 	AEnemyCharKwang();
 	void OnDamaged();
 	void Attack();
+	void AttackCheck();
 	FOnAttackEnd OnAttackEnd;
+
 
 	UFUNCTION()
 	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
@@ -33,9 +35,13 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	UAnimMontage* AttackMontage;
+public:
+	void SetDamaged(bool Value) { IsDamaged = Value; }
+	bool GetDamaged() { return IsDamaged; }
 
 private:
 	UPROPERTY()
 	class UEnemyAnimInstance* AnimInst;
+	bool IsDamaged = false;
 
 };

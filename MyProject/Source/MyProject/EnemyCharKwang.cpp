@@ -27,12 +27,55 @@ AEnemyCharKwang::AEnemyCharKwang()
 
 void AEnemyCharKwang::OnDamaged()
 {
-	UE_LOG(LogTemp, Log, TEXT("Damaged!!!!!"));
+	AnimInst->PlayDamagedMontage();
+	IsDamaged = true;
 }
 
 void AEnemyCharKwang::Attack()
 {
 	AnimInst->PlayAttackMontage();
+}
+
+void AEnemyCharKwang::AttackCheck()
+{
+	FHitResult HitResult;
+	FCollisionQueryParams Params(NAME_None, false, this);
+
+	float AttackRange = 100.f;
+	float AttackRadius = 50.f;
+
+	bool bResult = GetWorld()->SweepSingleByChannel(
+		OUT HitResult,
+		GetActorLocation(),
+		GetActorLocation() + GetActorForwardVector() * AttackRange,
+		FQuat::Identity,
+		ECollisionChannel::ECC_GameTraceChannel2,
+		FCollisionShape::MakeSphere(AttackRadius),
+		Params);
+
+	FVector Vec = GetActorForwardVector() * AttackRange;
+	FVector Center = GetActorLocation() + Vec * 0.5f;
+	float HalfHeight = AttackRange * 0.5f + AttackRadius;
+	FQuat Rotation = FRotationMatrix::MakeFromZ(Vec).ToQuat();
+	FColor DrawColor;
+
+	if (bResult)
+		DrawColor = FColor::Green;
+	else
+		DrawColor = FColor::Red;
+
+	DrawDebugCapsule(GetWorld(), Center, HalfHeight, AttackRadius, Rotation, DrawColor, false, 2.f);
+
+
+
+	if (bResult && HitResult.GetActor())
+	{
+		UE_LOG(LogTemp, Log, TEXT("Hit Actor : %s"), *HitResult.GetActor()->GetName());
+		//AEnemyCharKwang* Enemy = Cast<AEnemyCharKwang>(HitResult.GetActor());
+
+		//
+		//Enemy->OnDamaged();
+	}
 }
 
 
@@ -46,7 +89,7 @@ void AEnemyCharKwang::PostInitializeComponents()
 	if (AnimInst)
 	{
 		AnimInst->OnMontageEnded.AddDynamic(this, &AEnemyCharKwang::OnAttackMontageEnded);
-		//AnimInst->OnAttackHit.AddUObject(this, &AMyPlayer::AttackCheck);
+		AnimInst->OnAttackHit.AddUObject(this, &AEnemyCharKwang::AttackCheck);
 	}
 }
 

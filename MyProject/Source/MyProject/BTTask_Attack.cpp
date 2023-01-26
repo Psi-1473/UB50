@@ -22,6 +22,7 @@ EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 	if (MyCharacter == nullptr)
 		return EBTNodeResult::Failed;
 
+
 	MyCharacter->Attack();
 	bIsAttacking = true;
 
