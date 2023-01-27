@@ -4,6 +4,7 @@
 #include "EnemyCharKwang.h"
 #include "EnemyKwang.h"
 #include "EnemyAnimInstance.h"
+#include "MyPlayer.h"
 
 // Sets default values
 AEnemyCharKwang::AEnemyCharKwang()
@@ -71,10 +72,11 @@ void AEnemyCharKwang::AttackCheck()
 	if (bResult && HitResult.GetActor())
 	{
 		UE_LOG(LogTemp, Log, TEXT("Hit Actor : %s"), *HitResult.GetActor()->GetName());
-		//AEnemyCharKwang* Enemy = Cast<AEnemyCharKwang>(HitResult.GetActor());
+		AMyPlayer* Player = Cast<AMyPlayer>(HitResult.GetActor());
 
-		//
-		//Enemy->OnDamaged();
+		FDamageEvent DamageEvent;
+		Player->TakeDamage(10, DamageEvent, GetController(), this);
+		// 10ю╨ юс╫ц
 	}
 }
 

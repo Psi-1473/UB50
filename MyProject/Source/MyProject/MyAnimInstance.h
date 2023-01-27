@@ -20,6 +20,7 @@ public:
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 	
 	void PlayAttackMontage();
+	void PlayDamagedMontage();
 	void JumpToSection(int32 SectionIndex);
 
 	UFUNCTION()
@@ -30,6 +31,9 @@ public:
 
 	UFUNCTION()
 	void AnimNotify_HitCheck();
+
+	UFUNCTION()
+	void AnimNotify_HitEnded();
 
 	FName GetAttackMontageName(int32 SectionIndex);
 
@@ -48,6 +52,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
 	UAnimMontage* AttackMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
+	UAnimMontage* DamagedMontage;
 
 
 public:

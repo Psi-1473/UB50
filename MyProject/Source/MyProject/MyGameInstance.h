@@ -22,6 +22,28 @@ struct FMyCharacterData : public FTableRowBase
 	int MaxHp;
 };
 
+USTRUCT()
+struct FEnemyData : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Name;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Level;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Attack;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int MaxHp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Speed;
+};
+
+
 /**
  * 
  */
@@ -36,10 +58,14 @@ public:
 	virtual void Init() override;
 
 	FMyCharacterData* GetStatData(int32 Level);
+	FEnemyData* GetEnemyData(FString Kwang);
 
 private:
 	UPROPERTY()
 	class UDataTable* MyStats;
+
+	UPROPERTY()
+	class UDataTable* EnemyStats;
 
 	
 };

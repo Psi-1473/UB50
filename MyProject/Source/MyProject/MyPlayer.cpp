@@ -5,6 +5,7 @@
 #include "MyPlayer.h"
 #include "MyAnimInstance.h"
 #include "EnemyCharKwang.h"
+#include "PlayerStatComponent.h"
 
 // Sets default values
 AMyPlayer::AMyPlayer()
@@ -33,7 +34,7 @@ AMyPlayer::AMyPlayer()
 		GetMesh()->SetSkeletalMesh(SM.Object);
 	}
 
-
+	Stat = CreateDefaultSubobject<UPlayerStatComponent>(TEXT("STAT"));
 
 }
 
@@ -41,7 +42,6 @@ AMyPlayer::AMyPlayer()
 void AMyPlayer::BeginPlay()
 {
 	Super::BeginPlay();
-	
 	
 }
 
@@ -80,8 +80,13 @@ void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+
+
 void AMyPlayer::MoveForward(float Value)
 {
+	if (bDamaged)
+		return;
+
 	if (IsAttacking)
 		return;
 
@@ -91,6 +96,9 @@ void AMyPlayer::MoveForward(float Value)
 
 void AMyPlayer::MoveRight(float Value)
 {
+	if (bDamaged)
+		return;
+
 	if (IsAttacking)
 		return;
 
@@ -120,6 +128,9 @@ void AMyPlayer::OffSprint()
 
 void AMyPlayer::ClickAttack()
 {
+	if (bDamaged)
+		return;
+
 	if (IsAttacking == false)
 	{
 		Attack();
@@ -187,9 +198,19 @@ void AMyPlayer::AttackCheck()
 		UE_LOG(LogTemp, Log, TEXT("Hit Actor : %s"), *HitResult.GetActor()->GetName());
 		AEnemyCharKwang* Enemy = Cast<AEnemyCharKwang>(HitResult.GetActor());
 
-		//
 		Enemy->OnDamaged();
+		//FDamageEvent DamageEvent;
+		//Enemy->TakeDamage(Stat->GetAttack(), DamageEvent, GetController(), this);
 	}
+}
+
+void AMyPlayer::OnDamaged()
+{
+	bDamaged = true;
+	IsAttacking = false;
+	bCombo = false;
+	AttackIndex = 0;
+	AnimInst->PlayDamagedMontage();
 }
 
 void AMyPlayer::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
@@ -202,6 +223,14 @@ void AMyPlayer::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 void AMyPlayer::OnAttackMontageStarted(UAnimMontage* Montage, bool bInterrupted)
 {
 	bCombo = false;
+}
+
+float AMyPlayer::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+
+	Stat->OnAttacked(Damage);
+	OnDamaged();
+	return Damage;
 }
 
 

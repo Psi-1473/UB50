@@ -29,6 +29,11 @@ public:
 	void SetCombo(bool Val) { bCombo = Val; }
 	void EndAttack();
 	void AttackCheck();
+	void OnDamaged();
+
+public:
+	void SetDamaged(bool Value) { bDamaged = Value; }
+	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 private:
 	void MoveForward(float Value);
@@ -61,10 +66,16 @@ public:
 	bool IsAttacking = false;
 
 	UPROPERTY(EditAnywhere)
+	bool bDamaged = false;
+
+	UPROPERTY(EditAnywhere)
 	bool bCombo = false;
 
 	UPROPERTY(EditAnywhere)
 	int32 AttackIndex = 0;
+
+	UPROPERTY(VisibleAnywhere)
+	class UPlayerStatComponent* Stat;
 
 private:
 	UPROPERTY(EditAnywhere)
