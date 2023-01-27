@@ -198,9 +198,9 @@ void AMyPlayer::AttackCheck()
 		UE_LOG(LogTemp, Log, TEXT("Hit Actor : %s"), *HitResult.GetActor()->GetName());
 		AEnemyCharKwang* Enemy = Cast<AEnemyCharKwang>(HitResult.GetActor());
 
-		Enemy->OnDamaged();
-		//FDamageEvent DamageEvent;
-		//Enemy->TakeDamage(Stat->GetAttack(), DamageEvent, GetController(), this);
+		//Enemy->OnDamaged();
+		FDamageEvent DamageEvent;
+		Enemy->TakeDamage(Stat->GetAttack(), DamageEvent, GetController(), this);
 	}
 }
 
@@ -227,7 +227,6 @@ void AMyPlayer::OnAttackMontageStarted(UAnimMontage* Montage, bool bInterrupted)
 
 float AMyPlayer::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-
 	Stat->OnAttacked(Damage);
 	OnDamaged();
 	return Damage;

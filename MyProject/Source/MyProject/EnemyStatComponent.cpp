@@ -2,6 +2,8 @@
 
 
 #include "EnemyStatComponent.h"
+#include "MyGameInstance.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
 UEnemyStatComponent::UEnemyStatComponent()
@@ -25,14 +27,31 @@ void UEnemyStatComponent::BeginPlay()
 
 void UEnemyStatComponent::InitializeComponent()
 {
-
+	Level = 1;
+	SetLevel(Level);
 }
 
 void UEnemyStatComponent::SetLevel(int32 NewLevel)
 {
+	auto MyGameInstance = Cast<UMyGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (MyGameInstance)
+	{
+		auto StatData = MyGameInstance->GetStatData(Level);
+		if (StatData)
+		{
+			Level = StatData->Level;
+			Hp = StatData->MaxHp;
+			Attack = StatData->Attack;
+		}
+	}
 }
 
 void UEnemyStatComponent::OnAttacked(float DamagedAmount)
 {
+	Hp -= DamagedAmount;
+	if (Hp < 0)
+		Hp = 0;
+
+	UE_LOG(LogTemp, Warning, TEXT("OnAttacked %d"), Hp);
 }
 

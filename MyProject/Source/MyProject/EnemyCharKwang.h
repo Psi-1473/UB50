@@ -38,11 +38,11 @@ public:
 public:
 	void SetDamaged(bool Value) { IsDamaged = Value; }
 	bool GetDamaged() { return IsDamaged; }
-	//virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 public:
-	//UPROPERTY(VisibleAnywhere)
-		//class * Stat;
+	UPROPERTY(VisibleAnywhere)
+	class UEnemyStatComponent* Stat;
 private:
 	UPROPERTY()
 	class UEnemyAnimInstance* AnimInst;

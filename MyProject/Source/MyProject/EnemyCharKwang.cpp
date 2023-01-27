@@ -5,6 +5,7 @@
 #include "EnemyKwang.h"
 #include "EnemyAnimInstance.h"
 #include "MyPlayer.h"
+#include "EnemyStatComponent.h"
 
 // Sets default values
 AEnemyCharKwang::AEnemyCharKwang()
@@ -24,6 +25,8 @@ AEnemyCharKwang::AEnemyCharKwang()
 
 	AIControllerClass = AEnemyKwang::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+
+	Stat = CreateDefaultSubobject<UEnemyStatComponent>(TEXT("STAT"));
 }
 
 void AEnemyCharKwang::OnDamaged()
@@ -75,7 +78,7 @@ void AEnemyCharKwang::AttackCheck()
 		AMyPlayer* Player = Cast<AMyPlayer>(HitResult.GetActor());
 
 		FDamageEvent DamageEvent;
-		Player->TakeDamage(10, DamageEvent, GetController(), this);
+		Player->TakeDamage(Stat->GetAttack(), DamageEvent, GetController(), this);
 		// 10ю╨ юс╫ц
 	}
 }
@@ -111,6 +114,13 @@ void AEnemyCharKwang::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+float AEnemyCharKwang::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	Stat->OnAttacked(Damage);
+	OnDamaged();
+	return Damage;
 }
 
 void AEnemyCharKwang::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
