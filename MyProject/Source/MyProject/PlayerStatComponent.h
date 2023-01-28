@@ -6,7 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "PlayerStatComponent.generated.h"
 
-
+// 델리게이트 여기다가 추가
+DECLARE_MULTICAST_DELEGATE(FHpDecreased);
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class MYPROJECT_API UPlayerStatComponent : public UActorComponent
 {
@@ -23,12 +24,16 @@ protected:
 
 public:
 	void SetLevel(int32 NewLevel);
+	void SetHp(int32 NewHp);
 	void OnAttacked(float DamagedAmount);
 
 	int32 GetLevel() { return Level; }
 	int32 GetHp() { return Hp; }
+	int32 GetMaxHp() { return MaxHp; }
+	float GetHpRatio() { return Hp / (float)MaxHp; }
 	int32 GetAttack() { return Attack; }
 
+	FHpDecreased OnHpDecreased;
 
 
 private:
@@ -36,6 +41,8 @@ private:
 		int32 Level;
 	UPROPERTY(EditAnywhere, Category = Stat)
 		int32 Hp;
+	UPROPERTY(EditAnywhere, Category = Stat)
+		int32 MaxHp;
 	UPROPERTY(EditAnywhere, Category = Stat)
 		int32 Attack;
 

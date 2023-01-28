@@ -49,6 +49,13 @@ void UPlayerStatComponent::SetLevel(int32 NewLevel)
 	}
 }
 
+void UPlayerStatComponent::SetHp(int32 NewHp)
+{
+	Hp = NewHp;
+	if (Hp < 0)
+		Hp = 0;
+}
+
 void UPlayerStatComponent::OnAttacked(float DamagedAmount)
 {
 	Hp -= DamagedAmount;

@@ -19,7 +19,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-
+	
 	virtual void PostInitializeComponents() override;
 public:	
 
@@ -89,7 +89,8 @@ private:
 	UPROPERTY()
 	class UMyAnimInstance* AnimInst;
 
-	
+	UPROPERTY(VisibleAnywhere)
+	class UWidgetComponent* HpBar;
 
 };
 
