@@ -43,7 +43,8 @@ void UPlayerStatComponent::SetLevel(int32 NewLevel)
 		if (StatData)
 		{
 			Level = StatData->Level;
-			Hp = StatData->MaxHp;
+			MaxHp = StatData->MaxHp;
+			SetHp(StatData->MaxHp);
 			Attack = StatData->Attack;
 		}
 	}
@@ -54,11 +55,13 @@ void UPlayerStatComponent::SetHp(int32 NewHp)
 	Hp = NewHp;
 	if (Hp < 0)
 		Hp = 0;
+
+	OnHpDecreased.Broadcast();
 }
 
 void UPlayerStatComponent::OnAttacked(float DamagedAmount)
 {
-	Hp -= DamagedAmount;
+	SetHp(Hp - DamagedAmount);
 	if (Hp < 0)
 		Hp = 0;
 

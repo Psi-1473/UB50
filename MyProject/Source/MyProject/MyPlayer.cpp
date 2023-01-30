@@ -39,7 +39,6 @@ AMyPlayer::AMyPlayer()
 	Stat = CreateDefaultSubobject<UPlayerStatComponent>(TEXT("STAT"));
 	HpBar = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBAR"));
 	HpBar->SetupAttachment(GetMesh());
-
 	HpBar->SetWidgetSpace(EWidgetSpace::Screen);
 
 	static ConstructorHelpers::FClassFinder<UUserWidget> UW(TEXT("WidgetBlueprint'/Game/UI/WBP_HPBar.WBP_HPBar_C'"));
@@ -72,6 +71,8 @@ void AMyPlayer::PostInitializeComponents()
 	}
 
 	HpBar->InitWidget();
+	auto Bar = Cast<UWidget_Hp>(HpBar->GetUserWidgetObject());
+	Bar->BindWidget_Player(Stat);
 
 	// TODO Hp바 델리게이트 바인딩
 }

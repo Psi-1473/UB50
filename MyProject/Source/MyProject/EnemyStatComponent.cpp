@@ -40,18 +40,31 @@ void UEnemyStatComponent::SetLevel(int32 NewLevel)
 		if (StatData)
 		{
 			Level = StatData->Level;
-			Hp = StatData->MaxHp;
+			MaxHp = StatData->MaxHp;
+			SetHp(MaxHp);
 			Attack = StatData->Attack;
 		}
 	}
 }
 
-void UEnemyStatComponent::OnAttacked(float DamagedAmount)
+void UEnemyStatComponent::SetHp(float NewHp)
 {
-	Hp -= DamagedAmount;
+	Hp = NewHp;
 	if (Hp < 0)
 		Hp = 0;
 
-	UE_LOG(LogTemp, Warning, TEXT("OnAttacked %d"), Hp);
+
+	OnHpDecreased.Broadcast();
 }
+
+void UEnemyStatComponent::OnAttacked(float DamagedAmount)
+{
+	SetHp(Hp - DamagedAmount);
+	if (Hp < 0)
+		Hp = 0;
+
+	UE_LOG(LogTemp, Warning, TEXT("Enemy Attacked %d"), Hp);
+}
+
+
 

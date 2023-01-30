@@ -7,6 +7,7 @@
 #include "EnemyStatComponent.generated.h"
 
 
+DECLARE_MULTICAST_DELEGATE(FHpDecreased);
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class MYPROJECT_API UEnemyStatComponent : public UActorComponent
 {
@@ -22,13 +23,18 @@ protected:
 	virtual void InitializeComponent() override;
 public:
 	void SetLevel(int32 NewLevel);
+	void SetHp(float NewHp);
 	void OnAttacked(float DamagedAmount);
+
+	FHpDecreased OnHpDecreased;
+
 public:
 	FString GetName() { return Name; }
 	int32 GetLevel() { return Level; }
 	int32 GetHp() { return Hp; }
 	int32 GetAttack() { return Attack; }
 	int32 GetSpeed() { return Speed; }
+	float GetHpRatio() { return Hp / (float)MaxHp; }
 
 private:
 	UPROPERTY(EditAnywhere, Category = Stat)
@@ -42,6 +48,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = Stat)
 	int32 Hp;
+
+	UPROPERTY(EditAnywhere, Category = Stat)
+	int32 MaxHp;
 
 	UPROPERTY(EditAnywhere, Category = Stat)
 	int32 Speed;

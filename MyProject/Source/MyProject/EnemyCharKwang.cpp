@@ -6,6 +6,8 @@
 #include "EnemyAnimInstance.h"
 #include "MyPlayer.h"
 #include "EnemyStatComponent.h"
+#include "Widget_Hp.h"
+#include "Components/WidgetComponent.h"
 
 // Sets default values
 AEnemyCharKwang::AEnemyCharKwang()
@@ -27,6 +29,20 @@ AEnemyCharKwang::AEnemyCharKwang()
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
 	Stat = CreateDefaultSubobject<UEnemyStatComponent>(TEXT("STAT"));
+	HpBar = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBAR"));
+
+	HpBar->SetupAttachment(GetMesh());
+	HpBar->SetWidgetSpace(EWidgetSpace::Screen);
+
+	static ConstructorHelpers::FClassFinder<UUserWidget> UW(TEXT("WidgetBlueprint'/Game/UI/WBP_HPBar.WBP_HPBar_C'"));
+
+	if (UW.Succeeded())
+	{
+		HpBar->SetWidgetClass(UW.Class);
+		HpBar->SetDrawSize(FVector2d(200.f, 50.f));
+		HpBar->SetRelativeLocation(FVector(0.f, 0.f, 200.f));
+	}
+
 }
 
 void AEnemyCharKwang::OnDamaged()
@@ -83,6 +99,11 @@ void AEnemyCharKwang::AttackCheck()
 	}
 }
 
+void AEnemyCharKwang::Die()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Die"));
+}
+
 
 
 void AEnemyCharKwang::PostInitializeComponents()
@@ -96,6 +117,11 @@ void AEnemyCharKwang::PostInitializeComponents()
 		AnimInst->OnMontageEnded.AddDynamic(this, &AEnemyCharKwang::OnAttackMontageEnded);
 		AnimInst->OnAttackHit.AddUObject(this, &AEnemyCharKwang::AttackCheck);
 	}
+
+	HpBar->InitWidget();
+
+	auto Bar = Cast<UWidget_Hp>(HpBar->GetUserWidgetObject());
+	Bar->BindWidget_Enemy(Stat);
 }
 
 void AEnemyCharKwang::BeginPlay()
@@ -120,6 +146,12 @@ float AEnemyCharKwang::TakeDamage(float Damage, FDamageEvent const& DamageEvent,
 {
 	Stat->OnAttacked(Damage);
 	OnDamaged();
+
+	if (Stat->GetHp() == 0)
+	{
+		Die();
+	}
+
 	return Damage;
 }
 

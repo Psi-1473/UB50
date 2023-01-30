@@ -18,6 +18,7 @@ public:
 	void OnDamaged();
 	void Attack();
 	void AttackCheck();
+	void Die();
 	FOnAttackEnd OnAttackEnd;
 
 
@@ -49,5 +50,8 @@ private:
 
 	UPROPERTY()
 	bool IsDamaged = false;
+
+	UPROPERTY()
+	class UWidgetComponent* HpBar;
 
 };

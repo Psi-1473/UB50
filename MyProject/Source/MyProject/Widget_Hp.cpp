@@ -4,31 +4,31 @@
 #include "Widget_Hp.h"
 #include "GameFramework/Character.h"
 #include "MyPlayer.h"
-#include "PlayerStatComponent.h"
 #include "Components/ProgressBar.h"
+#include "EnemyCharKwang.h"
 
-void UWidget_Hp::NativeConstruct()
+
+void UWidget_Hp::BindWidget_Player(UPlayerStatComponent* Stat)
 {
-	auto Character = Cast<AMyPlayer>(GetOwningLocalPlayer());
-	
-	HpBar = Cast<UProgressBar>(GetWidgetFromName(TEXT("PB_HpBar")));
-	
-	if (Character)
-	{
-		Player = Character;
-		Character->Stat->OnHpDecreased.AddUObject(this, &UWidget_Hp::UpdatePlayerHp);
-	}
-
-	// 캐릭터가 플레이어가 아닌 경우 = 적
+	IsPlayer = true;
+	PlayerStat = Stat;
+	PlayerStat->OnHpDecreased.AddUObject(this, &UWidget_Hp::UpdateHp);
 }
 
-void UWidget_Hp::UpdatePlayerHp()
+void UWidget_Hp::BindWidget_Enemy(UEnemyStatComponent* Stat)
 {
-
-	//ProgressBar
-	HpBar->SetPercent(Player->Stat->GetHpRatio());
-
-
+	IsPlayer = false;
+	EnemyStat = Stat;
+	EnemyStat->OnHpDecreased.AddUObject(this, &UWidget_Hp::UpdateHp);
 }
+
+void UWidget_Hp::UpdateHp()
+{
+	if(IsPlayer)
+		PB_HpBar->SetPercent(PlayerStat->GetHpRatio());
+	else
+		PB_HpBar->SetPercent(EnemyStat->GetHpRatio());
+}
+
 
 

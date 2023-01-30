@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "EnemyStatComponent.h"
+#include "PlayerStatComponent.h"
 #include "Widget_Hp.generated.h"
 
 /**
@@ -14,17 +16,20 @@ class MYPROJECT_API UWidget_Hp : public UUserWidget
 {
 	GENERATED_BODY()
 
-protected:
-	virtual void NativeConstruct() override;
-
 public:
-	void UpdatePlayerHp();
+	void BindWidget_Player(UPlayerStatComponent* Stat);
+	void BindWidget_Enemy(UEnemyStatComponent* Stat);
+	void UpdateHp();
 
 private:
+	UPROPERTY(meta = (BindWidget))
+	class UProgressBar* PB_HpBar;
+
 	UPROPERTY()
-	class UProgressBar* HpBar;
+	bool IsPlayer;
 
-	class AMyPlayer* Player;
-
+	UPROPERTY()
+	TWeakObjectPtr<UPlayerStatComponent> PlayerStat;
+	TWeakObjectPtr<UEnemyStatComponent> EnemyStat;
 	
 };
