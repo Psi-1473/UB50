@@ -21,6 +21,7 @@ public:
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 	void PlayAttackMontage();
 	void PlayDamagedMontage();
+	void PlayDeathMontage();
 
 public:
 	UFUNCTION()
@@ -28,6 +29,9 @@ public:
 
 	UFUNCTION()
 	void AnimNotify_HitCheck();
+
+	UFUNCTION()
+	void AnimNotify_Death();
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
@@ -38,6 +42,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
 	UAnimMontage* DamagedMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
+	UAnimMontage* DeathMontage;
 
 public:
 	FonAttackHit OnAttackHit;

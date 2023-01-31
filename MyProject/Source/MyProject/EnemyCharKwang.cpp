@@ -102,9 +102,10 @@ void AEnemyCharKwang::AttackCheck()
 void AEnemyCharKwang::Die()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Die"));
+	AnimInst->PlayDeathMontage();
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
-
-
 
 void AEnemyCharKwang::PostInitializeComponents()
 {
@@ -164,6 +165,7 @@ void AEnemyCharKwang::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrup
 
 void AEnemyCharKwang::OnAttackMontageStarted(UAnimMontage* Montage, bool bInterrupted)
 {
+	
 }
 
 
