@@ -90,7 +90,7 @@ private:
 	class UMyAnimInstance* AnimInst;
 
 	UPROPERTY(VisibleAnywhere)
-	class UWidgetComponent* HpBar;
+	class TSubclassOf<UUserWidget> PlayerMain;
 
 };
 
