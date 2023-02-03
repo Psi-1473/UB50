@@ -39,12 +39,7 @@ AMyPlayer::AMyPlayer()
 
 	Stat = CreateDefaultSubobject<UPlayerStatComponent>(TEXT("STAT"));
 
-	static ConstructorHelpers::FClassFinder<UUserWidget> UW(TEXT("WidgetBlueprint'/Game/UI/WBP_PlayerMain.WBP_PlayerMain_C'"));
-
-	if (UW.Succeeded())
-	{
-		PlayerMain = UW.Class;
-	}
+	
 
 
 }
@@ -53,12 +48,7 @@ AMyPlayer::AMyPlayer()
 void AMyPlayer::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	//UWidget_PlayerMain* Main = CreateWidget<UWidget_PlayerMain>(GetWorld(), PlayerMain);
-	//if (Main)
-	//{
-	//	Main->AddToViewport(1);
-	//}
+
 
 }
 

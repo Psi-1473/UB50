@@ -89,8 +89,7 @@ private:
 	UPROPERTY()
 	class UMyAnimInstance* AnimInst;
 
-	UPROPERTY(VisibleAnywhere)
-	class TSubclassOf<UUserWidget> PlayerMain;
+
 
 };
 
