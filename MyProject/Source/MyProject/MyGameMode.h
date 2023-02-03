@@ -18,7 +18,7 @@ class MYPROJECT_API AMyGameMode : public AGameModeBase
 public:
 	AMyGameMode();
 	virtual void BeginPlay() override;
-
+	void UIUpdate_Hp(float Value);
 
 	UPROPERTY(VisibleAnywhere)
 	TSubclassOf<UUserWidget> HUD_Class;

@@ -14,6 +14,8 @@ class MYPROJECT_API UWidget_PlayerMain : public UUserWidget
 {
 	GENERATED_BODY()
 
+public:
+	void UpdateHp(float Percentage);
 
 private:
 	UPROPERTY(meta = (BindWidget))

@@ -7,8 +7,9 @@
 #include "EnemyCharKwang.h"
 #include "PlayerStatComponent.h"
 #include "Components/WidgetComponent.h"
-#include "Widget_Hp.h"
 #include "Widget_PlayerMain.h"
+#include "MyGameMode.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AMyPlayer::AMyPlayer()
@@ -38,17 +39,18 @@ AMyPlayer::AMyPlayer()
 	}
 
 	Stat = CreateDefaultSubobject<UPlayerStatComponent>(TEXT("STAT"));
-
+	GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	
-
-
 }
 
 // Called when the game starts or when spawned
 void AMyPlayer::BeginPlay()
 {
 	Super::BeginPlay();
-
+	if (GameMode)
+	{
+		GameMode->UIUpdate_Hp(Stat->GetHpRatio());
+	}
 
 }
 
@@ -222,6 +224,8 @@ void AMyPlayer::OnDamaged()
 	IsAttacking = false;
 	bCombo = false;
 	AttackIndex = 0;
+
+
 	AnimInst->PlayDamagedMontage();
 }
 
@@ -241,6 +245,11 @@ float AMyPlayer::TakeDamage(float Damage, FDamageEvent const& DamageEvent, ACont
 {
 	Stat->OnAttacked(Damage);
 	OnDamaged();
+
+	if (GameMode)
+	{
+		GameMode->UIUpdate_Hp(Stat->GetHpRatio());
+	}
 	return Damage;
 }
 

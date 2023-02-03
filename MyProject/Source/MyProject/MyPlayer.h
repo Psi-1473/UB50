@@ -89,6 +89,9 @@ private:
 	UPROPERTY()
 	class UMyAnimInstance* AnimInst;
 
+	UPROPERTY()
+	class AMyGameMode* GameMode;
+
 
 
 };

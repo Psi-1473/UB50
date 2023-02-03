@@ -24,8 +24,6 @@ AMyGameMode::AMyGameMode()
 
 		}
 	}
-
-	
 }
 
 void AMyGameMode::BeginPlay()
@@ -33,4 +31,11 @@ void AMyGameMode::BeginPlay()
 	Super::BeginPlay();
 	
 
+}
+
+void AMyGameMode::UIUpdate_Hp(float Value)
+{
+	UWidget_PlayerMain* Hud = Cast<UWidget_PlayerMain>(CurrentWidget);
+	
+	Hud->UpdateHp(Value);
 }

@@ -93,9 +93,11 @@ void AEnemyCharKwang::AttackCheck()
 		UE_LOG(LogTemp, Log, TEXT("Hit Actor : %s"), *HitResult.GetActor()->GetName());
 		AMyPlayer* Player = Cast<AMyPlayer>(HitResult.GetActor());
 
-		FDamageEvent DamageEvent;
-		Player->TakeDamage(Stat->GetAttack(), DamageEvent, GetController(), this);
-		// 10ю╨ юс╫ц
+		if (Player)
+		{
+			FDamageEvent DamageEvent;
+			Player->TakeDamage(Stat->GetAttack(), DamageEvent, GetController(), this);
+		}
 	}
 }
 
