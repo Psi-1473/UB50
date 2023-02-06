@@ -9,7 +9,7 @@
 AMyGameMode::AMyGameMode()
 {
 	//DefaultPawnClass = BP_MyPlayer::StaticClass();
-	static ConstructorHelpers::FClassFinder<UUserWidget> UW(TEXT("WidgetBlueprint'/Game/UI/WBP_Inventory.WBP_Inventory_C'"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> UW(TEXT("WidgetBlueprint'/Game/UI/WBP_PlayerMain.WBP_PlayerMain_C'"));
 	UE_LOG(LogTemp, Warning, TEXT("GameMode Start!"));
 	if (UW.Succeeded())
 	{
@@ -21,9 +21,10 @@ AMyGameMode::AMyGameMode()
 		{
 			UE_LOG(LogTemp, Warning, TEXT("GameMode CurrentWidget Succeeded!"));
 			CurrentWidget->AddToViewport();
-			UWidget_Inventory* Inven = Cast<UWidget_Inventory>(CurrentWidget);
-			Inven->CreateSlot();
+			//UWidget_Inventory* Inven = Cast<UWidget_Inventory>(CurrentWidget);
+			//Inven->CreateSlot();
 			// Add to Viewport ¹Ý´ë = RemoveFromViewport
+
 
 		}
 	}
@@ -38,7 +39,7 @@ void AMyGameMode::BeginPlay()
 
 void AMyGameMode::UIUpdate_Hp(float Value)
 {
-	//UWidget_PlayerMain* Hud = Cast<UWidget_PlayerMain>(CurrentWidget);
-	//
-	//Hud->UpdateHp(Value);
+	UWidget_PlayerMain* Hud = Cast<UWidget_PlayerMain>(CurrentWidget);
+
+	Hud->UpdateHp(Value);
 }

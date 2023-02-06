@@ -15,7 +15,7 @@ class MYPROJECT_API UWidget_InvenSlot : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	void SetCount();
+	void SetCount(int8 Index);
 
 private:
 	UPROPERTY()
@@ -35,6 +35,8 @@ private:
 
 	UPROPERTY()
 	FString ItemSub;
+
+	// 필요하면 나중에 ItemId만 남겨도 될 듯?
 
 private:
 	UPROPERTY(meta = (BindWidget))

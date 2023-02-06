@@ -12,9 +12,22 @@ void UWidget_Inventory::NativeOnInitialized()
 
 void UWidget_Inventory::CreateSlot()
 {
-	auto ItemSlot = Cast<UWidget_InvenSlot>(WrapBox_Slot->GetChildAt(0));
+	for (int i = 0; i < WrapBox_Slot->GetChildrenCount(); i++)
+	{
+		Slots.Add(Cast<UWidget_InvenSlot>(WrapBox_Slot->GetChildAt(i)));
+		Slots[i]->SetCount(i);
+	}
 	
-	ItemSlot->SetCount();
 
 	
+}
+
+void UWidget_Inventory::AddItem()
+{
+	//Todo
+}
+
+void UWidget_Inventory::RemoveItem(int8 Index)
+{
+	//Todo
 }

@@ -4,9 +4,10 @@
 #include "Widget_InvenSlot.h"
 #include "Components/TextBlock.h"
 
-void UWidget_InvenSlot::SetCount()
+void UWidget_InvenSlot::SetCount(int8 Index)
 {
 	FString strText;
-	strText = FString::Printf(TEXT("%d"), 12);
+	SlotIndex = Index;
+	strText = FString::Printf(TEXT("%d"), SlotIndex);
 	Count->SetText(FText::FromString(strText));
 }

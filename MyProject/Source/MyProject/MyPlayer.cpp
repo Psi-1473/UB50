@@ -10,6 +10,7 @@
 #include "Widget_PlayerMain.h"
 #include "MyGameMode.h"
 #include "Kismet/GameplayStatics.h"
+#include "Widget_Inventory.h"
 
 // Sets default values
 AMyPlayer::AMyPlayer()
@@ -41,6 +42,11 @@ AMyPlayer::AMyPlayer()
 	Stat = CreateDefaultSubobject<UPlayerStatComponent>(TEXT("STAT"));
 	GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	
+	static ConstructorHelpers::FClassFinder<UUserWidget> IW(TEXT("WidgetBlueprint'/Game/UI/WBP_Inventory.WBP_Inventory_C'"));
+	if (IW.Succeeded())
+	{
+		Inventory = IW.Class;
+	}
 }
 
 // Called when the game starts or when spawned
@@ -91,6 +97,7 @@ void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction(TEXT("Sprint"), EInputEvent::IE_Pressed, this, &AMyPlayer::OnSprint);
 	PlayerInputComponent->BindAction(TEXT("Sprint"), EInputEvent::IE_Released, this, &AMyPlayer::OffSprint);
 	PlayerInputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &AMyPlayer::ClickAttack);
+	PlayerInputComponent->BindAction(TEXT("Inventory"), EInputEvent::IE_Pressed, this, &AMyPlayer::PopupInventory);
 
 }
 
@@ -107,7 +114,6 @@ void AMyPlayer::MoveForward(float Value)
 	Vertical = Value;
 	AddMovementInput(GetActorForwardVector(), Value);
 }
-
 void AMyPlayer::MoveRight(float Value)
 {
 	if (bDamaged)
@@ -124,7 +130,6 @@ void AMyPlayer::Yaw(float Value)
 {
 	AddControllerYawInput(Value);
 }
-
 void AMyPlayer::Pitch(float Value)
 {
 	AddControllerPitchInput(Value);
@@ -134,7 +139,6 @@ void AMyPlayer::OnSprint()
 {
 	bIsSprint = true;
 }
-
 void AMyPlayer::OffSprint()
 {
 	bIsSprint = false;
@@ -154,7 +158,29 @@ void AMyPlayer::ClickAttack()
 		bCombo = true;
 	}
 }
-
+void AMyPlayer::PopupInventory()
+{
+	if (bOnInventory)
+	{
+		Inven->RemoveFromViewport();
+		bOnInventory = false;
+		GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);
+	}
+	else
+	{
+		if(Inven == nullptr)
+			Inven = CreateWidget(GetWorld(), Inventory);
+		
+		UE_LOG(LogTemp, Warning, TEXT("GameMode CurrentWidget Succeeded!"));
+		Inven->AddToViewport();
+		UWidget_Inventory* WInven = Cast<UWidget_Inventory>(Inven);
+		WInven->CreateSlot();
+		bOnInventory = true;
+		GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
+		//	// Add to Viewport ¹Ý´ë = RemoveFromViewport
+		//
+	}
+}
 void AMyPlayer::Attack()
 {
 	if (AttackIndex >= 3)
@@ -167,14 +193,12 @@ void AMyPlayer::Attack()
 	AnimInst->JumpToSection(AttackIndex);
 	AttackIndex++;
 }
-
 void AMyPlayer::EndAttack()
 {
 	IsAttacking = false;
 	bCombo = false;
 	AttackIndex = 0;
 }
-
 void AMyPlayer::AttackCheck()
 {
 	FHitResult HitResult;
@@ -217,6 +241,8 @@ void AMyPlayer::AttackCheck()
 		Enemy->TakeDamage(Stat->GetAttack(), DamageEvent, GetController(), this);
 	}
 }
+
+
 
 void AMyPlayer::OnDamaged()
 {

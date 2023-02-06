@@ -44,7 +44,9 @@ private:
 	void OnSprint();
 	void OffSprint();
 	void ClickAttack();
-	
+
+	void PopupInventory();
+
 	
 
 	UFUNCTION()
@@ -90,7 +92,12 @@ private:
 	UPROPERTY()
 	class AMyGameMode* GameMode;
 
+	UPROPERTY()
+	bool bOnInventory = false; //임시 나중에 UI 매니저에서 관리
 
-
+private:
+	TSubclassOf<UUserWidget> Inventory;
+	UUserWidget* Inven;
+	// 임시
 };
 
