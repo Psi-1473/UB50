@@ -84,8 +84,6 @@ private:
 	UPROPERTY(EditAnywhere)
 	UCameraComponent* Camera;
 
-
-
 	UPROPERTY()
 	class UMyAnimInstance* AnimInst;
 
