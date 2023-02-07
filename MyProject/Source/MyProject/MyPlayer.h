@@ -7,6 +7,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Npc.h"
 #include "MyPlayer.generated.h"
 
 UCLASS()
@@ -34,6 +35,18 @@ public:
 public:
 	void SetDamaged(bool Value) { bDamaged = Value; }
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+	void SetNpc(ANpc* NewNpc = nullptr)
+	{ 
+		CanInteractNpc = NewNpc;
+		if (CanInteractNpc)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("You Can Interact with Npc"));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Npc Out"));
+		}
+	}
 
 private:
 	void MoveForward(float Value);
@@ -99,5 +112,8 @@ private:
 	TSubclassOf<UUserWidget> Inventory;
 	UUserWidget* Inven;
 	// юс╫ц
+
+	UPROPERTY()
+	ANpc* CanInteractNpc;
 };
 
