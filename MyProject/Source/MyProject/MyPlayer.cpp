@@ -47,6 +47,11 @@ AMyPlayer::AMyPlayer()
 	{
 		Inventory = IW.Class;
 	}
+	static ConstructorHelpers::FClassFinder<UUserWidget> CW(TEXT("WidgetBlueprint'/Game/UI/WBP_Inventory.WBP_Inventory_C'"));
+	if (IW.Succeeded())
+	{
+		Conversation = CW.Class;
+	}
 }
 
 // Called when the game starts or when spawned
@@ -98,6 +103,7 @@ void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction(TEXT("Sprint"), EInputEvent::IE_Released, this, &AMyPlayer::OffSprint);
 	PlayerInputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &AMyPlayer::ClickAttack);
 	PlayerInputComponent->BindAction(TEXT("Inventory"), EInputEvent::IE_Pressed, this, &AMyPlayer::PopupInventory);
+	PlayerInputComponent->BindAction(TEXT("Interact"), EInputEvent::IE_Pressed, this, &AMyPlayer::Interact);
 
 }
 
@@ -277,6 +283,31 @@ float AMyPlayer::TakeDamage(float Damage, FDamageEvent const& DamageEvent, ACont
 		GameMode->UIUpdate_Hp(Stat->GetHpRatio());
 	}
 	return Damage;
+}
+
+void AMyPlayer::Interact()
+{
+	if (CanInteractNpc == nullptr)
+		return;
+	if (bInteract)
+	{
+		Conv->RemoveFromViewport();
+		bInteract = false;
+		GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);
+	}
+	else
+	{
+		if (Conv == nullptr)
+			Conv = CreateWidget(GetWorld(), Conversation);
+
+		UE_LOG(LogTemp, Warning, TEXT("GameMode CurrentWidget Succeeded!"));
+		Conv->AddToViewport();
+		bInteract = true;
+		GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
+		//	// Add to Viewport ¹Ý´ë = RemoveFromViewport
+		//
+	}
+
 }
 
 

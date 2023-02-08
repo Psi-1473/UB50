@@ -35,7 +35,7 @@ ANpc::ANpc()
 	InteractBox->OnComponentBeginOverlap.AddDynamic(this, &ANpc::OnOverlapBegin);
 	InteractBox->OnComponentEndOverlap.AddDynamic(this, &ANpc::OnOverlapEnd);
 
-	InteractBox->SetCollisionObjectType(ECollisionChannel::ECC_EngineTraceChannel3);
+	InteractBox->SetCollisionObjectType(ECollisionChannel::ECC_EngineTraceChannel2);
 	UE_LOG(LogTemp, Warning, TEXT("Npc On"));
 }
 
@@ -65,12 +65,10 @@ void ANpc::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActo
 	UE_LOG(LogTemp, Warning, TEXT("Someone Entered"));
 	if (OtherActor && (OtherActor != this) && OtherComp)
 	{
-		
 		auto Player = Cast<AMyPlayer>(OtherActor);
-
 		if (Player)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Player Entered"));
+			InteractionKey->SetVisibility(true);
 			Player->SetNpc(this);
 		}
 	}
@@ -81,12 +79,10 @@ void ANpc::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 	UE_LOG(LogTemp, Warning, TEXT("Someone Out"));
 	if (OtherActor && (OtherActor != this) && OtherComp)
 	{
-		
 		auto Player = Cast<AMyPlayer>(OtherActor);
-
 		if (Player)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Player Out"));
+			InteractionKey->SetVisibility(false);
 			Player->SetNpc();
 		}
 	}

@@ -35,18 +35,8 @@ public:
 public:
 	void SetDamaged(bool Value) { bDamaged = Value; }
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
-	void SetNpc(ANpc* NewNpc = nullptr)
-	{ 
-		CanInteractNpc = NewNpc;
-		if (CanInteractNpc)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("You Can Interact with Npc"));
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Npc Out"));
-		}
-	}
+	void SetNpc(ANpc* NewNpc = nullptr){ CanInteractNpc = NewNpc; }
+	void Interact();
 
 private:
 	void MoveForward(float Value);
@@ -107,10 +97,15 @@ private:
 
 	UPROPERTY()
 	bool bOnInventory = false; //임시 나중에 UI 매니저에서 관리
+	UPROPERTY()
+	bool bInteract = false;
 
 private:
 	TSubclassOf<UUserWidget> Inventory;
 	UUserWidget* Inven;
+
+	TSubclassOf<UUserWidget> Conversation;
+	UUserWidget* Conv;
 	// 임시
 
 	UPROPERTY()
