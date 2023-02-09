@@ -43,6 +43,71 @@ struct FEnemyData : public FTableRowBase
 	int Speed;
 };
 
+USTRUCT()
+struct FWeaponData : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Name;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Id;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Attack;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int SellPrice;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int BuyPrice;
+};
+
+USTRUCT()
+struct FArmorData : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Name;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Id;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Defense;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int SellPrice;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int BuyPrice;
+};
+
+USTRUCT()
+struct FUseItemData : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Name;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Id;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Hp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Mp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int SellPrice;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int BuyPrice;
+};
 
 /**
  * 
@@ -66,6 +131,15 @@ private:
 
 	UPROPERTY()
 	class UDataTable* EnemyStats;
+
+	UPROPERTY()
+	class UDataTable* WeaponData;
+
+	UPROPERTY()
+	class UDataTable* ArmorData;
+
+	UPROPERTY()
+	class UDataTable* UseItemData;
 
 	
 };
