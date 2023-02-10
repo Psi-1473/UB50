@@ -54,7 +54,6 @@ AMyPlayer::AMyPlayer()
 	}
 }
 
-// Called when the game starts or when spawned
 void AMyPlayer::BeginPlay()
 {
 	Super::BeginPlay();
@@ -83,86 +82,17 @@ void AMyPlayer::PostInitializeComponents()
 	// TODO Hp바 델리게이트 바인딩
 }
 
-// Called every frame
 void AMyPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
-// Called to bind functionality to input
 void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &AMyPlayer::MoveForward);
-	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &AMyPlayer::MoveRight);
-	PlayerInputComponent->BindAxis(TEXT("Yaw"), this, &AMyPlayer::Yaw);
-	PlayerInputComponent->BindAxis(TEXT("Pitch"), this, &AMyPlayer::Pitch);
-
-	PlayerInputComponent->BindAction(TEXT("Sprint"), EInputEvent::IE_Pressed, this, &AMyPlayer::OnSprint);
-	PlayerInputComponent->BindAction(TEXT("Sprint"), EInputEvent::IE_Released, this, &AMyPlayer::OffSprint);
-	PlayerInputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &AMyPlayer::ClickAttack);
 	PlayerInputComponent->BindAction(TEXT("Inventory"), EInputEvent::IE_Pressed, this, &AMyPlayer::PopupInventory);
 	PlayerInputComponent->BindAction(TEXT("Interact"), EInputEvent::IE_Pressed, this, &AMyPlayer::Interact);
 
-}
-
-
-
-void AMyPlayer::MoveForward(float Value)
-{
-	if (bDamaged)
-		return;
-
-	if (IsAttacking)
-		return;
-
-	Vertical = Value;
-	AddMovementInput(GetActorForwardVector(), Value);
-}
-void AMyPlayer::MoveRight(float Value)
-{
-	if (bDamaged)
-		return;
-
-	if (IsAttacking)
-		return;
-
-	Horizontal = Value;
-	AddMovementInput(GetActorRightVector(), Value);
-}
-
-void AMyPlayer::Yaw(float Value)
-{
-	AddControllerYawInput(Value);
-}
-void AMyPlayer::Pitch(float Value)
-{
-	AddControllerPitchInput(Value);
-}
-
-void AMyPlayer::OnSprint()
-{
-	bIsSprint = true;
-}
-void AMyPlayer::OffSprint()
-{
-	bIsSprint = false;
-}
-
-void AMyPlayer::ClickAttack()
-{
-	if (bDamaged)
-		return;
-
-	if (IsAttacking == false)
-	{
-		Attack();
-	}
-	else
-	{
-		bCombo = true;
-	}
 }
 void AMyPlayer::PopupInventory()
 {
@@ -247,9 +177,6 @@ void AMyPlayer::AttackCheck()
 		Enemy->TakeDamage(Stat->GetAttack(), DamageEvent, GetController(), this);
 	}
 }
-
-
-
 void AMyPlayer::OnDamaged()
 {
 	bDamaged = true;

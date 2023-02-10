@@ -39,15 +39,6 @@ public:
 	void Interact();
 
 private:
-	void MoveForward(float Value);
-	void MoveRight(float Value);
-	void Yaw(float Value);
-	void Pitch(float Value);
-
-	void OnSprint();
-	void OffSprint();
-	void ClickAttack();
-
 	void PopupInventory();
 
 	
@@ -110,5 +101,6 @@ private:
 
 	UPROPERTY()
 	ANpc* CanInteractNpc;
+
 };
 
