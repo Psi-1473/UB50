@@ -11,6 +11,7 @@
 #include "MyGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "Widget_Inventory.h"
+#include "Widget_InvenSlot.h"
 
 // Sets default values
 AMyPlayer::AMyPlayer()
@@ -52,6 +53,11 @@ AMyPlayer::AMyPlayer()
 	{
 		Conversation = CW.Class;
 	}
+
+	WeaponList.Init(nullptr, 24);
+	ArmorList.Init(nullptr, 24);
+	UseItemList.Init(nullptr, 24);
+
 }
 
 void AMyPlayer::BeginPlay()
@@ -92,6 +98,7 @@ void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent->BindAction(TEXT("Inventory"), EInputEvent::IE_Pressed, this, &AMyPlayer::PopupInventory);
 	PlayerInputComponent->BindAction(TEXT("Interact"), EInputEvent::IE_Pressed, this, &AMyPlayer::Interact);
+	PlayerInputComponent->BindAction(TEXT("TestKey"), EInputEvent::IE_Pressed, this, &AMyPlayer::TestAddItem);
 
 }
 void AMyPlayer::PopupInventory()
@@ -235,6 +242,33 @@ void AMyPlayer::Interact()
 		//
 	}
 
+}
+
+void AMyPlayer::TestAddItem()
+{
+	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
+	WeaponList[WeaponIndex] = GInstance->GetWeaponData(1);
+	if (bOnInventory)
+	{
+		auto MyInven = Cast<UWidget_Inventory>(Inven);
+		MyInven->Slots[WeaponIndex]->SetWeaponItem();
+	}
+	FindNextWeaponIndex();
+	
+}
+
+void AMyPlayer::FindNextWeaponIndex()
+{
+	// if 인벤토리가 가득 찼을 때 처리 TODO
+
+	for (int i = 0; i < 24; i++)
+	{
+		if (WeaponList[i] == nullptr)
+		{
+			WeaponIndex = i;
+			return;
+		}
+	}
 }
 
 

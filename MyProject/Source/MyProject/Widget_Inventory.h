@@ -27,6 +27,7 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	class UWrapBox* WrapBox_Slot;
 	
+public:
 	UPROPERTY()
 	TArray<class UWidget_InvenSlot*> Slots;
 	//이거 안해도 될 듯

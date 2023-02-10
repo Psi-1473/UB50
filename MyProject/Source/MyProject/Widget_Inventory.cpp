@@ -16,6 +16,7 @@ void UWidget_Inventory::CreateSlot()
 	{
 		Slots.Add(Cast<UWidget_InvenSlot>(WrapBox_Slot->GetChildAt(i)));
 		Slots[i]->SetCount(i);
+		Slots[i]->SetWeaponItem();
 	}
 	
 

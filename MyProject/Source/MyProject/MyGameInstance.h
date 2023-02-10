@@ -48,6 +48,14 @@ struct FWeaponData : public FTableRowBase
 {
 	GENERATED_BODY()
 
+	FWeaponData()
+	{
+		Name = "None";
+		Id = -1;
+		Attack = 0;
+		SellPrice = 0;
+		BuyPrice = 0;
+	}
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Name;
 
@@ -69,6 +77,14 @@ struct FArmorData : public FTableRowBase
 {
 	GENERATED_BODY()
 
+	FArmorData()
+	{
+		Name = "None";
+		Id = -1;
+		Defense = 0;
+		SellPrice = 0;
+		BuyPrice = 0;
+	}
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Name;
 
@@ -89,7 +105,16 @@ USTRUCT()
 struct FUseItemData : public FTableRowBase
 {
 	GENERATED_BODY()
-
+		
+	FUseItemData()
+	{
+		Name = "None";
+		Id = -1;
+		Hp = 0;
+		Mp = 0;
+		SellPrice = 0;
+		BuyPrice = 0;
+	}
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Name;
 
@@ -124,6 +149,7 @@ public:
 
 	FMyCharacterData* GetStatData(int32 Level);
 	FEnemyData* GetEnemyData(FString Kwang);
+	FWeaponData* GetWeaponData(int32 Id);
 
 private:
 	UPROPERTY()

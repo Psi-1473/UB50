@@ -16,6 +16,7 @@ class MYPROJECT_API UWidget_InvenSlot : public UUserWidget
 
 public:
 	void SetCount(int8 Index);
+	void SetWeaponItem();
 
 private:
 	UPROPERTY()

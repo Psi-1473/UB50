@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "MyGameInstance.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -37,6 +38,8 @@ public:
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 	void SetNpc(ANpc* NewNpc = nullptr){ CanInteractNpc = NewNpc; }
 	void Interact();
+	void TestAddItem();
+	void FindNextWeaponIndex();
 
 private:
 	void PopupInventory();
@@ -99,6 +102,15 @@ private:
 	UUserWidget* Conv;
 	// юс╫ц
 
+public:
+	TArray<FWeaponData*> WeaponList;
+	int32 WeaponIndex = 0;
+	TArray<FArmorData*> ArmorList;
+	int32 ArmorIndex = 0;
+	TArray<FUseItemData*> UseItemList;
+	int32 UseItemIndex = 0;
+
+private:
 	UPROPERTY()
 	ANpc* CanInteractNpc;
 
