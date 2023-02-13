@@ -22,10 +22,14 @@ public:
 	void CreateSlot();
 	void AddItem();//플레이어에 아이템 정보 저장하는 리스트 생성후 그 리스트랑 비교 후 채우기
 	void RemoveItem(int8 Index);
+	void RefreshSlot(int8 ItemType); // 아이템 리스트랑 비교해서 아이템 들어있으면 아이템 없으면 null로
 	
 private:
 	UPROPERTY(meta = (BindWidget))
 	class UWrapBox* WrapBox_Slot;
+
+	UPROPERTY()
+	int8 TypeIndex = 0; // 0 - 무기, 1 - 장비, 2 - 소모품
 	
 public:
 	UPROPERTY()

@@ -44,8 +44,6 @@ public:
 private:
 	void PopupInventory();
 
-	
-
 	UFUNCTION()
 	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
 

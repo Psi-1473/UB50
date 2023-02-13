@@ -17,10 +17,7 @@ void UWidget_Inventory::CreateSlot()
 		Slots.Add(Cast<UWidget_InvenSlot>(WrapBox_Slot->GetChildAt(i)));
 		Slots[i]->SetCount(i);
 		Slots[i]->SetWeaponItem();
-	}
-	
-
-	
+	}	
 }
 
 void UWidget_Inventory::AddItem()
@@ -31,4 +28,8 @@ void UWidget_Inventory::AddItem()
 void UWidget_Inventory::RemoveItem(int8 Index)
 {
 	//Todo
+}
+
+void UWidget_Inventory::RefreshSlot(int8 ItemType)
+{
 }
