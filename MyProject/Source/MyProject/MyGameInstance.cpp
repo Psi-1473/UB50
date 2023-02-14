@@ -17,6 +17,11 @@ UMyGameInstance::UMyGameInstance()
 	ArmorData = Armors.Object;
 	UseItemData = UseItems.Object;
 
+	//for (int i = 1; i < 4; i++)
+	//{
+	//	static ConstructorHelpers::FObjectFinder<UImage> WImage(TEXT("Texture2D'/Game/Graphics/Items/Weapons/Sword1.Sword1'"));
+	//	//WeaponImage.Add(i, WImage.Object);
+	//}
 }
 
 void UMyGameInstance::Init()

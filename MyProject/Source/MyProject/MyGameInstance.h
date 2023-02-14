@@ -169,5 +169,14 @@ private:
 	UPROPERTY()
 	class UDataTable* UseItemData;
 
+	UPROPERTY()
+	TMap<int, class UImage*> WeaponImage;
+
+	UPROPERTY()
+	TMap<int, class UImage*> ArmorImage;
+
+	UPROPERTY()
+	TMap<int, class UImage*> UseItemImage;
+
 	
 };
