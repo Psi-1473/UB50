@@ -150,6 +150,8 @@ public:
 	FMyCharacterData* GetStatData(int32 Level);
 	FEnemyData* GetEnemyData(FString Kwang);
 	FWeaponData* GetWeaponData(int32 Id);
+	FArmorData* GetArmorData(int32 Id);
+	FUseItemData* GetUseData(int32 Id);
 
 private:
 	UPROPERTY()

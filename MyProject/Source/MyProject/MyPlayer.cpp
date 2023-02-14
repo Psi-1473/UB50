@@ -98,7 +98,9 @@ void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent->BindAction(TEXT("Inventory"), EInputEvent::IE_Pressed, this, &AMyPlayer::PopupInventory);
 	PlayerInputComponent->BindAction(TEXT("Interact"), EInputEvent::IE_Pressed, this, &AMyPlayer::Interact);
-	PlayerInputComponent->BindAction(TEXT("TestKey"), EInputEvent::IE_Pressed, this, &AMyPlayer::TestAddItem);
+	PlayerInputComponent->BindAction(TEXT("TestKey"), EInputEvent::IE_Pressed, this, &AMyPlayer::TestAddItemWeapon);
+	PlayerInputComponent->BindAction(TEXT("TestKey2"), EInputEvent::IE_Pressed, this, &AMyPlayer::TestAddItemArmor);
+	PlayerInputComponent->BindAction(TEXT("TestKey3"), EInputEvent::IE_Pressed, this, &AMyPlayer::TestAddItemUse);
 
 }
 void AMyPlayer::PopupInventory()
@@ -244,17 +246,43 @@ void AMyPlayer::Interact()
 
 }
 
-void AMyPlayer::TestAddItem()
+void AMyPlayer::TestAddItemWeapon()
 {
 	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
 	WeaponList[WeaponIndex] = GInstance->GetWeaponData(1);
 	if (bOnInventory)
 	{
 		auto MyInven = Cast<UWidget_Inventory>(Inven);
-		MyInven->Slots[WeaponIndex]->SetWeaponItem();
+		if(MyInven->GetInvenType() == 0)
+			MyInven->Slots[WeaponIndex]->SetWeaponItem();
 	}
 	FindNextWeaponIndex();
-	
+}
+
+void AMyPlayer::TestAddItemArmor()
+{
+	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
+	ArmorList[ArmorIndex] = GInstance->GetArmorData(1);
+	if (bOnInventory)
+	{
+		auto MyInven = Cast<UWidget_Inventory>(Inven);
+		if (MyInven->GetInvenType() == 1)
+			MyInven->Slots[ArmorIndex]->SetArmorItem();
+	}
+	FindNextArmorIndex();
+}
+
+void AMyPlayer::TestAddItemUse()
+{
+	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
+	UseItemList[UseItemIndex] = GInstance->GetUseData(1);
+	if (bOnInventory)
+	{
+		auto MyInven = Cast<UWidget_Inventory>(Inven);
+		if (MyInven->GetInvenType() == 2)
+			MyInven->Slots[UseItemIndex]->SetUseItem();
+	}
+	FindNextUseIndex();
 }
 
 void AMyPlayer::FindNextWeaponIndex()
@@ -266,6 +294,30 @@ void AMyPlayer::FindNextWeaponIndex()
 		if (WeaponList[i] == nullptr)
 		{
 			WeaponIndex = i;
+			return;
+		}
+	}
+}
+
+void AMyPlayer::FindNextArmorIndex()
+{
+	for (int i = 0; i < 24; i++)
+	{
+		if (ArmorList[i] == nullptr)
+		{
+			ArmorIndex = i;
+			return;
+		}
+	}
+}
+
+void AMyPlayer::FindNextUseIndex()
+{
+	for (int i = 0; i < 24; i++)
+	{
+		if (UseItemList[i] == nullptr)
+		{
+			UseItemIndex = i;
 			return;
 		}
 	}

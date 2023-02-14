@@ -16,20 +16,43 @@ class MYPROJECT_API UWidget_Inventory : public UUserWidget
 
 
 public:
-	virtual void NativeOnInitialized();
+	virtual void NativeConstruct() override;
 
 public:
+	int8 GetInvenType() { return TypeIndex; }
 	void CreateSlot();
 	void AddItem();//플레이어에 아이템 정보 저장하는 리스트 생성후 그 리스트랑 비교 후 채우기
 	void RemoveItem(int8 Index);
 	void RefreshSlot(int8 ItemType); // 아이템 리스트랑 비교해서 아이템 들어있으면 아이템 없으면 null로
 	
+public:
+	UFUNCTION()
+	void RefreshToWeapon();
+
+	UFUNCTION()
+	void RefreshToArmor();
+
+	UFUNCTION()
+	void RefreshToUse();
+
 private:
 	UPROPERTY(meta = (BindWidget))
 	class UWrapBox* WrapBox_Slot;
 
+	UPROPERTY(meta = (BindWidget))
+	class UButton* Btn_Weapon;
+
+	UPROPERTY(meta = (BindWidget))
+	class UButton* Btn_Armor;
+
+	UPROPERTY(meta = (BindWidget))
+	class UButton* Btn_Use; // 잠시 방어구로 사용
+
+
 	UPROPERTY()
 	int8 TypeIndex = 0; // 0 - 무기, 1 - 장비, 2 - 소모품
+
+	int MaxInvenSlot = 24;
 	
 public:
 	UPROPERTY()

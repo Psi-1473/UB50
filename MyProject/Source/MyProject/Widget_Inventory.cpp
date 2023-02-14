@@ -4,10 +4,15 @@
 #include "Widget_Inventory.h"
 #include "Components/WrapBox.h"
 #include "Widget_InvenSlot.h"
+#include "Components/Button.h"
 
-void UWidget_Inventory::NativeOnInitialized()
+void UWidget_Inventory::NativeConstruct()
 {
-	
+	Super::NativeConstruct();
+
+	Btn_Weapon->OnClicked.AddDynamic(this, &UWidget_Inventory::RefreshToWeapon);
+	Btn_Armor->OnClicked.AddDynamic(this, &UWidget_Inventory::RefreshToArmor);
+	Btn_Use->OnClicked.AddDynamic(this, &UWidget_Inventory::RefreshToUse);
 }
 
 void UWidget_Inventory::CreateSlot()
@@ -16,8 +21,8 @@ void UWidget_Inventory::CreateSlot()
 	{
 		Slots.Add(Cast<UWidget_InvenSlot>(WrapBox_Slot->GetChildAt(i)));
 		Slots[i]->SetCount(i);
-		Slots[i]->SetWeaponItem();
 	}	
+	RefreshSlot(TypeIndex);
 }
 
 void UWidget_Inventory::AddItem()
@@ -32,4 +37,52 @@ void UWidget_Inventory::RemoveItem(int8 Index)
 
 void UWidget_Inventory::RefreshSlot(int8 ItemType)
 {
+	switch (ItemType)
+	{
+	case 0:
+		RefreshToWeapon();
+		break;
+	case 1:
+		RefreshToArmor();
+		break;
+	case 2:
+		RefreshToUse();
+		break;
+	default:
+		break;
+	}
+}
+
+void UWidget_Inventory::RefreshToWeapon()
+{
+	if (TypeIndex == 0)
+		return;
+	TypeIndex = 0;
+
+	for (int i = 0; i < WrapBox_Slot->GetChildrenCount(); i++)
+	{
+		Slots[i]->SetWeaponItem();
+	}
+}
+void UWidget_Inventory::RefreshToArmor()
+{
+	if (TypeIndex == 1)
+		return;
+	TypeIndex = 1;
+
+	for (int i = 0; i < WrapBox_Slot->GetChildrenCount(); i++)
+	{
+		Slots[i]->SetArmorItem();
+	}
+}
+void UWidget_Inventory::RefreshToUse()
+{
+	if (TypeIndex == 2)
+		return;
+	TypeIndex = 2;
+
+	for (int i = 0; i < WrapBox_Slot->GetChildrenCount(); i++)
+	{
+		Slots[i]->SetUseItem();
+	}
 }

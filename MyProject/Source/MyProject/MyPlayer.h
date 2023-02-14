@@ -38,8 +38,12 @@ public:
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 	void SetNpc(ANpc* NewNpc = nullptr){ CanInteractNpc = NewNpc; }
 	void Interact();
-	void TestAddItem();
+	void TestAddItemWeapon();
+	void TestAddItemArmor();
+	void TestAddItemUse();
 	void FindNextWeaponIndex();
+	void FindNextArmorIndex();
+	void FindNextUseIndex();
 
 private:
 	void PopupInventory();
