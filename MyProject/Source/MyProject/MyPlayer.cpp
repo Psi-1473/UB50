@@ -131,6 +131,12 @@ void AMyPlayer::Attack()
 	if (AttackIndex >= 3)
 		return;
 
+	if (bDamaged)
+		return;
+
+	if (bOnInventory)
+		return;
+
 	bCombo = false;
 	IsAttacking = true;
 

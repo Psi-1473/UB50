@@ -71,9 +71,6 @@ void AMyPlayerController::OffSprint()
 
 void AMyPlayerController::ClickAttack()
 {
-	if (MyPlayer->bDamaged)
-		return;
-
 	if (MyPlayer->IsAttacking == false)
 	{
 		MyPlayer->Attack();

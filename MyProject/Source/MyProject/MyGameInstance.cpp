@@ -10,18 +10,19 @@ UMyGameInstance::UMyGameInstance()
 	static ConstructorHelpers::FObjectFinder<UDataTable> Weapons(TEXT("DataTable'/Game/Data/WeaponTable.WeaponTable'"));
 	static ConstructorHelpers::FObjectFinder<UDataTable> Armors(TEXT("DataTable'/Game/Data/ArmorTable.ArmorTable'"));
 	static ConstructorHelpers::FObjectFinder<UDataTable> UseItems(TEXT("DataTable'/Game/Data/UseItemTable.UseItemTable'"));
+	static ConstructorHelpers::FObjectFinder<UDataTable> WeaponImg(TEXT("DataTable'/Game/Data/ImageTable/WeaponImgTable.WeaponImgTable'"));
+	static ConstructorHelpers::FObjectFinder<UDataTable> ArmorImg(TEXT("DataTable'/Game/Data/ImageTable/ArmorImgTable.ArmorImgTable'"));
+	static ConstructorHelpers::FObjectFinder<UDataTable> UseItemImg(TEXT("DataTable'/Game/Data/ImageTable/UseItemImgTable.UseItemImgTable'"));
 		
+
 	MyStats = Data.Object;
 	EnemyStats = EnemyData.Object;
 	WeaponData = Weapons.Object;
 	ArmorData = Armors.Object;
 	UseItemData = UseItems.Object;
-
-	//for (int i = 1; i < 4; i++)
-	//{
-	//	static ConstructorHelpers::FObjectFinder<UImage> WImage(TEXT("Texture2D'/Game/Graphics/Items/Weapons/Sword1.Sword1'"));
-	//	//WeaponImage.Add(i, WImage.Object);
-	//}
+	WeaponImage = WeaponImg.Object;
+	ArmorImage = ArmorImg.Object;
+	UseItemImage = UseItemImg.Object;
 }
 
 void UMyGameInstance::Init()
@@ -56,4 +57,19 @@ FArmorData* UMyGameInstance::GetArmorData(int32 Id)
 FUseItemData* UMyGameInstance::GetUseData(int32 Id)
 {
 	return UseItemData->FindRow<FUseItemData>(*FString::FromInt(Id), TEXT(""));
+}
+
+FRichImageRow* UMyGameInstance::GetWeaponImage(int32 Id)
+{
+	return WeaponImage->FindRow<FRichImageRow>(*FString::FromInt(Id), TEXT(""));
+}
+
+FRichImageRow* UMyGameInstance::GetArmorImage(int32 Id)
+{
+	return ArmorImage->FindRow<FRichImageRow>(*FString::FromInt(Id), TEXT(""));;
+}
+
+FRichImageRow* UMyGameInstance::GetUseImage(int32 Id)
+{
+	return UseItemImage->FindRow<FRichImageRow>(*FString::FromInt(Id), TEXT(""));
 }

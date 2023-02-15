@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
 #include "Engine/DataTable.h"
+#include "Components/RichTextBlockImageDecorator.h"
 #include "MyGameInstance.generated.h"
 
 USTRUCT()
@@ -147,11 +148,15 @@ public:
 
 	virtual void Init() override;
 
+
 	FMyCharacterData* GetStatData(int32 Level);
 	FEnemyData* GetEnemyData(FString Kwang);
 	FWeaponData* GetWeaponData(int32 Id);
 	FArmorData* GetArmorData(int32 Id);
 	FUseItemData* GetUseData(int32 Id);
+	FRichImageRow* GetWeaponImage(int32 Id);
+	FRichImageRow* GetArmorImage(int32 Id);
+	FRichImageRow* GetUseImage(int32 Id);
 
 private:
 	UPROPERTY()
@@ -170,13 +175,13 @@ private:
 	class UDataTable* UseItemData;
 
 	UPROPERTY()
-	TMap<int, class UImage*> WeaponImage;
+	class UDataTable* WeaponImage;
 
 	UPROPERTY()
-	TMap<int, class UImage*> ArmorImage;
+	class UDataTable* ArmorImage;
 
 	UPROPERTY()
-	TMap<int, class UImage*> UseItemImage;
+	class UDataTable* UseItemImage;
 
 	
 };

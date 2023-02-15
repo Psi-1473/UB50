@@ -40,12 +40,15 @@ void UWidget_Inventory::RefreshSlot(int8 ItemType)
 	switch (ItemType)
 	{
 	case 0:
+		TypeIndex = -1;
 		RefreshToWeapon();
 		break;
 	case 1:
+		TypeIndex = -1;
 		RefreshToArmor();
 		break;
 	case 2:
+		TypeIndex = -1;
 		RefreshToUse();
 		break;
 	default:
@@ -57,6 +60,7 @@ void UWidget_Inventory::RefreshToWeapon()
 {
 	if (TypeIndex == 0)
 		return;
+
 	TypeIndex = 0;
 
 	for (int i = 0; i < WrapBox_Slot->GetChildrenCount(); i++)
@@ -86,3 +90,5 @@ void UWidget_Inventory::RefreshToUse()
 		Slots[i]->SetUseItem();
 	}
 }
+
+

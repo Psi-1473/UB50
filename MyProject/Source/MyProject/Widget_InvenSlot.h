@@ -20,6 +20,9 @@ public:
 	void SetArmorItem();
 	void SetUseItem();
 
+	void SetEmpty();
+	void ChangeImage(int TypeIndex, int Index, class UMyGameInstance* Instance, class AMyPlayer* PlayerInst);
+	//0 무기 1 방어구 2 소모품
 private:
 	UPROPERTY()
 	int8 SlotIndex;
@@ -39,10 +42,15 @@ private:
 	UPROPERTY()
 	FString ItemSub;
 
+	
+
 	// 필요하면 나중에 ItemId만 남겨도 될 듯?
 
 private:
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* Count;
+
+	UPROPERTY(meta = (BindWidget))
+	class UImage* Img_Item;
 	
 };
