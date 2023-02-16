@@ -8,6 +8,7 @@
 #include "EnemyStatComponent.h"
 #include "Widget_Hp.h"
 #include "Components/WidgetComponent.h"
+#include "MonsterSpawner.h"
 
 // Sets default values
 AEnemyCharKwang::AEnemyCharKwang()
@@ -107,6 +108,13 @@ void AEnemyCharKwang::Die()
 	AnimInst->PlayDeathMontage();
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	MySpawner->DownCount();
+}
+
+void AEnemyCharKwang::SetSpawner(AMonsterSpawner* Spawner)
+{
+	MySpawner = Spawner;
+	MySpawner->UpCount();
 }
 
 void AEnemyCharKwang::PostInitializeComponents()
@@ -130,7 +138,7 @@ void AEnemyCharKwang::PostInitializeComponents()
 void AEnemyCharKwang::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 void AEnemyCharKwang::Tick(float DeltaTime)

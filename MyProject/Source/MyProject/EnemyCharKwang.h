@@ -21,6 +21,8 @@ public:
 	void Die();
 	FOnAttackEnd OnAttackEnd;
 
+	void SetSpawner(class AMonsterSpawner* Spawner);
+
 
 	UFUNCTION()
 	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
@@ -54,4 +56,6 @@ private:
 	UPROPERTY()
 	class UWidgetComponent* HpBar;
 
+	UPROPERTY()
+	AMonsterSpawner* MySpawner;
 };

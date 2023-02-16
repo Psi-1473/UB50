@@ -7,7 +7,10 @@
 #include "Engine/DataTable.h"
 #include "Components/RichTextBlockImageDecorator.h"
 #include "MyGameInstance.generated.h"
-
+enum MonsterType
+{
+	Kwang,
+};
 USTRUCT()
 struct FMyCharacterData : public FTableRowBase
 {
