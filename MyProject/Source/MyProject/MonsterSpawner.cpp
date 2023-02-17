@@ -46,8 +46,9 @@ FVector AMonsterSpawner::FindSpawnSpot()
 	//{
 	//	return RandomLocation.Location;
 	//}
-
-	NavSystem->GetRandomPointInNavigableRadius(FVector::ZeroVector, 500.f, RandomLocation);
+	//FVector::ZeroVector
+	
+	NavSystem->GetRandomPointInNavigableRadius(SpawnerLocation, 500.f, RandomLocation);
 	return RandomLocation.Location;
 }
 
@@ -64,7 +65,8 @@ void AMonsterSpawner::SpawnMob(FVector Location)
 void AMonsterSpawner::BeginPlay()
 {
 	AActor::BeginPlay();
-
+	
+	SpawnerLocation = GetActorTransform().GetLocation();
 	GetWorldTimerManager().SetTimer(MemberTimerHandle, this, &AMonsterSpawner::CheckMobCount, 5.f, true);
 }
 

@@ -8,6 +8,8 @@
 #include "BehaviorTree/BlackboardData.h"
 #include "AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "EnemyCharKwang.h"
+#include "MonsterSpawner.h"
 
 UBTTask_FindPatrolPos::UBTTask_FindPatrolPos()
 {
@@ -30,8 +32,11 @@ EBTNodeResult::Type UBTTask_FindPatrolPos::ExecuteTask(UBehaviorTreeComponent& O
 		return EBTNodeResult::Failed;
 
 	FNavLocation RandomLocation;
+	auto Kwang = Cast<AEnemyCharKwang>(OwnerComp.GetAIOwner()->GetPawn());
+	auto SpawnerLocation = Kwang->GetSpawner()->GetLocation();
 
-	if (NavSystem->GetRandomPointInNavigableRadius(FVector::ZeroVector, 500.f, RandomLocation))
+
+	if (NavSystem->GetRandomPointInNavigableRadius(SpawnerLocation, 500.f, RandomLocation))
 	{
 		//UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, RandomLocation);
 		OwnerComp.GetBlackboardComponent()->SetValueAsVector(FName(TEXT("PatrolPos")), RandomLocation.Location);

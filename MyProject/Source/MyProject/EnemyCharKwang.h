@@ -22,6 +22,7 @@ public:
 	FOnAttackEnd OnAttackEnd;
 
 	void SetSpawner(class AMonsterSpawner* Spawner);
+	AMonsterSpawner* GetSpawner() { return MySpawner; }
 
 
 	UFUNCTION()

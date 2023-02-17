@@ -28,6 +28,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	void DownCount();
 	void UpCount();
+	FVector GetLocation() { return SpawnerLocation; }
 
 private:
 
@@ -37,6 +38,8 @@ private:
 
 	float RangeX;
 	float RangeY;
+
+	FVector SpawnerLocation;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<AActor> ActorToSpawn;
