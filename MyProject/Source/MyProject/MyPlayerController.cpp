@@ -4,6 +4,8 @@
 #include "MyPlayerController.h"
 #include "MyPlayer.h"
 #include "Kismet/GameplayStatics.h"
+#include "GameFramework/PawnMovementComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 void AMyPlayerController::BeginPlay()
 {
@@ -63,10 +65,14 @@ void AMyPlayerController::Pitch(float Value)
 void AMyPlayerController::OnSprint()
 {
 	MyPlayer->bIsSprint = true;
+	MyPlayer->GetCharacterMovement()->MaxWalkSpeed = 800.f;
+
+
 }
 void AMyPlayerController::OffSprint()
 {
 	MyPlayer->bIsSprint = false;
+	MyPlayer->GetCharacterMovement()->MaxWalkSpeed = 600.f;
 }
 
 void AMyPlayerController::ClickAttack()

@@ -23,7 +23,7 @@ private:
 	void OnSprint();
 	void OffSprint();
 	void ClickAttack();
-	void PopupInventory();
+	//void PopupInventory();
 
 public:
 	virtual void BeginPlay() override;

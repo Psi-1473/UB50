@@ -4,7 +4,7 @@
 
 #include "MyPlayer.h"
 #include "MyAnimInstance.h"
-#include "EnemyCharKwang.h"
+#include "Monster.h"
 #include "PlayerStatComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Widget_PlayerMain.h"
@@ -25,9 +25,9 @@ AMyPlayer::AMyPlayer()
 	Camera->SetupAttachment(SpringArm);
 
 
-	SpringArm->TargetArmLength = 500.f;
-	Camera->SetRelativeRotation(FRotator(-35.f, 0.f, 0.f));
-	Camera->SetRelativeLocation(FVector(0.f, 0.f, 300.f));
+	SpringArm->TargetArmLength = 700;
+	Camera->SetRelativeRotation(FRotator(0.f, 0.f, 0.f));
+	Camera->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
 	
 
 	GetMesh()->SetRelativeLocationAndRotation(
@@ -81,9 +81,6 @@ void AMyPlayer::PostInitializeComponents()
 		AnimInst->OnMontageEnded.AddDynamic(this, &AMyPlayer::OnAttackMontageEnded);
 		AnimInst->OnAttackHit.AddUObject(this, &AMyPlayer::AttackCheck);
 	}
-
-
-
 
 	// TODO Hp바 델리게이트 바인딩
 }
@@ -152,14 +149,15 @@ void AMyPlayer::EndAttack()
 }
 void AMyPlayer::AttackCheck()
 {
-	FHitResult HitResult;
+	TArray<FHitResult> HitResults;
+
 	FCollisionQueryParams Params(NAME_None, false, this);
 
 	float AttackRange = 100.f;
-	float AttackRadius = 50.f;
+	float AttackRadius = 100.f;
 
-	bool bResult = GetWorld()->SweepSingleByChannel(
-		OUT HitResult,
+	bool bResult = GetWorld()->SweepMultiByChannel(
+		OUT HitResults,
 		GetActorLocation(),
 		GetActorLocation() + GetActorForwardVector() * AttackRange,
 		FQuat::Identity,
@@ -180,16 +178,15 @@ void AMyPlayer::AttackCheck()
 
 	DrawDebugCapsule(GetWorld(), Center, HalfHeight, AttackRadius, Rotation, DrawColor, false, 2.f);
 
-
-
-	if (bResult && HitResult.GetActor())
+	if (bResult && !HitResults.IsEmpty())
 	{
-		UE_LOG(LogTemp, Log, TEXT("Hit Actor : %s"), *HitResult.GetActor()->GetName());
-		AEnemyCharKwang* Enemy = Cast<AEnemyCharKwang>(HitResult.GetActor());
-
-		//Enemy->OnDamaged();
-		FDamageEvent DamageEvent;
-		Enemy->TakeDamage(Stat->GetAttack(), DamageEvent, GetController(), this);
+		for(FHitResult HitResult : HitResults)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Hit Actor : %s"), *HitResult.GetActor()->GetName());
+			AMonster* Enemy = Cast<AMonster>(HitResult.GetActor());
+			FDamageEvent DamageEvent;
+			Enemy->TakeDamage(Stat->GetAttack(), DamageEvent, GetController(), this);
+		}
 	}
 }
 void AMyPlayer::OnDamaged()

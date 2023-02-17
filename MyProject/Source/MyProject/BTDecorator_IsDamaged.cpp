@@ -4,6 +4,7 @@
 #include "BTDecorator_IsDamaged.h"
 #include "EnemyKwang.h"
 #include "EnemyCharKwang.h"
+#include "Monster.h"
 
 
 bool UBTDecorator_IsDamaged::CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const
@@ -14,7 +15,7 @@ bool UBTDecorator_IsDamaged::CalculateRawConditionValue(UBehaviorTreeComponent& 
 	if (CurrentPawn == nullptr)
 		return false;
 
-	AEnemyCharKwang* Pawn = Cast<AEnemyCharKwang>(CurrentPawn); 
+	AMonster* Pawn = Cast<AMonster>(CurrentPawn);
 
 	return bResult && Pawn->GetDamaged();
 }
