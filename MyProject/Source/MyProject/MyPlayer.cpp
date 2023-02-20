@@ -12,6 +12,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Widget_Inventory.h"
 #include "Widget_InvenSlot.h"
+#include "Widget_Shop.h"
 
 // Sets default values
 AMyPlayer::AMyPlayer()
@@ -48,7 +49,7 @@ AMyPlayer::AMyPlayer()
 	{
 		Inventory = IW.Class;
 	}
-	static ConstructorHelpers::FClassFinder<UUserWidget> CW(TEXT("WidgetBlueprint'/Game/UI/WBP_Inventory.WBP_Inventory_C'"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> CW(TEXT("WidgetBlueprint'/Game/UI/WBP_Shop.WBP_Shop_C'"));
 	if (IW.Succeeded())
 	{
 		Conversation = CW.Class;
@@ -242,6 +243,8 @@ void AMyPlayer::Interact()
 
 		UE_LOG(LogTemp, Warning, TEXT("GameMode CurrentWidget Succeeded!"));
 		Conv->AddToViewport();
+		UWidget_Shop* Shop = Cast<UWidget_Shop>(Conv);
+		Shop->CreateSlot();
 		bInteract = true;
 		GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
 		//	// Add to Viewport ¹Ý´ë = RemoveFromViewport
