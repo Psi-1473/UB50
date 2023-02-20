@@ -27,6 +27,7 @@ AMonster::AMonster()
 		HpBar->SetDrawSize(FVector2d(200.f, 50.f));
 		HpBar->SetRelativeLocation(FVector(0.f, 0.f, 200.f));
 	}
+	Stat = CreateDefaultSubobject<UEnemyStatComponent>(TEXT("STAT"));
 
 }
 void AMonster::PostInitializeComponents()
@@ -122,13 +123,25 @@ void AMonster::AttackCheck()
 	}
 }
 
-void AMonster::Die()
+void AMonster::Die(AMyPlayer* Player)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Die"));
 	AnimInst->PlayDeathMontage();
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	MySpawner->DownCount();
+	DropItemOrGold(Player);
+}
+
+void AMonster::DropItemOrGold(AMyPlayer* Player)
+{
+	int32 MaxGold = Stat->GetMaxGold();
+	int32 MinGold = Stat->GetMinGold();
+
+	int32 RandGold = FMath::RandRange(MinGold, MaxGold);
+
+	Player->ChangeGold(RandGold);
+	UE_LOG(LogTemp, Log, TEXT("Add Gold %d"), RandGold);
 }
 
 
@@ -139,7 +152,8 @@ float AMonster::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContr
 
 	if (Stat->GetHp() == 0)
 	{
-		Die();
+		AMyPlayer* Player = Cast<AMyPlayer>(DamageCauser);
+		Die(Player);
 	}
 
 	return Damage;

@@ -5,6 +5,7 @@
 #include "Components/WrapBox.h"
 #include "Widget_InvenSlot.h"
 #include "Components/Button.h"
+#include "Components/TextBlock.h"
 
 void UWidget_Inventory::NativeConstruct()
 {
@@ -89,6 +90,14 @@ void UWidget_Inventory::RefreshToUse()
 	{
 		Slots[i]->SetUseItem();
 	}
+}
+
+void UWidget_Inventory::ChangeGold(int Value)
+{
+	FString strText;
+	Gold = Value;
+	strText = FString::Printf(TEXT("%d"), Gold);
+	Txt_Gold->SetText(FText::FromString(strText));
 }
 
 

@@ -45,6 +45,8 @@ public:
 	void FindNextArmorIndex();
 	void FindNextUseIndex();
 
+	void ChangeGold(int Value);
+
 private:
 	void PopupInventory();
 
@@ -111,6 +113,8 @@ public:
 	int32 ArmorIndex = 0;
 	TArray<FUseItemData*> UseItemList;
 	int32 UseItemIndex = 0;
+
+	int Gold = 0;
 
 private:
 	UPROPERTY()

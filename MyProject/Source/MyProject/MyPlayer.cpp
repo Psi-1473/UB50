@@ -117,6 +117,7 @@ void AMyPlayer::PopupInventory()
 		Inven->AddToViewport();
 		UWidget_Inventory* WInven = Cast<UWidget_Inventory>(Inven);
 		WInven->CreateSlot();
+		WInven->ChangeGold(Gold);
 		bOnInventory = true;
 		GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
 		//	// Add to Viewport ¹Ý´ë = RemoveFromViewport
@@ -323,6 +324,17 @@ void AMyPlayer::FindNextUseIndex()
 			UseItemIndex = i;
 			return;
 		}
+	}
+}
+
+void AMyPlayer::ChangeGold(int Value)
+{
+	Gold += Value;
+
+	if (bOnInventory)
+	{
+		auto MyInven = Cast<UWidget_Inventory>(Inven);
+		MyInven->ChangeGold(Value);
 	}
 }
 

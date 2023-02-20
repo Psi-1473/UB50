@@ -34,6 +34,8 @@ public:
 	int32 GetHp() { return Hp; }
 	int32 GetAttack() { return Attack; }
 	int32 GetSpeed() { return Speed; }
+	int32 GetMaxGold() { return MaxGold; }
+	int32 GetMinGold() { return MinGold; }
 	float GetHpRatio() { return Hp / (float)MaxHp; }
 
 private:
@@ -54,5 +56,11 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = Stat)
 	int32 Speed;
+	
+	UPROPERTY(EditAnywhere, Category = Stat)
+	int32 MaxGold;
+	
+	UPROPERTY(EditAnywhere, Category = Stat)
+	int32 MinGold;
 		
 };

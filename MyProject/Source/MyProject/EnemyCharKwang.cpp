@@ -29,7 +29,7 @@ AEnemyCharKwang::AEnemyCharKwang()
 	AIControllerClass = AEnemyKwang::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
-	Stat = CreateDefaultSubobject<UEnemyStatComponent>(TEXT("STAT"));
+
 	
 }
 

@@ -34,15 +34,19 @@ void UEnemyStatComponent::InitializeComponent()
 void UEnemyStatComponent::SetLevel(int32 NewLevel)
 {
 	auto MyGameInstance = Cast<UMyGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	// TODO 얘가 컴포넌트니까 오너 폰 받아와서 걔를 통해 데이터 불러오기 
 	if (MyGameInstance)
 	{
-		auto StatData = MyGameInstance->GetStatData(Level);
+		auto StatData = MyGameInstance->GetEnemyData("Kwang");
 		if (StatData)
 		{
+			Name = StatData->Name;
 			Level = StatData->Level;
-			MaxHp = StatData->MaxHp;
+			MaxHp = 100;
 			SetHp(MaxHp);
 			Attack = StatData->Attack;
+			MaxGold = StatData->MaxGold;
+			MinGold = StatData->MinGold;
 		}
 	}
 }

@@ -30,7 +30,8 @@ public:
 	void OnDamaged();
 	void Attack();
 	void AttackCheck();
-	void Die();
+	void Die(class AMyPlayer* Player);
+	void DropItemOrGold(class AMyPlayer* Player);
 
 public:
 	void SetDamaged(bool Value) { IsDamaged = Value; }

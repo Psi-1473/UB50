@@ -45,6 +45,12 @@ struct FEnemyData : public FTableRowBase
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Speed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int MaxGold;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int MinGold;
 };
 
 USTRUCT()

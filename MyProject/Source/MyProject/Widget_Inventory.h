@@ -35,6 +35,8 @@ public:
 	UFUNCTION()
 	void RefreshToUse();
 
+	void ChangeGold(int Value);
+
 private:
 	UPROPERTY(meta = (BindWidget))
 	class UWrapBox* WrapBox_Slot;
@@ -48,11 +50,15 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	class UButton* Btn_Use; // 잠시 방어구로 사용
 
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* Txt_Gold;
+
 
 	UPROPERTY()
 	int8 TypeIndex = 0; // 0 - 무기, 1 - 장비, 2 - 소모품
 
 	int MaxInvenSlot = 24;
+	int Gold;
 	
 public:
 	UPROPERTY()
