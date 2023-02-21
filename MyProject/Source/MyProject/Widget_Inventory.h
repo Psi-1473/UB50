@@ -16,6 +16,7 @@ class MYPROJECT_API UWidget_Inventory : public UUserWidget
 
 
 public:
+
 	virtual void NativeConstruct() override;
 
 public:

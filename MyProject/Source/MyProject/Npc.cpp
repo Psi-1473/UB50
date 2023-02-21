@@ -37,6 +37,8 @@ ANpc::ANpc()
 
 	InteractBox->SetCollisionObjectType(ECollisionChannel::ECC_EngineTraceChannel2);
 	UE_LOG(LogTemp, Warning, TEXT("Npc On"));
+
+	
 }
 
 // Called when the game starts or when spawned

@@ -28,13 +28,17 @@ public:
 	UFUNCTION()
 	void OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	int GetTotalItemNum() { return WeaponId.Num(); }
 private:
 	UPROPERTY()
 	FString NpcName;
 
+	bool IsShopNpc;
+	UPROPERTY(EditAnywhere)
+	TArray<int> WeaponId;
 	// Todo
 	// 가진 퀘스트 목록
-	
+	// 상점 아이템 리스트
 	// 스크립트?
 
 	UPROPERTY(VisibleAnywhere)

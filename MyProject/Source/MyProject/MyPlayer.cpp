@@ -244,7 +244,7 @@ void AMyPlayer::Interact()
 		UE_LOG(LogTemp, Warning, TEXT("GameMode CurrentWidget Succeeded!"));
 		Conv->AddToViewport();
 		UWidget_Shop* Shop = Cast<UWidget_Shop>(Conv);
-		Shop->CreateSlot();
+		Shop->CreateSlot(CanInteractNpc->GetTotalItemNum());
 		bInteract = true;
 		GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
 		//	// Add to Viewport ¹Ý´ë = RemoveFromViewport

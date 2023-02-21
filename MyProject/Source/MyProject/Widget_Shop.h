@@ -15,8 +15,11 @@ class MYPROJECT_API UWidget_Shop : public UUserWidget
 	GENERATED_BODY()
 	
 public:
+	UWidget_Shop(const FObjectInitializer &ObjectInitializer);
+	virtual void NativeOnInitialized() override;
 	virtual void NativeConstruct() override;
-	void CreateSlot();
+	virtual void NativeDestruct() override;
+	void CreateSlot(int Num);
 	
 
 private:
