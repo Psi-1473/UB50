@@ -96,9 +96,6 @@ void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent->BindAction(TEXT("Inventory"), EInputEvent::IE_Pressed, this, &AMyPlayer::PopupInventory);
 	PlayerInputComponent->BindAction(TEXT("Interact"), EInputEvent::IE_Pressed, this, &AMyPlayer::Interact);
-	//PlayerInputComponent->BindAction(TEXT("TestKey"), EInputEvent::IE_Pressed, this, &AMyPlayer::TestAddItemWeapon);
-	//PlayerInputComponent->BindAction(TEXT("TestKey2"), EInputEvent::IE_Pressed, this, &AMyPlayer::TestAddItemArmor);
-	//PlayerInputComponent->BindAction(TEXT("TestKey3"), EInputEvent::IE_Pressed, this, &AMyPlayer::TestAddItemUse);
 
 }
 void AMyPlayer::PopupInventory()
@@ -244,8 +241,6 @@ void AMyPlayer::Interact()
 		Shop->CreateSlot(CanInteractNpc);
 		bInteract = true;
 		GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
-		//	// Add to Viewport ¹Ý´ë = RemoveFromViewport
-		//
 	}
 
 }

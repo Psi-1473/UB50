@@ -49,7 +49,6 @@ void UWidget_ShopSlot::InitWeapon(UMyGameInstance* GInstance, int ItemId)
 
 	strText = FString::Printf(TEXT("%s"), *ItemName);
 	Txt_Name->SetText(FText::FromString(strText));
-
 	Img_Item->SetBrush(GInstance->GetWeaponImage(ItemId)->Brush);
 }
 
