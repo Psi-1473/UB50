@@ -13,9 +13,23 @@ UCLASS()
 class MYPROJECT_API UWidget_ShopSlot : public UUserWidget
 {
 	GENERATED_BODY()
-	void InitializeSlot(int ItemId);
-
+public:
+	void InitializeSlot(class UMyGameInstance* GInstance, int ItemType, int ItemId);
 private:
+	void InitWeapon(class UMyGameInstance* GInstance, int ItemId);
+	void InitArmor(class UMyGameInstance* GInstance, int ItemId);
+	void InitUseItem(class UMyGameInstance* GInstance, int ItemId);
+
+	UFUNCTION()
+	void BuyItem();
+
+protected:
+	virtual void NativeConstruct() override;
+private:
+	int MyType;
+	int MyId;
+	int MyPrice;
+
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* Txt_Name;
 

@@ -22,7 +22,7 @@ ANpc::ANpc()
 	{
 		InteractionKey->SetWidgetClass(UW.Class);
 		InteractionKey->SetDrawSize(FVector2d(50.f, 50.f));
-		InteractionKey->SetRelativeLocation(FVector(400.f, 0.f, 300.f));
+		InteractionKey->SetRelativeLocation(FVector(0.f, 0.f, 250.f));
 	}
 
 	InteractionKey->SetVisibility(false);
@@ -88,5 +88,25 @@ void ANpc::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 			Player->SetNpc();
 		}
 	}
+}
+
+int ANpc::GetTotalItemNum()
+{
+	if(ItemType == 0)
+		return WeaponId.Num();
+	else if(ItemType == 1)
+		return ArmorId.Num();
+	else
+		return UseId.Num();
+}
+
+int ANpc::GetItem(int Id)
+{
+	if (ItemType == 0)
+		return WeaponId[Id];
+	else if (ItemType == 1)
+		return ArmorId[Id];
+	else
+		return UseId[Id];
 }
 

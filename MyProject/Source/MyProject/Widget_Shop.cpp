@@ -3,6 +3,9 @@
 
 #include "Widget_Shop.h"
 #include "Components/ScrollBox.h"
+#include "Widget_ShopSlot.h"
+#include "Npc.h"
+#include "MyGameInstance.h"
 
 UWidget_Shop::UWidget_Shop(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
@@ -29,13 +32,19 @@ void UWidget_Shop::NativeDestruct()
 	Scroll_List->ClearChildren();
 }
 
-void UWidget_Shop::CreateSlot(int Num)
+void UWidget_Shop::CreateSlot(ANpc* NPC)
 {
-	for (int i = 0; i < Num; i++)
+	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
+
+	int ItemType = NPC->ItemType;
+	int SlotSize = NPC->GetTotalItemNum();
+
+	for (int i = 0; i < SlotSize; i++)
 	{
 		Slot = CreateWidget(GetWorld(), BP_Slot);
-
 		Scroll_List->AddChild(Slot);
+		auto ShopSlot = Cast<UWidget_ShopSlot>(Slot);
+		ShopSlot->InitializeSlot(GInstance, ItemType, NPC->GetItem(i));
 	}
 	UE_LOG(LogTemp, Warning, TEXT("Shop Slot"));
 }

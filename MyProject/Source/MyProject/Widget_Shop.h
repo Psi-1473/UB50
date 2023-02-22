@@ -19,7 +19,7 @@ public:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
-	void CreateSlot(int Num);
+	void CreateSlot(class ANpc* NPC);
 	
 
 private:

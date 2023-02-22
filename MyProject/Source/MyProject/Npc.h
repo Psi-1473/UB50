@@ -28,14 +28,25 @@ public:
 	UFUNCTION()
 	void OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
-	int GetTotalItemNum() { return WeaponId.Num(); }
+	int GetTotalItemNum();
+	int GetItem(int Id);
+	bool IsShopNpc;
+	
+	UPROPERTY(EditAnywhere)
+	int ItemType;
+
 private:
 	UPROPERTY()
 	FString NpcName;
-
-	bool IsShopNpc;
+	
 	UPROPERTY(EditAnywhere)
 	TArray<int> WeaponId;
+
+	UPROPERTY(EditAnywhere)
+	TArray<int> ArmorId;
+
+	UPROPERTY(EditAnywhere)
+	TArray<int> UseId;
 	// Todo
 	// 가진 퀘스트 목록
 	// 상점 아이템 리스트

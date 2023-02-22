@@ -96,9 +96,9 @@ void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent->BindAction(TEXT("Inventory"), EInputEvent::IE_Pressed, this, &AMyPlayer::PopupInventory);
 	PlayerInputComponent->BindAction(TEXT("Interact"), EInputEvent::IE_Pressed, this, &AMyPlayer::Interact);
-	PlayerInputComponent->BindAction(TEXT("TestKey"), EInputEvent::IE_Pressed, this, &AMyPlayer::TestAddItemWeapon);
-	PlayerInputComponent->BindAction(TEXT("TestKey2"), EInputEvent::IE_Pressed, this, &AMyPlayer::TestAddItemArmor);
-	PlayerInputComponent->BindAction(TEXT("TestKey3"), EInputEvent::IE_Pressed, this, &AMyPlayer::TestAddItemUse);
+	//PlayerInputComponent->BindAction(TEXT("TestKey"), EInputEvent::IE_Pressed, this, &AMyPlayer::TestAddItemWeapon);
+	//PlayerInputComponent->BindAction(TEXT("TestKey2"), EInputEvent::IE_Pressed, this, &AMyPlayer::TestAddItemArmor);
+	//PlayerInputComponent->BindAction(TEXT("TestKey3"), EInputEvent::IE_Pressed, this, &AMyPlayer::TestAddItemUse);
 
 }
 void AMyPlayer::PopupInventory()
@@ -111,12 +111,11 @@ void AMyPlayer::PopupInventory()
 	}
 	else
 	{
-		if(Inven == nullptr)
-			Inven = CreateWidget(GetWorld(), Inventory);
+		Inven = CreateWidget(GetWorld(), Inventory);
 		
 		UE_LOG(LogTemp, Warning, TEXT("GameMode CurrentWidget Succeeded!"));
 		Inven->AddToViewport();
-		UWidget_Inventory* WInven = Cast<UWidget_Inventory>(Inven);
+		auto WInven = Cast<UWidget_Inventory>(Inven);
 		WInven->CreateSlot();
 		WInven->ChangeGold(Gold);
 		bOnInventory = true;
@@ -238,13 +237,11 @@ void AMyPlayer::Interact()
 	}
 	else
 	{
-		if (Conv == nullptr)
-			Conv = CreateWidget(GetWorld(), Conversation);
+		Conv = CreateWidget(GetWorld(), Conversation);
 
-		UE_LOG(LogTemp, Warning, TEXT("GameMode CurrentWidget Succeeded!"));
 		Conv->AddToViewport();
 		UWidget_Shop* Shop = Cast<UWidget_Shop>(Conv);
-		Shop->CreateSlot(CanInteractNpc->GetTotalItemNum());
+		Shop->CreateSlot(CanInteractNpc);
 		bInteract = true;
 		GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
 		//	// Add to Viewport ¹Ý´ë = RemoveFromViewport
@@ -253,10 +250,10 @@ void AMyPlayer::Interact()
 
 }
 
-void AMyPlayer::TestAddItemWeapon()
+void AMyPlayer::AddItemWeapon(int Id)
 {
 	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
-	WeaponList[WeaponIndex] = GInstance->GetWeaponData(1);
+	WeaponList[WeaponIndex] = GInstance->GetWeaponData(Id);
 	if (bOnInventory)
 	{
 		auto MyInven = Cast<UWidget_Inventory>(Inven);
@@ -266,10 +263,10 @@ void AMyPlayer::TestAddItemWeapon()
 	FindNextWeaponIndex();
 }
 
-void AMyPlayer::TestAddItemArmor()
+void AMyPlayer::AddItemArmor(int Id)
 {
 	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
-	ArmorList[ArmorIndex] = GInstance->GetArmorData(1);
+	ArmorList[ArmorIndex] = GInstance->GetArmorData(Id);
 	if (bOnInventory)
 	{
 		auto MyInven = Cast<UWidget_Inventory>(Inven);
@@ -279,10 +276,10 @@ void AMyPlayer::TestAddItemArmor()
 	FindNextArmorIndex();
 }
 
-void AMyPlayer::TestAddItemUse()
+void AMyPlayer::AddItemUse(int Id)
 {
 	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
-	UseItemList[UseItemIndex] = GInstance->GetUseData(1);
+	UseItemList[UseItemIndex] = GInstance->GetUseData(Id);
 	if (bOnInventory)
 	{
 		auto MyInven = Cast<UWidget_Inventory>(Inven);

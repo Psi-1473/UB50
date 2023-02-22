@@ -37,10 +37,12 @@ public:
 	void SetDamaged(bool Value) { bDamaged = Value; }
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 	void SetNpc(ANpc* NewNpc = nullptr){ CanInteractNpc = NewNpc; }
+	int GetGold() { return Gold; }
+	void SetGold(int Value) { Gold = Value; }
 	void Interact();
-	void TestAddItemWeapon();
-	void TestAddItemArmor();
-	void TestAddItemUse();
+	void AddItemWeapon(int Id);
+	void AddItemArmor(int Id);
+	void AddItemUse(int Id);
 	void FindNextWeaponIndex();
 	void FindNextArmorIndex();
 	void FindNextUseIndex();
