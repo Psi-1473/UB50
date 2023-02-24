@@ -15,6 +15,8 @@ class MYPROJECT_API UWidget_InvenSlot : public UUserWidget
 	GENERATED_BODY()
 
 public:
+	virtual void NativeConstruct() override;
+
 	void SetCount(int8 Index);
 	void SetWeaponItem();
 	void SetArmorItem();
@@ -23,6 +25,9 @@ public:
 	void SetEmpty();
 	void ChangeImage(int TypeIndex, int Index, class UMyGameInstance* Instance, class AMyPlayer* PlayerInst);
 	//0 公扁 1 规绢备 2 家葛前
+
+	UFUNCTION()
+	void ClickSlot();
 private:
 	UPROPERTY()
 	int8 SlotIndex;
@@ -52,5 +57,8 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	class UImage* Img_Item;
+
+	UPROPERTY(meta = (BindWidget))
+	class UButton* Btn_Slot;
 	
 };

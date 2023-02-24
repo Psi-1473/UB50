@@ -6,8 +6,15 @@
 #include "Kismet/GameplayStatics.h"
 #include "MyPlayer.h"
 #include "Components/Image.h"
+#include "Components/Button.h"
 #include "MyGameInstance.h"
 
+
+void UWidget_InvenSlot::NativeConstruct()
+{
+	Btn_Slot->OnClicked.AddDynamic(this, &UWidget_InvenSlot::ClickSlot);
+	
+}
 
 void UWidget_InvenSlot::SetCount(int8 Index)
 {
@@ -86,4 +93,9 @@ void UWidget_InvenSlot::ChangeImage(int TypeIndex, int Index, UMyGameInstance* I
 	}
 
 	Count->SetText(FText::FromString(strText));
+}
+
+void UWidget_InvenSlot::ClickSlot()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Click Slot"));
 }
