@@ -18,6 +18,8 @@ class MYPROJECT_API UWidget_Inventory : public UUserWidget
 public:
 
 	virtual void NativeConstruct() override;
+	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
+
 
 public:
 	int8 GetInvenType() { return TypeIndex; }

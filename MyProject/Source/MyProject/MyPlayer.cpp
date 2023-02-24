@@ -68,7 +68,7 @@ void AMyPlayer::BeginPlay()
 	{
 		GameMode->UIUpdate_Hp(Stat->GetHpRatio());
 	}
-
+	Gold = 1000;
 }
 
 void AMyPlayer::PostInitializeComponents()
@@ -320,6 +320,19 @@ void AMyPlayer::FindNextUseIndex()
 			return;
 		}
 	}
+}
+
+bool AMyPlayer::DraggingSwap(int from, int to)
+{
+	auto MyInven = Cast<UWidget_Inventory>(Inven);
+	UWidget_InvenSlot* Slot = MyInven->Slots[from];
+	// 328줄이 문제
+	// 새 슬롯 할당후 from값 대입, from을 to로 리셋, to는 to 새슬롯으로 리셋 해야 하는데 새 슬롯 할당 후 from 대입을 어떻게 해야할까
+	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Swap"));
+	MyInven->Slots[from]->RefreshSlot(MyInven->Slots[to]);
+	MyInven->Slots[to]->RefreshSlot(Slot);
+	//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Swap!"));
+	return true;
 }
 
 void AMyPlayer::ChangeGold(int Value)

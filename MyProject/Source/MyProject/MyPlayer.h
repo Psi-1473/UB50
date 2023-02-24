@@ -46,6 +46,9 @@ public:
 	void FindNextWeaponIndex();
 	void FindNextArmorIndex();
 	void FindNextUseIndex();
+	//Temp
+	bool DraggingSwap(int from, int to);
+	bool SwapInven(int from, int to);
 
 	void ChangeGold(int Value);
 

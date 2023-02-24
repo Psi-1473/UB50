@@ -17,12 +17,17 @@ class MYPROJECT_API UWidget_InvenSlot : public UUserWidget
 public:
 	virtual void NativeConstruct() override;
 
+	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+	virtual void NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation) override;
+	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
+
 	void SetCount(int8 Index);
 	void SetWeaponItem();
 	void SetArmorItem();
 	void SetUseItem();
 
 	void SetEmpty();
+	void RefreshSlot(UWidget_InvenSlot* FromSlot);
 	void ChangeImage(int TypeIndex, int Index, class UMyGameInstance* Instance, class AMyPlayer* PlayerInst);
 	//0 무기 1 방어구 2 소모품
 
@@ -50,6 +55,9 @@ private:
 	
 
 	// 필요하면 나중에 ItemId만 남겨도 될 듯?
+public:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSubclassOf<UWidget_InvenSlot> DragVisualClass;
 
 private:
 	UPROPERTY(meta = (BindWidget))
@@ -58,7 +66,5 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	class UImage* Img_Item;
 
-	UPROPERTY(meta = (BindWidget))
-	class UButton* Btn_Slot;
 	
 };
