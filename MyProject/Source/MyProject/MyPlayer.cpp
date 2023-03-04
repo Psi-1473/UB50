@@ -325,13 +325,64 @@ void AMyPlayer::FindNextUseIndex()
 bool AMyPlayer::DraggingSwap(int from, int to)
 {
 	auto MyInven = Cast<UWidget_Inventory>(Inven);
-	UWidget_InvenSlot* Slot = MyInven->Slots[from];
-	// 328줄이 문제
-	// 새 슬롯 할당후 from값 대입, from을 to로 리셋, to는 to 새슬롯으로 리셋 해야 하는데 새 슬롯 할당 후 from 대입을 어떻게 해야할까
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Swap"));
-	MyInven->Slots[from]->RefreshSlot(MyInven->Slots[to]);
-	MyInven->Slots[to]->RefreshSlot(Slot);
-	//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Swap!"));
+	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
+	int FromId;
+	int ToId;
+	switch (MyInven->GetInvenType())
+	{
+	case 0:
+		FromId = WeaponList[from]->Id;
+
+		if (WeaponList[to] == nullptr)
+		{
+			WeaponList[from] = nullptr;
+			WeaponIndex = from;
+		}
+		else
+		{
+			ToId = WeaponList[to]->Id;
+			WeaponList[from] = GInstance->GetWeaponData(ToId);
+		}
+		WeaponList[to] = GInstance->GetWeaponData(FromId);
+		MyInven->Slots[to]->SetWeaponItem();
+		MyInven->Slots[from]->SetWeaponItem();
+
+		break;
+	case 1:
+		FromId = ArmorList[from]->Id;
+		if (ArmorList[to] == nullptr)
+		{
+			ArmorList[from] = nullptr;
+			ArmorIndex = from;
+		}
+		else
+		{
+			ToId = ArmorList[to]->Id;
+			ArmorList[from] = GInstance->GetArmorData(ToId);
+		}
+		ArmorList[to] = GInstance->GetArmorData(FromId);
+		MyInven->Slots[from]->SetArmorItem();
+		MyInven->Slots[to]->SetArmorItem();
+		break;
+	case 2:
+		FromId = UseItemList[from]->Id;
+
+		if (UseItemList[to] == nullptr)
+		{
+			UseItemList[from] = nullptr;
+			UseItemIndex = from;
+		}
+		else
+		{
+			ToId = UseItemList[to]->Id;
+			UseItemList[from] = GInstance->GetUseData(ToId);
+		}
+		UseItemList[to] = GInstance->GetUseData(FromId);
+		MyInven->Slots[from]->SetUseItem();
+		MyInven->Slots[to]->SetUseItem();
+		break;
+	}
+
 	return true;
 }
 
