@@ -45,10 +45,13 @@ void UWidget_InvenSlot::NativeOnDragDetected(const FGeometry& InGeometry, const 
 		OutOperation = DragOper;
 		DragOper->DragIndex = this->SlotIndex;
 
+		
 		if (DragVisualClass != nullptr)
 		{
+			GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Widget Created"));
 			UWidget_InvenSlot* VisualWidget = CreateWidget<UWidget_InvenSlot>(GetWorld(), DragVisualClass);
 			VisualWidget->SetVisibility(ESlateVisibility::Visible);
+			
 			VisualWidget->SlotIndex = this->SlotIndex;
 			VisualWidget->RefreshSlot(this);
 			VisualWidget->SetPositionInViewport(InMouseEvent.GetScreenSpacePosition());
