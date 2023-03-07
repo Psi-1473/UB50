@@ -100,6 +100,7 @@ void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 }
 void AMyPlayer::PopupInventory()
 {
+	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
 	if (bOnInventory)
 	{
 		Inven->RemoveFromViewport();
@@ -116,6 +117,13 @@ void AMyPlayer::PopupInventory()
 		WInven->CreateSlot();
 		WInven->ChangeGold(Gold);
 		bOnInventory = true;
+
+		if (EquipWeaponId != -1)
+			WInven->ChangeWeapon(EquipWeaponId, GInstance);
+
+		if (EquipArmorId != -1)
+			WInven->ChangeWeapon(EquipArmorId, GInstance);
+
 		GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
 		//	// Add to Viewport 반대 = RemoveFromViewport
 		//
@@ -409,14 +417,14 @@ void AMyPlayer::EquipWeapon(int Id, int Idx)
 	{
 		// 장착된 아이템 해제
 		WeaponList[Idx] = GInstance->GetWeaponData(EquipWeaponId);
-		MyInven->Slots[Idx]->SetWeaponItem();
 	}
 	else
 	{
-		WeaponList[Idx] = nullptr;
-		MyInven->Slots[Idx]->SetWeaponItem();
+		WeaponList[Idx] = nullptr;	
 	}
 
+	MyInven->Slots[Idx]->SetWeaponItem();
+	MyInven->ChangeWeapon(Id, GInstance);
 	EquipWeaponId = Id;
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Weapon Equip!"));
 }
@@ -433,14 +441,14 @@ void AMyPlayer::EquipArmor(int Id, int Idx)
 	{
 		// 장착된 아이템 해제
 		ArmorList[Idx] = GInstance->GetArmorData(EquipArmorId);
-		MyInven->Slots[Idx]->SetArmorItem();
 	}
 	else
 	{
 		ArmorList[Idx] = nullptr;
-		MyInven->Slots[Idx]->SetArmorItem();
 	}
 
+	MyInven->Slots[Idx]->SetArmorItem();
+	MyInven->ChangeArmor(Id, GInstance);
 	EquipArmorId = Id;
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Armor Equip!"));
 }
@@ -451,6 +459,8 @@ void AMyPlayer::UseItem(int Id, int Idx)
 	if (GInstance->GetUseData(Id) == nullptr)
 		return;
 
+
+	// 아이템 정보를 받아와서 
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("item Use!"));
 }
 

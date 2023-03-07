@@ -39,6 +39,9 @@ public:
 	void RefreshToUse();
 
 	void ChangeGold(int Value);
+	void ChangeWeapon(int Id, class UMyGameInstance* GInstance);
+	void ChangeArmor(int Id, class UMyGameInstance* GInstance);
+
 
 private:
 	UPROPERTY(meta = (BindWidget))
@@ -56,6 +59,11 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* Txt_Gold;
 
+	UPROPERTY(meta = (BindWidget))
+	class UImage* Img_EquipWeapon;
+
+	UPROPERTY(meta = (BindWidget))
+	class UImage* Img_EquipArmor;
 
 	UPROPERTY()
 	int8 TypeIndex = 0; // 0 - 무기, 1 - 장비, 2 - 소모품

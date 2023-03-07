@@ -7,6 +7,8 @@
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "DragWidget.h"
+#include "MyGameInstance.h"
+#include "Components/Image.h"
 
 void UWidget_Inventory::NativeConstruct()
 {
@@ -120,6 +122,17 @@ void UWidget_Inventory::ChangeGold(int Value)
 	Gold = Value;
 	strText = FString::Printf(TEXT("%d"), Gold);
 	Txt_Gold->SetText(FText::FromString(strText));
+}
+
+void UWidget_Inventory::ChangeWeapon(int Id, UMyGameInstance* GInstance)
+{
+
+	Img_EquipWeapon->Brush = GInstance->GetWeaponImage(Id)->Brush;
+}
+
+void UWidget_Inventory::ChangeArmor(int Id, UMyGameInstance* GInstance)
+{
+	Img_EquipArmor->Brush = GInstance->GetArmorImage(Id)->Brush;
 }
 
 
