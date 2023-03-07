@@ -304,8 +304,8 @@ void AMyPlayer::FindNextArmorIndex()
 	{
 		if (ArmorList[i] == nullptr)
 		{
-			ArmorIndex = i;
-			return;
+		ArmorIndex = i;
+		return;
 		}
 	}
 }
@@ -395,6 +395,63 @@ void AMyPlayer::ChangeGold(int Value)
 		auto MyInven = Cast<UWidget_Inventory>(Inven);
 		MyInven->ChangeGold(Value);
 	}
+}
+
+void AMyPlayer::EquipWeapon(int Id, int Idx)
+{
+	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
+	auto MyInven = Cast<UWidget_Inventory>(Inven);
+
+	if (GInstance->GetWeaponData(Id) == nullptr)
+		return;
+
+	if (EquipWeaponId != -1)
+	{
+		// 장착된 아이템 해제
+		WeaponList[Idx] = GInstance->GetWeaponData(EquipWeaponId);
+		MyInven->Slots[Idx]->SetWeaponItem();
+	}
+	else
+	{
+		WeaponList[Idx] = nullptr;
+		MyInven->Slots[Idx]->SetWeaponItem();
+	}
+
+	EquipWeaponId = Id;
+	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Weapon Equip!"));
+}
+
+void AMyPlayer::EquipArmor(int Id, int Idx)
+{
+	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
+	auto MyInven = Cast<UWidget_Inventory>(Inven);
+
+	if (GInstance->GetArmorData(Id) == nullptr)
+		return;
+
+	if (EquipArmorId != -1)
+	{
+		// 장착된 아이템 해제
+		ArmorList[Idx] = GInstance->GetArmorData(EquipArmorId);
+		MyInven->Slots[Idx]->SetArmorItem();
+	}
+	else
+	{
+		ArmorList[Idx] = nullptr;
+		MyInven->Slots[Idx]->SetArmorItem();
+	}
+
+	EquipArmorId = Id;
+	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Armor Equip!"));
+}
+
+void AMyPlayer::UseItem(int Id, int Idx)
+{
+	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
+	if (GInstance->GetUseData(Id) == nullptr)
+		return;
+
+	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("item Use!"));
 }
 
 

@@ -35,16 +35,16 @@ public:
 	void ClickSlot();
 private:
 	UPROPERTY()
-	int8 SlotIndex;
+	int8 SlotIndex; // 사용 중
 
 	UPROPERTY()
-	int8 ItemType;
+	int8 ItemType; // 사용 중
 
 	UPROPERTY()
 	int8 ItemCount;
 
 	UPROPERTY()
-	int8 ItemId;
+	int8 ItemId; // 사용 중
 
 	UPROPERTY()
 	FString ItemName;

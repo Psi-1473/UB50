@@ -48,9 +48,12 @@ public:
 	void FindNextUseIndex();
 	//Temp
 	bool DraggingSwap(int from, int to);
-	bool SwapInven(int from, int to);
 
 	void ChangeGold(int Value);
+
+	void EquipWeapon(int Id, int Idx);
+	void EquipArmor(int Id, int Idx);
+	void UseItem(int Id, int Idx);
 
 private:
 	void PopupInventory();
@@ -124,6 +127,9 @@ public:
 private:
 	UPROPERTY()
 	ANpc* CanInteractNpc;
+
+	int EquipWeaponId = -1;
+	int EquipArmorId = -1;
 
 };
 

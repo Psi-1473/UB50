@@ -22,12 +22,35 @@ FReply UWidget_InvenSlot::NativeOnMouseButtonDown(const FGeometry& InGeometry, c
 {
 	FEventReply Reply;
 	Reply.NativeReply = Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
+	if (InMouseEvent.IsMouseButtonDown(EKeys::RightMouseButton) == true)
+	{
+		auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+		auto MyPlayer = Cast<AMyPlayer>(Char);
+		// 아이템 사용
+		int Id = ItemId;
+		int Idx = SlotIndex;
 
-	if (InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton) == true)
+		//SetEmpty();
+
+		switch (ItemType)
+		{
+		case 0:
+			MyPlayer->EquipWeapon(Id, Idx);
+			break;
+		case 1:
+			MyPlayer->EquipArmor(Id, Idx);
+			break;
+		case 2:
+			MyPlayer->UseItem(Id, Idx);
+			break;
+		}
+	}
+	else if (InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton) == true)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Left Button Down"));
 
 		Reply = UWidgetBlueprintLibrary::DetectDragIfPressed(InMouseEvent, this, EKeys::LeftMouseButton);
+		
 	}
 
 	return Reply.NativeReply;
@@ -55,7 +78,7 @@ void UWidget_InvenSlot::NativeOnDragDetected(const FGeometry& InGeometry, const 
 			VisualWidget->SlotIndex = this->SlotIndex;
 			VisualWidget->RefreshSlot(this);
 			VisualWidget->SetPositionInViewport(InMouseEvent.GetScreenSpacePosition());
-			DragOper->WidgetReference = VisualWidget;
+			DragOper->DefaultDragVisual = VisualWidget;
 		}
 	}
 	else
@@ -107,9 +130,13 @@ void UWidget_InvenSlot::SetWeaponItem()
 	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	auto MyPlayer = Cast<AMyPlayer>(Char);
 	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
+	ItemType = 0;
 
 	if (MyPlayer->WeaponList[SlotIndex] != nullptr)
+	{
 		ChangeImage(0, MyPlayer->WeaponList[SlotIndex]->Id, GInstance, MyPlayer);
+		ItemId = MyPlayer->WeaponList[SlotIndex]->Id;
+	}
 	else
 		SetEmpty();
 }
@@ -119,9 +146,13 @@ void UWidget_InvenSlot::SetArmorItem()
 	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	auto MyPlayer = Cast<AMyPlayer>(Char);
 	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
+	ItemType = 1;
 
 	if (MyPlayer->ArmorList[SlotIndex] != nullptr)
+	{
 		ChangeImage(1, MyPlayer->ArmorList[SlotIndex]->Id, GInstance, MyPlayer);
+		ItemId = MyPlayer->ArmorList[SlotIndex]->Id;
+	}
 	else
 		SetEmpty();
 }
@@ -131,9 +162,13 @@ void UWidget_InvenSlot::SetUseItem()
 	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	auto MyPlayer = Cast<AMyPlayer>(Char);
 	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
+	ItemType = 2;
 
 	if (MyPlayer->UseItemList[SlotIndex] != nullptr)
+	{
 		ChangeImage(2, MyPlayer->UseItemList[SlotIndex]->Id, GInstance, MyPlayer);
+		ItemId = MyPlayer->UseItemList[SlotIndex]->Id;
+	}
 	else
 		SetEmpty();
 }
@@ -145,6 +180,7 @@ void UWidget_InvenSlot::SetEmpty()
 	strText = FString::Printf(TEXT(""), 00);
 	Count->SetText(FText::FromString(strText));
 	Img_Item->SetBrush(GInstance->GetArmorImage(0)->Brush);
+	ItemId = -1;
 }
 
 void UWidget_InvenSlot::RefreshSlot(UWidget_InvenSlot* FromSlot)
