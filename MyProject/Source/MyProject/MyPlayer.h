@@ -33,6 +33,7 @@ public:
 	void AttackCheck();
 	void OnDamaged();
 	void SkillR();
+	void SkillQ();
 	void SkillRAttackCheck();
 
 public:
@@ -77,6 +78,9 @@ public:
 	float Vertical;
 	UPROPERTY(EditAnywhere)
 	bool IsAttacking = false;
+
+	UPROPERTY(EditAnywhere)
+	bool bSkill = false;
 
 	UPROPERTY(EditAnywhere)
 	bool bDamaged = false;

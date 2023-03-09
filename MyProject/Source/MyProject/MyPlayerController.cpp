@@ -27,6 +27,7 @@ void AMyPlayerController::SetupInputComponent()
 	InputComponent->BindAction(TEXT("Sprint"), EInputEvent::IE_Released, this, &AMyPlayerController::OffSprint);
 	InputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &AMyPlayerController::ClickAttack);
 	InputComponent->BindAction(TEXT("Skill1"), EInputEvent::IE_Pressed, this, &AMyPlayerController::ClickRSkill);
+	InputComponent->BindAction(TEXT("Skill2"), EInputEvent::IE_Pressed, this, &AMyPlayerController::ClickQSkill);
 }
 
 void AMyPlayerController::MoveForward(float Value)
@@ -35,6 +36,9 @@ void AMyPlayerController::MoveForward(float Value)
 		return;
 
 	if (MyPlayer->IsAttacking)
+		return;
+
+	if (MyPlayer->bSkill)
 		return;
 
 	MyPlayer->Vertical = Value;
@@ -48,6 +52,9 @@ void AMyPlayerController::MoveRight(float Value)
 		return;
 
 	if (MyPlayer->IsAttacking)
+		return;
+
+	if (MyPlayer->bSkill)
 		return;
 
 	MyPlayer->Horizontal = Value;
@@ -78,6 +85,9 @@ void AMyPlayerController::OffSprint()
 
 void AMyPlayerController::ClickAttack()
 {
+	if (MyPlayer->bSkill)
+		return;
+
 	if (MyPlayer->IsAttacking == false)
 	{
 		MyPlayer->Attack();
@@ -93,6 +103,22 @@ void AMyPlayerController::ClickRSkill()
 	if (MyPlayer->IsAttacking)
 		return;
 
+	if (MyPlayer->bSkill)
+	return;
+
 	MyPlayer->SkillR();
+	MyPlayer->bSkill = true;
+}
+
+void AMyPlayerController::ClickQSkill()
+{
+	if (MyPlayer->IsAttacking)
+		return;
+
+	if (MyPlayer->bSkill)
+	return;
+
+	MyPlayer->SkillQ();
+	MyPlayer->bSkill = true;
 }
 

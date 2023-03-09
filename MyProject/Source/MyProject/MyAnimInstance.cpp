@@ -59,11 +59,12 @@ void UMyAnimInstance::PlayDamagedMontage()
 	}
 }
 
-void UMyAnimInstance::PlaySkillMontage()
+void UMyAnimInstance::PlaySkillMontage(int32 SectionIndex)
 {
 	if (!Montage_IsPlaying(SkillMontage))
 	{
 		Montage_Play(SkillMontage, 1.f);
+		JumpToSkillSection(SectionIndex);
 	}
 }
 
@@ -71,6 +72,12 @@ void UMyAnimInstance::JumpToSection(int32 SectionIndex)
 {
 	FName Name = GetAttackMontageName(SectionIndex);
 	Montage_JumpToSection(Name, AttackMontage);
+}
+
+void UMyAnimInstance::JumpToSkillSection(int32 SectionIndex)
+{
+	FName Name = GetSkillMontageName(SectionIndex);
+	Montage_JumpToSection(Name, SkillMontage);
 }
 
 void UMyAnimInstance::AnimNotify_CanCombo()
@@ -117,7 +124,18 @@ void UMyAnimInstance::AnimNotify_RHitCheck()
 	MyCharacter->SkillRAttackCheck();
 }
 
+void UMyAnimInstance::AnimNotify_SkillEnd()
+{
+	auto MyCharacter = Cast<AMyPlayer>(TryGetPawnOwner());
+	MyCharacter->bSkill = false;
+}
+
 FName UMyAnimInstance::GetAttackMontageName(int32 SectionIndex)
 {
 	return FName(*FString::Printf(TEXT("Attack%d"), SectionIndex));
+}
+
+FName UMyAnimInstance::GetSkillMontageName(int32 SectionIndex)
+{
+	return FName(*FString::Printf(TEXT("Skill%d"), SectionIndex));
 }

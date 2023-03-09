@@ -21,8 +21,9 @@ public:
 	
 	void PlayAttackMontage();
 	void PlayDamagedMontage();
-	void PlaySkillMontage();
+	void PlaySkillMontage(int32 SectionIndex);
 	void JumpToSection(int32 SectionIndex);
+	void JumpToSkillSection(int32 SectionIndex);
 
 	UFUNCTION()
 	void AnimNotify_CanCombo();
@@ -39,7 +40,11 @@ public:
 	UFUNCTION()
 	void AnimNotify_RHitCheck();
 
+	UFUNCTION()
+	void AnimNotify_SkillEnd();
+
 	FName GetAttackMontageName(int32 SectionIndex);
+	FName GetSkillMontageName(int32 SectionIndex);
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
