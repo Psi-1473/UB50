@@ -24,6 +24,7 @@ private:
 	void OffSprint();
 	void ClickAttack();
 	void ClickRSkill();
+	void ClickQSkill();
 	//void PopupInventory();
 
 public:

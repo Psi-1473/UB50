@@ -208,7 +208,12 @@ void AMyPlayer::OnDamaged()
 
 void AMyPlayer::SkillR()
 {
-	AnimInst->PlaySkillMontage();
+	AnimInst->PlaySkillMontage(0);
+}
+
+void AMyPlayer::SkillQ()
+{
+	AnimInst->PlaySkillMontage(1);
 }
 
 void AMyPlayer::SkillRAttackCheck()

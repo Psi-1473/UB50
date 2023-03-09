@@ -59,7 +59,6 @@ void AMonsterSpawner::SpawnMob(FVector Location)
 	AActor* Mob = GetWorld()->SpawnActor<AActor>(ActorToSpawn, SpawnTrans);
 	auto Kwang = Cast<AEnemyCharKwang>(Mob);
 	Kwang->SetSpawner(this);
-
 }
 
 void AMonsterSpawner::BeginPlay()
