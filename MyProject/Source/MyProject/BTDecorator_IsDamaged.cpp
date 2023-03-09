@@ -16,6 +16,6 @@ bool UBTDecorator_IsDamaged::CalculateRawConditionValue(UBehaviorTreeComponent& 
 		return false;
 
 	AMonster* Pawn = Cast<AMonster>(CurrentPawn);
-
-	return bResult && Pawn->GetDamaged();
+	bool Damaged = Pawn->GetDamaged() || Pawn->bStuned;
+	return bResult && Damaged;
 }

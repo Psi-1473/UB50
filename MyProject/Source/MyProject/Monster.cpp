@@ -8,6 +8,7 @@
 #include "MonsterSpawner.h"
 #include "Components/WidgetComponent.h"
 #include "Widget_Hp.h"
+#include "GameFrameWork/CharacterMovementComponent.h"
 
 // Sets default values
 AMonster::AMonster()
@@ -143,6 +144,22 @@ void AMonster::DropItemOrGold(AMyPlayer* Player)
 	Player->ChangeGold(RandGold);
 	UE_LOG(LogTemp, Log, TEXT("Add Gold %d"), RandGold);
 }
+
+void AMonster::OnStun(float Tick)
+{
+	bStuned = true;
+	AnimInst->StopAllMontages(0.5f);
+	GetWorldTimerManager().SetTimer(StunTimerHandle, this, &AMonster::OffStun, Tick, true);
+	
+	GetCharacterMovement()->StopMovementImmediately();
+	
+}
+
+void AMonster::OffStun()
+{
+	bStuned = false;
+}
+
 
 
 float AMonster::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)

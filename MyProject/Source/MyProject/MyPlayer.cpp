@@ -206,6 +206,54 @@ void AMyPlayer::OnDamaged()
 	AnimInst->PlayDamagedMontage();
 }
 
+void AMyPlayer::SkillR()
+{
+	AnimInst->PlaySkillMontage();
+}
+
+void AMyPlayer::SkillRAttackCheck()
+{
+	float AttackX = 250.f;
+	float AttackY = 100.f;
+	float AttackZ = 200.f;
+
+	TArray<FHitResult> HitResults;
+	FCollisionQueryParams Params(NAME_None, false, this);
+	FVector BoxVector(AttackX, AttackY, AttackZ);
+
+	bool bResult = GetWorld()->SweepMultiByChannel(
+		OUT HitResults,
+		GetActorLocation(),
+		GetActorLocation() + GetActorForwardVector() * AttackX,
+		FQuat::Identity,
+		ECollisionChannel::ECC_GameTraceChannel2,
+		FCollisionShape::MakeBox(BoxVector),
+		Params);
+
+	FVector Vec = GetActorForwardVector() * AttackX;
+	FVector Center = GetActorLocation() + Vec * 0.5f;
+	FQuat Rotation = FRotationMatrix::MakeFromZ(Vec).ToQuat();
+	FColor DrawColor;
+
+	if (bResult)
+		DrawColor = FColor::Green;
+	else
+		DrawColor = FColor::Red;
+
+	if (bResult && !HitResults.IsEmpty())
+	{
+		for (FHitResult HitResult : HitResults)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Hit Actor : %s"), *HitResult.GetActor()->GetName());
+			AMonster* Enemy = Cast<AMonster>(HitResult.GetActor());
+			FDamageEvent DamageEvent;
+			Enemy->OnStun(2.f);
+		}
+	}
+
+	DrawDebugBox(GetWorld(), Center, BoxVector, Rotation, DrawColor, false, 2.f);
+}
+
 void AMyPlayer::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 {
 	//IsAttacking = false;

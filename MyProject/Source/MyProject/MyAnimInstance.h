@@ -21,6 +21,7 @@ public:
 	
 	void PlayAttackMontage();
 	void PlayDamagedMontage();
+	void PlaySkillMontage();
 	void JumpToSection(int32 SectionIndex);
 
 	UFUNCTION()
@@ -34,6 +35,9 @@ public:
 
 	UFUNCTION()
 	void AnimNotify_HitEnded();
+
+	UFUNCTION()
+	void AnimNotify_RHitCheck();
 
 	FName GetAttackMontageName(int32 SectionIndex);
 
@@ -50,12 +54,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
 	bool bSprint;
 
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
 	UAnimMontage* AttackMontage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
 	UAnimMontage* DamagedMontage;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
+	UAnimMontage* SkillMontage;
 
 public:
 	FonAttackHit OnAttackHit;

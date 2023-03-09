@@ -32,6 +32,8 @@ public:
 	void EndAttack();
 	void AttackCheck();
 	void OnDamaged();
+	void SkillR();
+	void SkillRAttackCheck();
 
 public:
 	void SetDamaged(bool Value) { bDamaged = Value; }

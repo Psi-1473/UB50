@@ -32,6 +32,8 @@ public:
 	void AttackCheck();
 	void Die(class AMyPlayer* Player);
 	void DropItemOrGold(class AMyPlayer* Player);
+	void OnStun(float Tick);
+	void OffStun();
 
 public:
 	void SetDamaged(bool Value) { IsDamaged = Value; }
@@ -63,5 +65,11 @@ protected:
 
 	UPROPERTY()
 	float Speed;
+
+	UPROPERTY()
+	FTimerHandle StunTimerHandle;
+public:
+	UPROPERTY()
+	bool bStuned;
 
 };

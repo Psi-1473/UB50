@@ -21,10 +21,14 @@ bool UBTDecorator_CanAttack::CalculateRawConditionValue(UBehaviorTreeComponent& 
 	if (CurrentPawn == nullptr)
 		return false;
 
+
+
 	auto Target = Cast<AMyPlayer>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(FName(TEXT("Target"))));
 
 	if (Target == nullptr)
 		return false;
+
+	
 
 	return bResult && Target->GetDistanceTo(CurrentPawn) <= 200.f;
 

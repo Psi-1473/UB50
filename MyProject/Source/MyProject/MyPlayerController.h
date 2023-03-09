@@ -23,6 +23,7 @@ private:
 	void OnSprint();
 	void OffSprint();
 	void ClickAttack();
+	void ClickRSkill();
 	//void PopupInventory();
 
 public:

@@ -32,6 +32,12 @@ void UEnemyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	{
 		Speed = pawn->GetVelocity().Size();
 	}
+
+	auto Character = Cast<AMonster>(pawn);
+	if (Character)
+	{
+		bStuned = Character->bStuned;
+	}
 }
 
 void UEnemyAnimInstance::PlayAttackMontage()

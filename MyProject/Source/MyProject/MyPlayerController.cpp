@@ -26,6 +26,7 @@ void AMyPlayerController::SetupInputComponent()
 	InputComponent->BindAction(TEXT("Sprint"), EInputEvent::IE_Pressed, this, &AMyPlayerController::OnSprint);
 	InputComponent->BindAction(TEXT("Sprint"), EInputEvent::IE_Released, this, &AMyPlayerController::OffSprint);
 	InputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &AMyPlayerController::ClickAttack);
+	InputComponent->BindAction(TEXT("Skill1"), EInputEvent::IE_Pressed, this, &AMyPlayerController::ClickRSkill);
 }
 
 void AMyPlayerController::MoveForward(float Value)
@@ -85,5 +86,13 @@ void AMyPlayerController::ClickAttack()
 	{
 		MyPlayer->bCombo = true;
 	}
+}
+
+void AMyPlayerController::ClickRSkill()
+{
+	if (MyPlayer->IsAttacking)
+		return;
+
+	MyPlayer->SkillR();
 }
 

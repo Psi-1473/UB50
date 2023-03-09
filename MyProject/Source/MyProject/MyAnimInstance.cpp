@@ -8,11 +8,15 @@ UMyAnimInstance::UMyAnimInstance()
 {
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> AM(TEXT("AnimMontage'/Game/Blueprints/Animations/AM_Attack.AM_Attack'"));
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> DM(TEXT("AnimMontage'/Game/Blueprints/Animations/AM_Damaged.AM_Damaged'"));
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> SM(TEXT("AnimMontage'/Game/Blueprints/Animations/AM_Skill.AM_Skill'"));
 	if (AM.Succeeded())
 		AttackMontage = AM.Object;
 
 	if (DM.Succeeded())
 		DamagedMontage = DM.Object;
+
+	if (SM.Succeeded())
+		SkillMontage = SM.Object;
 
 }
 
@@ -52,6 +56,14 @@ void UMyAnimInstance::PlayDamagedMontage()
 	if (!Montage_IsPlaying(DamagedMontage))
 	{
 		Montage_Play(DamagedMontage, 1.f);
+	}
+}
+
+void UMyAnimInstance::PlaySkillMontage()
+{
+	if (!Montage_IsPlaying(SkillMontage))
+	{
+		Montage_Play(SkillMontage, 1.f);
 	}
 }
 
@@ -95,6 +107,14 @@ void UMyAnimInstance::AnimNotify_HitEnded()
 	auto MyCharacter = Cast<AMyPlayer>(TryGetPawnOwner());
 	MyCharacter->SetDamaged(false);
 
+}
+
+void UMyAnimInstance::AnimNotify_RHitCheck()
+{
+	auto MyCharacter = Cast<AMyPlayer>(TryGetPawnOwner());
+	MyCharacter->SetDamaged(false);
+
+	MyCharacter->SkillRAttackCheck();
 }
 
 FName UMyAnimInstance::GetAttackMontageName(int32 SectionIndex)
