@@ -34,6 +34,7 @@ public:
 	void OnDamaged();
 	void SkillR();
 	void SkillQ();
+	void Fire();
 	void SkillRAttackCheck();
 
 public:
@@ -111,6 +112,12 @@ private:
 	bool bOnInventory = false; //임시 나중에 UI 매니저에서 관리
 	UPROPERTY()
 	bool bInteract = false;
+
+	UPROPERTY(EditAnywhere)
+	FVector MuzzleOffset;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AProjectile> ProjectileClass;
 
 private:
 	TSubclassOf<UUserWidget> Inventory;

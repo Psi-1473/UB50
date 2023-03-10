@@ -13,6 +13,8 @@
 #include "Widget_Inventory.h"
 #include "Widget_InvenSlot.h"
 #include "Widget_Shop.h"
+#include "Projectile.h"
+#include "GameFrameWork/Actor.h"
 
 // Sets default values
 AMyPlayer::AMyPlayer()
@@ -54,6 +56,7 @@ AMyPlayer::AMyPlayer()
 	{
 		Conversation = CW.Class;
 	}
+
 
 	WeaponList.Init(nullptr, 24);
 	ArmorList.Init(nullptr, 24);
@@ -214,6 +217,27 @@ void AMyPlayer::SkillR()
 void AMyPlayer::SkillQ()
 {
 	AnimInst->PlaySkillMontage(1);
+}
+
+void AMyPlayer::Fire()
+{
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Owner = this;
+	SpawnParams.Instigator = GetInstigator();
+	FVector CameraLocation;
+	FRotator CameraRotation;
+	GetActorEyesViewPoint(CameraLocation, CameraRotation);
+
+	FVector MuzzleLocation = CameraLocation + FTransform(CameraRotation).TransformVector(MuzzleOffset);
+	AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileClass, MuzzleLocation, CameraRotation, SpawnParams);
+	
+	if (Projectile)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Fire : Skill Q Fire"));
+		FVector LaunchDirection = GetActorForwardVector();
+		Projectile->SetController(GetController());
+		Projectile->FireInDirection(LaunchDirection);
+	}
 }
 
 void AMyPlayer::SkillRAttackCheck()

@@ -119,9 +119,15 @@ void UMyAnimInstance::AnimNotify_HitEnded()
 void UMyAnimInstance::AnimNotify_RHitCheck()
 {
 	auto MyCharacter = Cast<AMyPlayer>(TryGetPawnOwner());
-	MyCharacter->SetDamaged(false);
 
 	MyCharacter->SkillRAttackCheck();
+}
+
+void UMyAnimInstance::AnimNotify_Fire()
+{
+	auto MyCharacter = Cast<AMyPlayer>(TryGetPawnOwner());
+
+	MyCharacter->Fire();
 }
 
 void UMyAnimInstance::AnimNotify_SkillEnd()

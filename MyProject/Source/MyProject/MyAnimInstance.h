@@ -41,6 +41,9 @@ public:
 	void AnimNotify_RHitCheck();
 
 	UFUNCTION()
+	void AnimNotify_Fire();
+
+	UFUNCTION()
 	void AnimNotify_SkillEnd();
 
 	FName GetAttackMontageName(int32 SectionIndex);
