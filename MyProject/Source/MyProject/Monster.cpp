@@ -71,6 +71,7 @@ void AMonster::SetSpawner(AMonsterSpawner* Spawner)
 void AMonster::OnDamaged()
 {
 	AnimInst->PlayDamagedMontage();
+	GetCharacterMovement()->StopMovementImmediately();
 	IsDamaged = true;
 }
 
@@ -142,7 +143,6 @@ void AMonster::DropItemOrGold(AMyPlayer* Player)
 	int32 RandGold = FMath::RandRange(MinGold, MaxGold);
 
 	Player->ChangeGold(RandGold);
-	UE_LOG(LogTemp, Log, TEXT("Add Gold %d"), RandGold);
 }
 
 void AMonster::OnStun(float Tick)

@@ -57,6 +57,7 @@ AMyPlayer::AMyPlayer()
 		Conversation = CW.Class;
 	}
 
+	
 
 	WeaponList.Init(nullptr, 24);
 	ArmorList.Init(nullptr, 24);
@@ -227,7 +228,6 @@ void AMyPlayer::Fire()
 	FVector CameraLocation;
 	FRotator CameraRotation;
 	GetActorEyesViewPoint(CameraLocation, CameraRotation);
-
 	FVector MuzzleLocation = CameraLocation + FTransform(CameraRotation).TransformVector(MuzzleOffset);
 	AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileClass, MuzzleLocation, CameraRotation, SpawnParams);
 	
@@ -235,7 +235,7 @@ void AMyPlayer::Fire()
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Fire : Skill Q Fire"));
 		FVector LaunchDirection = GetActorForwardVector();
-		Projectile->SetController(GetController());
+		Projectile->SetPlayer(this);
 		Projectile->FireInDirection(LaunchDirection);
 	}
 }

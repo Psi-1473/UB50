@@ -18,6 +18,8 @@ public:
 	UFUNCTION()
 	void OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	UFUNCTION()
+	void OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -28,7 +30,7 @@ public:
 	void FireInDirection(const FVector& ShootDirection);
 	void DestroyProjectile();
 	void CheckEnemy();
-	void SetController(AController* Controller) { PlayerController = Controller; }
+	void SetPlayer(class AMyPlayer* MyOwner) { OwnerPlayer = MyOwner; }
 
 
 private:
@@ -38,8 +40,13 @@ private:
 	UPROPERTY(EditAnywhere)
 	class UProjectileMovementComponent* ProjectileMovementComponent;
 
+	UPROPERTY(EditAnywhere)
+	class UStaticMeshComponent* MeshComp;
+
+	
+
 	UPROPERTY()
-	AController* PlayerController;
+	class AMyPlayer* OwnerPlayer;
 
 	UPROPERTY()
 	FTimerHandle DestroyTimerHandle;
