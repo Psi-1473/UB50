@@ -62,6 +62,7 @@ AMyPlayer::AMyPlayer()
 	WeaponList.Init(nullptr, 24);
 	ArmorList.Init(nullptr, 24);
 	UseItemList.Init(nullptr, 24);
+	SkillCoolTimes.Init(0, 3);
 
 }
 
@@ -93,6 +94,8 @@ void AMyPlayer::PostInitializeComponents()
 void AMyPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+
 }
 
 void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

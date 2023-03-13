@@ -127,6 +127,10 @@ private:
 	UUserWidget* Conv;
 	// юс╫ц
 
+private:
+	TArray<int32> SkillCoolTimes;
+
+
 public:
 	TArray<FWeaponData*> WeaponList;
 	int32 WeaponIndex = 0;
@@ -136,6 +140,7 @@ public:
 	int32 UseItemIndex = 0;
 
 	int Gold = 0;
+
 
 private:
 	UPROPERTY()
