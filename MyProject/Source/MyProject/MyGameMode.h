@@ -19,6 +19,9 @@ public:
 	AMyGameMode();
 	virtual void BeginPlay() override;
 	void UIUpdate_Hp(float Value);
+	void QSkillUpdate(int Value);
+	//void RSkillUpdate(int Value);
+	//void ESkillUpdate(int Value);
 
 	UPROPERTY(VisibleAnywhere)
 	TSubclassOf<UUserWidget> HUD_Class;

@@ -15,6 +15,7 @@
 #include "Widget_Shop.h"
 #include "Projectile.h"
 #include "GameFrameWork/Actor.h"
+#include "MyPlayerController.h"
 
 // Sets default values
 AMyPlayer::AMyPlayer()
@@ -216,11 +217,18 @@ void AMyPlayer::OnDamaged()
 void AMyPlayer::SkillR()
 {
 	AnimInst->PlaySkillMontage(0);
+	bSkill = true;
 }
 
 void AMyPlayer::SkillQ()
 {
+	// юс╫ц
+	if (SkillCoolTimes[0] > 0)
+		return;
+
 	AnimInst->PlaySkillMontage(1);
+	bSkill = true;
+	StartCoolDown();
 }
 
 void AMyPlayer::Fire()
@@ -284,6 +292,31 @@ void AMyPlayer::SkillRAttackCheck()
 	}
 
 	DrawDebugBox(GetWorld(), Center, BoxVector, Rotation, DrawColor, false, 2.f);
+}
+
+void AMyPlayer::StartCoolDown()
+{
+	SkillCoolTimes[0] = 15;
+
+	GetWorldTimerManager().SetTimer(QTimerHandle, this, &AMyPlayer::CoolDown, 1.f, true);
+}
+
+void AMyPlayer::CoolDown()
+{
+	SkillCoolTimes[0]--;
+
+	if (SkillCoolTimes[0] <= 0)
+		SkillCoolTimes[0] = 0;
+	else
+	{
+		GetWorldTimerManager().SetTimer(QTimerHandle, this, &AMyPlayer::CoolDown, 1.f, true);
+	}
+
+	GameMode->QSkillUpdate(SkillCoolTimes[0]);
+}
+
+void AMyPlayer::CheckCoolTime(int SkillNum)
+{
 }
 
 void AMyPlayer::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)

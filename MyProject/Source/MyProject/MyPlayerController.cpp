@@ -44,7 +44,6 @@ void AMyPlayerController::MoveForward(float Value)
 	MyPlayer->Vertical = Value;
 	GetPawn()->AddMovementInput(GetPawn()->GetActorForwardVector(), Value);
 	
-	
 }
 void AMyPlayerController::MoveRight(float Value)
 {
@@ -107,7 +106,6 @@ void AMyPlayerController::ClickRSkill()
 	return;
 
 	MyPlayer->SkillR();
-	MyPlayer->bSkill = true;
 }
 
 void AMyPlayerController::ClickQSkill()
@@ -119,6 +117,5 @@ void AMyPlayerController::ClickQSkill()
 	return;
 
 	MyPlayer->SkillQ();
-	MyPlayer->bSkill = true;
 }
 

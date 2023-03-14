@@ -37,6 +37,10 @@ public:
 	void Fire();
 	void SkillRAttackCheck();
 
+	void StartCoolDown();
+	void CoolDown();
+	void CheckCoolTime(int SkillNum);
+
 public:
 	void SetDamaged(bool Value) { bDamaged = Value; }
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
@@ -141,7 +145,8 @@ public:
 
 	int Gold = 0;
 
-
+	UPROPERTY()
+	FTimerHandle QTimerHandle;
 private:
 	UPROPERTY()
 	ANpc* CanInteractNpc;

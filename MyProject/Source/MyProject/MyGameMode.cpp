@@ -21,11 +21,6 @@ AMyGameMode::AMyGameMode()
 		{
 			UE_LOG(LogTemp, Warning, TEXT("GameMode CurrentWidget Succeeded!"));
 			CurrentWidget->AddToViewport();
-			//UWidget_Inventory* Inven = Cast<UWidget_Inventory>(CurrentWidget);
-			//Inven->CreateSlot();
-			// Add to Viewport ¹Ý´ë = RemoveFromViewport
-
-
 		}
 	}
 }
@@ -43,3 +38,18 @@ void AMyGameMode::UIUpdate_Hp(float Value)
 
 	Hud->UpdateHp(Value);
 }
+
+void AMyGameMode::QSkillUpdate(int Value)
+{
+	UWidget_PlayerMain* Hud = Cast<UWidget_PlayerMain>(CurrentWidget);
+
+	Hud->ChangeQText(Value);
+}
+
+//void AMyGameMode::RSkillUpdate(int Value)
+//{
+//}
+//
+//void AMyGameMode::ESkillUpdate(int Value)
+//{
+//}
