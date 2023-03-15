@@ -216,8 +216,12 @@ void AMyPlayer::OnDamaged()
 
 void AMyPlayer::SkillR()
 {
+	if (SkillCoolTimes[1] > 0)
+		return;
+
 	AnimInst->PlaySkillMontage(0);
 	bSkill = true;
+	StartCoolDown(1);
 }
 
 void AMyPlayer::SkillQ()
@@ -228,7 +232,7 @@ void AMyPlayer::SkillQ()
 
 	AnimInst->PlaySkillMontage(1);
 	bSkill = true;
-	StartCoolDown();
+	StartCoolDown(0);
 }
 
 void AMyPlayer::Fire()
@@ -294,14 +298,27 @@ void AMyPlayer::SkillRAttackCheck()
 	DrawDebugBox(GetWorld(), Center, BoxVector, Rotation, DrawColor, false, 2.f);
 }
 
-void AMyPlayer::StartCoolDown()
+void AMyPlayer::StartCoolDown(int Type)
 {
-	SkillCoolTimes[0] = 15;
-
-	GetWorldTimerManager().SetTimer(QTimerHandle, this, &AMyPlayer::CoolDown, 1.f, true);
+	switch (Type)
+	{
+	case 0:
+		SkillCoolTimes[0] = 11;
+		GetWorldTimerManager().SetTimer(QTimerHandle, this, &AMyPlayer::CoolDownQ, 1.f, true);
+		break;
+	case 1:
+		SkillCoolTimes[1] = 16;
+		GetWorldTimerManager().SetTimer(RTimerHandle, this, &AMyPlayer::CoolDownR, 1.f, true);
+		break;
+	case 2:
+		SkillCoolTimes[3] = 15;
+		GetWorldTimerManager().SetTimer(ETimerHandle, this, &AMyPlayer::CoolDownE, 1.f, true);
+		break;
+	}
+	
 }
 
-void AMyPlayer::CoolDown()
+void AMyPlayer::CoolDownQ()
 {
 	SkillCoolTimes[0]--;
 
@@ -309,10 +326,29 @@ void AMyPlayer::CoolDown()
 		SkillCoolTimes[0] = 0;
 	else
 	{
-		GetWorldTimerManager().SetTimer(QTimerHandle, this, &AMyPlayer::CoolDown, 1.f, true);
+		GetWorldTimerManager().SetTimer(QTimerHandle, this, &AMyPlayer::CoolDownQ, 1.f, true);
 	}
 
 	GameMode->QSkillUpdate(SkillCoolTimes[0]);
+}
+
+void AMyPlayer::CoolDownR()
+{
+	SkillCoolTimes[1]--;
+
+	if (SkillCoolTimes[1] <= 0)
+		SkillCoolTimes[1] = 0;
+	else
+	{
+		GetWorldTimerManager().SetTimer(RTimerHandle, this, &AMyPlayer::CoolDownR, 1.f, true);
+	}
+
+	GameMode->RSkillUpdate(SkillCoolTimes[1]);
+}
+
+void AMyPlayer::CoolDownE()
+{
+	//
 }
 
 void AMyPlayer::CheckCoolTime(int SkillNum)

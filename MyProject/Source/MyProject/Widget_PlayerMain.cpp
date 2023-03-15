@@ -5,6 +5,7 @@
 #include "Components/ProgressBar.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/TextBlock.h"
+#include "Components/Image.h"
 
 
 void UWidget_PlayerMain::UpdateHp(float Percentage)
@@ -15,8 +16,11 @@ void UWidget_PlayerMain::UpdateHp(float Percentage)
 void UWidget_PlayerMain::ChangeQText(int Value)
 {
 	FString strText;
-	if(Value == 0)
+	if (Value == 0)
+	{
 		strText = FString::Printf(TEXT(""));
+		SetImageAlpha(0, false);
+	}
 	else
 		strText = FString::Printf(TEXT("%d"), Value);
 
@@ -28,7 +32,10 @@ void UWidget_PlayerMain::ChangeRText(int Value)
 {
 	FString strText;
 	if (Value == 0)
+	{
 		strText = FString::Printf(TEXT(""));
+		SetImageAlpha(1, false);
+	}
 	else
 		strText = FString::Printf(TEXT("%d"), Value);
 
@@ -44,5 +51,30 @@ void UWidget_PlayerMain::ChangeEText(int Value)
 		strText = FString::Printf(TEXT("%d"), Value);
 
 	Txt_E->SetText(FText::FromString(strText));
+}
+
+void UWidget_PlayerMain::SetImageAlpha(int Type, bool On)
+{
+	FLinearColor NewColor;
+
+	if (On == true)
+		NewColor.A = 0.4f;
+	
+	if(On == false)
+		NewColor.A = 1.f;
+
+	switch (Type)
+	{
+	case 0:
+		Img_Q->SetColorAndOpacity(NewColor);
+		break;
+	case 1:
+		Img_R->SetColorAndOpacity(NewColor);
+		break;
+	case 2:
+		Img_E->SetColorAndOpacity(NewColor);
+		break;
+	}
+	
 }
 

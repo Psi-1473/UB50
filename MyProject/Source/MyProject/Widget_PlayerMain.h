@@ -20,6 +20,9 @@ public:
 	void ChangeQText(int Value);
 	void ChangeRText(int Value);
 	void ChangeEText(int Value);
+
+	void SetImageAlpha(int Type, bool On);
+
 private:
 
 	// 텍스트 이름 확인
@@ -31,6 +34,15 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* Txt_E;
+
+	UPROPERTY(meta = (BindWidget))
+	class UImage* Img_Q;
+
+	UPROPERTY(meta = (BindWidget))
+	class UImage* Img_R;
+
+	UPROPERTY(meta = (BindWidget))
+	class UImage* Img_E;
 	
 
 	UPROPERTY(meta = (BindWidget))

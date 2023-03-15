@@ -37,8 +37,10 @@ public:
 	void Fire();
 	void SkillRAttackCheck();
 
-	void StartCoolDown();
-	void CoolDown();
+	void StartCoolDown(int Type);
+	void CoolDownQ();
+	void CoolDownR();
+	void CoolDownE();
 	void CheckCoolTime(int SkillNum);
 
 public:
@@ -147,6 +149,10 @@ public:
 
 	UPROPERTY()
 	FTimerHandle QTimerHandle;
+	UPROPERTY()
+	FTimerHandle RTimerHandle;
+	UPROPERTY()
+	FTimerHandle ETimerHandle;
 private:
 	UPROPERTY()
 	ANpc* CanInteractNpc;
