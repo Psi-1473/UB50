@@ -323,7 +323,10 @@ void AMyPlayer::CoolDownQ()
 	SkillCoolTimes[0]--;
 
 	if (SkillCoolTimes[0] <= 0)
+	{
 		SkillCoolTimes[0] = 0;
+		GetWorldTimerManager().ClearTimer(QTimerHandle);
+	}
 	else
 	{
 		GetWorldTimerManager().SetTimer(QTimerHandle, this, &AMyPlayer::CoolDownQ, 1.f, true);
@@ -337,7 +340,10 @@ void AMyPlayer::CoolDownR()
 	SkillCoolTimes[1]--;
 
 	if (SkillCoolTimes[1] <= 0)
+	{
 		SkillCoolTimes[1] = 0;
+		GetWorldTimerManager().ClearTimer(RTimerHandle);
+	}
 	else
 	{
 		GetWorldTimerManager().SetTimer(RTimerHandle, this, &AMyPlayer::CoolDownR, 1.f, true);

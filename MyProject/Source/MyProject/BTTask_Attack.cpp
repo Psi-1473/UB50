@@ -5,6 +5,7 @@
 #include "EnemyKwang.h"
 #include "MyPlayer.h"
 #include "EnemyCharKwang.h"
+#include "BehaviorTree/BlackboardComponent.h"
 
 UBTTask_Attack::UBTTask_Attack()
 {
@@ -21,9 +22,12 @@ EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 
 	if (MyCharacter == nullptr)
 		return EBTNodeResult::Failed;
+	UObject* Target = OwnerComp.GetBlackboardComponent()->GetValueAsObject(FName(TEXT("Target")));
+	auto TargetPlayer = Cast<AMyPlayer>(Target);
 
 
-	MyCharacter->Attack();
+
+	MyCharacter->Attack(TargetPlayer);
 	bIsAttacking = true;
 
 	MyCharacter->OnAttackEnd.AddLambda([this]()

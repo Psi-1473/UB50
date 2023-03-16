@@ -55,10 +55,10 @@ void UWidget_PlayerMain::ChangeEText(int Value)
 
 void UWidget_PlayerMain::SetImageAlpha(int Type, bool On)
 {
-	FLinearColor NewColor;
+	FLinearColor NewColor(1.f, 1.f, 1.f, 1.f);
 
 	if (On == true)
-		NewColor.A = 0.4f;
+		NewColor.A = 0.5f;
 	
 	if(On == false)
 		NewColor.A = 1.f;

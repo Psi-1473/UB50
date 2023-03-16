@@ -43,16 +43,18 @@ void AMyGameMode::QSkillUpdate(int Value)
 {
 	UWidget_PlayerMain* Hud = Cast<UWidget_PlayerMain>(CurrentWidget);
 
-	Hud->ChangeQText(Value);
 	Hud->SetImageAlpha(0, true);
+	Hud->ChangeQText(Value);
+	
 }
 
 void AMyGameMode::RSkillUpdate(int Value)
 {
 	UWidget_PlayerMain* Hud = Cast<UWidget_PlayerMain>(CurrentWidget);
 
-	Hud->ChangeRText(Value);
 	Hud->SetImageAlpha(1, true);
+	Hud->ChangeRText(Value);
+	
 }
 
 void AMyGameMode::ESkillUpdate(int Value)
