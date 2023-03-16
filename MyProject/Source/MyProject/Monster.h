@@ -24,13 +24,10 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
-	void SetSpawner(class AMonsterSpawner* Spawner);
-	AMonsterSpawner* GetSpawner() { return MySpawner; }
-
 	void OnDamaged();
-	void Attack();
+	void Attack(class AMyPlayer* Target);
 	void AttackCheck();
-	void Die(class AMyPlayer* Player);
+	virtual void Die(class AMyPlayer* Player);
 	void DropItemOrGold(class AMyPlayer* Player);
 	void OnStun(float Tick);
 	void OffStun();
@@ -59,9 +56,6 @@ protected:
 
 	UPROPERTY()
 	class UWidgetComponent* HpBar;
-
-	UPROPERTY()
-	class AMonsterSpawner* MySpawner;
 
 	UPROPERTY()
 	float Speed;

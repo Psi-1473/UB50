@@ -8,6 +8,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DrawDebugHelpers.h"
 
+
 UBTService_SearchTarget::UBTService_SearchTarget()
 {
 	NodeName = TEXT("SearchTarget");

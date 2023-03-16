@@ -7,6 +7,8 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardData.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Monster.h"
+#include "GameFrameWork/CharacterMovementComponent.h"
 
 AEnemyKwang::AEnemyKwang()
 {
@@ -29,11 +31,8 @@ void AEnemyKwang::OnPossess(APawn* InPawn)
 	// 빙의가 되었을 때 실행
 	Super::OnPossess(InPawn);
 
-	// 타이머 세팅 - 타이머 핸들을 이용해 3초마다 1번씩 랜덤무브 실행
-	//GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AEnemyKwang::RandomMove, 3.f, true);
-
 	// 블랙보드 사용
-	UBlackboardComponent* BlackboardComp = Blackboard;
+	BlackboardComp = Blackboard;
 	if (UseBlackboard(BlackboardData, BlackboardComp))
 	{
 		if (RunBehaviorTree(BehaviorTree))
@@ -54,19 +53,24 @@ void AEnemyKwang::OnUnPossess()
 
 }
 
-void AEnemyKwang::RandomMove()
+void AEnemyKwang::Tick(float DeltaSeconds)
 {
-	auto CurrentPawn = GetPawn();
-
-	UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetNavigationSystem(GetWorld());
-
-	if (NavSystem == nullptr)
+	Super::Tick(DeltaSeconds);
+	UObject* Target;
+	Target = BlackboardComp->GetValueAsObject(FName(TEXT("Target")));
+	if (Target == nullptr)
 		return;
 
-	FNavLocation RandomLocation;
+	//FVector PawnLocation = GetOwner()->GetActorLocation();
+	FVector TargetLocation = Cast<AActor>(Target)->GetActorLocation();
 
-	if (NavSystem->GetRandomPointInNavigableRadius(FVector::ZeroVector, 500.f, RandomLocation))
+	float DistanceToPlayer = (GetPawn()->GetActorLocation() - TargetLocation).Size();
+
+	if (DistanceToPlayer > 1500)
 	{
-		UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, RandomLocation);
+		BlackboardComp->SetValueAsObject(FName(TEXT("Target")), nullptr);
+		auto OwnerPawn = Cast<AMonster>(GetPawn());
+		OwnerPawn->GetCharacterMovement()->StopMovementImmediately();
 	}
+
 }

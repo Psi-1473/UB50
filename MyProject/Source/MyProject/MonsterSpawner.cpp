@@ -3,7 +3,7 @@
 
 #include "MonsterSpawner.h"
 #include "NavigationSystem.h"
-#include "EnemyCharKwang.h"
+#include "SpawnMonster.h"
 
 AMonsterSpawner::AMonsterSpawner()
 {
@@ -57,7 +57,7 @@ void AMonsterSpawner::SpawnMob(FVector Location)
 	FTransform SpawnTrans;
 	SpawnTrans.SetLocation(Location);
 	AActor* Mob = GetWorld()->SpawnActor<AActor>(ActorToSpawn, SpawnTrans);
-	auto Kwang = Cast<AEnemyCharKwang>(Mob);
+	auto Kwang = Cast<ASpawnMonster>(Mob);
 	Kwang->SetSpawner(this);
 }
 

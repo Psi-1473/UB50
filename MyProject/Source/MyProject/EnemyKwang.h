@@ -20,6 +20,7 @@ public:
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void OnUnPossess() override;
 
+	virtual void Tick(float DeltaSeconds) override;
 private:
 	void RandomMove();
 
@@ -31,4 +32,8 @@ private:
 
 	UPROPERTY()
 	class UBlackboardData* BlackboardData;
+
+	UPROPERTY()
+	UBlackboardComponent* BlackboardComp;
+
 };

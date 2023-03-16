@@ -5,10 +5,10 @@
 #include "EnemyAnimInstance.h"
 #include "MyPlayer.h"
 #include "EnemyStatComponent.h"
-#include "MonsterSpawner.h"
 #include "Components/WidgetComponent.h"
 #include "Widget_Hp.h"
 #include "GameFrameWork/CharacterMovementComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 AMonster::AMonster()
@@ -62,11 +62,6 @@ void AMonster::Tick(float DeltaTime)
 
 }
 
-void AMonster::SetSpawner(AMonsterSpawner* Spawner)
-{
-	MySpawner = Spawner;
-	MySpawner->UpCount();
-}
 
 void AMonster::OnDamaged()
 {
@@ -75,8 +70,10 @@ void AMonster::OnDamaged()
 	IsDamaged = true;
 }
 
-void AMonster::Attack()
+void AMonster::Attack(AMyPlayer* Target)
 {
+	FRotator Rot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation());
+	SetActorRotation(Rot);
 	AnimInst->PlayAttackMontage();
 }
 
@@ -131,7 +128,6 @@ void AMonster::Die(AMyPlayer* Player)
 	AnimInst->PlayDeathMontage();
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	MySpawner->DownCount();
 	DropItemOrGold(Player);
 }
 

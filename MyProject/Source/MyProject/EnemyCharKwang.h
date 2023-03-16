@@ -5,12 +5,13 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Monster.h"
+#include "SpawnMonster.h"
 #include "EnemyCharKwang.generated.h"
 
 
 
 UCLASS()
-class MYPROJECT_API AEnemyCharKwang : public AMonster
+class MYPROJECT_API AEnemyCharKwang : public ASpawnMonster
 {
 	GENERATED_BODY()
 
