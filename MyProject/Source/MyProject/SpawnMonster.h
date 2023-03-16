@@ -16,6 +16,9 @@ class MYPROJECT_API ASpawnMonster : public AMonster
 	
 
 public:
+	ASpawnMonster();
+
+	virtual void PostInitializeComponents() override;
 	void SetSpawner(class AMonsterSpawner* Spawner);
 	AMonsterSpawner* GetSpawner() { return MySpawner; }
 

@@ -55,6 +55,9 @@ protected:
 	bool IsDamaged = false;
 
 	UPROPERTY()
+	bool IsDied = false;
+
+	UPROPERTY()
 	class UWidgetComponent* HpBar;
 
 	UPROPERTY()

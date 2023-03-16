@@ -15,44 +15,18 @@ AMonster::AMonster()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	HpBar = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBAR"));
-
-	HpBar->SetupAttachment(GetMesh());
-	HpBar->SetWidgetSpace(EWidgetSpace::Screen);
-
-	static ConstructorHelpers::FClassFinder<UUserWidget> UW(TEXT("WidgetBlueprint'/Game/UI/WBP_HPBar.WBP_HPBar_C'"));
-
-	if (UW.Succeeded())
-	{
-		HpBar->SetWidgetClass(UW.Class);
-		HpBar->SetDrawSize(FVector2d(200.f, 50.f));
-		HpBar->SetRelativeLocation(FVector(0.f, 0.f, 200.f));
-	}
 	Stat = CreateDefaultSubobject<UEnemyStatComponent>(TEXT("STAT"));
 
 }
 void AMonster::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-
 	AnimInst = Cast<UEnemyAnimInstance>(GetMesh()->GetAnimInstance());
-
-	if (AnimInst)
-	{
-		AnimInst->OnMontageEnded.AddDynamic(this, &AMonster::OnAttackMontageEnded);
-		AnimInst->OnAttackHit.AddUObject(this, &AMonster::AttackCheck);
-	}
-
-	HpBar->InitWidget();
-
-	auto Bar = Cast<UWidget_Hp>(HpBar->GetUserWidgetObject());
-	Bar->BindWidget_Enemy(Stat);
 }
 
 void AMonster::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -72,6 +46,9 @@ void AMonster::OnDamaged()
 
 void AMonster::Attack(AMyPlayer* Target)
 {
+	if (IsDied)
+		return;
+
 	FRotator Rot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation());
 	SetActorRotation(Rot);
 	AnimInst->PlayAttackMontage();
@@ -125,6 +102,7 @@ void AMonster::AttackCheck()
 void AMonster::Die(AMyPlayer* Player)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Die"));
+	IsDied = true;
 	AnimInst->PlayDeathMontage();
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
