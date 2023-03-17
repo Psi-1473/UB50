@@ -14,4 +14,6 @@ class MYPROJECT_API ABossMonster : public AMonster
 {
 	GENERATED_BODY()
 	
+public:
+	ABossMonster();
 };
