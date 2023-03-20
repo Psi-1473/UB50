@@ -21,7 +21,7 @@ AMonster::AMonster()
 void AMonster::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-	AnimInst = Cast<UEnemyAnimInstance>(GetMesh()->GetAnimInstance());
+
 }
 
 void AMonster::BeginPlay()
@@ -39,7 +39,7 @@ void AMonster::Tick(float DeltaTime)
 
 void AMonster::OnDamaged()
 {
-	AnimInst->PlayDamagedMontage();
+	
 	GetCharacterMovement()->StopMovementImmediately();
 	IsDamaged = true;
 }
@@ -51,7 +51,6 @@ void AMonster::Attack(AMyPlayer* Target)
 
 	FRotator Rot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation());
 	SetActorRotation(Rot);
-	AnimInst->PlayAttackMontage();
 }
 
 void AMonster::AttackCheck()
@@ -103,7 +102,7 @@ void AMonster::Die(AMyPlayer* Player)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Die"));
 	IsDied = true;
-	AnimInst->PlayDeathMontage();
+	
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	DropItemOrGold(Player);
@@ -122,7 +121,6 @@ void AMonster::DropItemOrGold(AMyPlayer* Player)
 void AMonster::OnStun(float Tick)
 {
 	bStuned = true;
-	AnimInst->StopAllMontages(0.5f);
 	GetWorldTimerManager().SetTimer(StunTimerHandle, this, &AMonster::OffStun, Tick, true);
 	
 	GetCharacterMovement()->StopMovementImmediately();

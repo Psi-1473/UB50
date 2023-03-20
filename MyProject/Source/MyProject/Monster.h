@@ -24,12 +24,12 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
-	void OnDamaged();
-	void Attack(class AMyPlayer* Target);
+	virtual void OnDamaged();
+	virtual void Attack(class AMyPlayer* Target);
 	void AttackCheck();
 	virtual void Die(class AMyPlayer* Player);
 	void DropItemOrGold(class AMyPlayer* Player);
-	void OnStun(float Tick);
+	virtual void OnStun(float Tick);
 	void OffStun();
 
 public:
@@ -48,8 +48,6 @@ public:
 
 	UAnimMontage* AttackMontage;
 protected:
-	UPROPERTY()
-	class UEnemyAnimInstance* AnimInst;
 
 	UPROPERTY()
 	bool IsDamaged = false;

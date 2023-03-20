@@ -5,6 +5,7 @@
 #include "MonsterSpawner.h"
 #include "Components/WidgetComponent.h"
 #include "Widget_Hp.h"
+#include "EnemyAnimInstance.h"
 
 ASpawnMonster::ASpawnMonster()
 {
@@ -23,11 +24,13 @@ ASpawnMonster::ASpawnMonster()
 	}
 }
 
+
+
 void ASpawnMonster::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
-
+	AnimInst = Cast<UEnemyAnimInstance>(GetMesh()->GetAnimInstance());
 	HpBar->InitWidget();
 	
 	auto Bar = Cast<UWidget_Hp>(HpBar->GetUserWidgetObject());
@@ -39,9 +42,27 @@ void ASpawnMonster::SetSpawner(AMonsterSpawner* Spawner)
 	MySpawner = Spawner;
 	MySpawner->UpCount();
 }
+void ASpawnMonster::OnDamaged()
+{
+	Super::OnDamaged();
+	AnimInst->PlayDamagedMontage();
+}
+
+void ASpawnMonster::Attack(AMyPlayer* Target)
+{
+	Super::Attack(Target);
+	AnimInst->PlayAttackMontage();
+}
 
 void ASpawnMonster::Die(AMyPlayer* Player)
 {
 	Super::Die(Player);
+	AnimInst->PlayDeathMontage();
 	MySpawner->DownCount();
+}
+
+void ASpawnMonster::OnStun(float Tick)
+{
+	Super::OnStun(Tick);
+	AnimInst->StopAllMontages(0.5f);
 }
