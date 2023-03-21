@@ -2,9 +2,14 @@
 
 
 #include "BossAnimInstance.h"
+#include "BossMonster.h"
 
 UBossAnimInstance::UBossAnimInstance()
 {
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> AM(TEXT("AnimMontage'/Game/Blueprints/Animations/Enemy/AM_BossSkills.AM_BossSkills'"));
+
+	if (AM.Succeeded())
+		AttackMontage = AM.Object;
 }
 
 void UBossAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -17,4 +22,43 @@ void UBossAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	{
 		Speed = pawn->GetVelocity().Size();
 	}
+}
+
+void UBossAnimInstance::PlayAttackMontage(int32 SectionIndex)
+{
+	if (!Montage_IsPlaying(AttackMontage))
+	{
+		Montage_Play(AttackMontage, 1.f);
+		//JumpToSection(SectionIndex);
+	}
+}
+
+void UBossAnimInstance::PlayDamagedMontage()
+{
+}
+
+void UBossAnimInstance::PlayDeathMontage()
+{
+}
+
+FName UBossAnimInstance::GetAttackMontageName(int32 SectionIndex)
+{
+	if(SectionIndex == 0)//∆Ú≈∏
+		return FName(*FString::Printf(TEXT("Attack")));
+
+	return FName(*FString::Printf(TEXT("Skill%d"), SectionIndex));
+}
+
+void UBossAnimInstance::JumpToSection(int32 SectionIndex)
+{
+	FName Name = GetAttackMontageName(SectionIndex);
+	Montage_JumpToSection(Name, AttackMontage);
+}
+
+void UBossAnimInstance::AnimNotify_HitEnded()
+{
+	auto pawn = TryGetPawnOwner();
+	auto Boss = Cast<ABossMonster>(pawn);
+
+	Boss->SetAttacking(false);
 }

@@ -22,7 +22,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void OnDamaged() override;
-	//virtual void Attack(class AMyPlayer* Target) override;
+	virtual void Attack(class AMyPlayer* Target) override;
 	//virtual void Die(class AMyPlayer* Player) override;
 
 public:
@@ -36,6 +36,8 @@ public:
 	void Skill3();
 	void Skill4();
 
+	void SetAttacking(bool Value) { IsAttacking = Value; }
+
 
 
 protected:
@@ -44,13 +46,14 @@ protected:
 
 private:
 	float ActionCoolTime;
+	float SkillActionCoolTime;
 	TArray<float> SkillCooltimes;
 
 	bool CanBeStuned;
 	bool CanBeStiffed;
-
+	bool IsAttacking;
 	UPROPERTY()
-	class AMyPlayer* Target;
+	class AMyPlayer* AttackTarget;
 
 
 	

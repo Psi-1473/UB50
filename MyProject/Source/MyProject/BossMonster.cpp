@@ -38,7 +38,7 @@ void ABossMonster::BeginPlay()
 	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	auto MyPlayer = Cast<AMyPlayer>(Char);
 
-	Target = MyPlayer;
+	AttackTarget = MyPlayer;
 	
 	
 }
@@ -49,13 +49,17 @@ void ABossMonster::Tick(float DeltaTime)
 	// 스킬 사용 가능?
 
 	
-	FVector MoveDir = Target->GetActorLocation() - GetActorLocation();
-	FRotator Rot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation());
+	FVector MoveDir = AttackTarget->GetActorLocation() - GetActorLocation();
+	FRotator Rot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), AttackTarget->GetActorLocation());
 
-	if (GetDistanceTo(Target) > 300)
+	if (GetDistanceTo(AttackTarget) > 300 && IsAttacking == false)
 	{
 		SetActorRotation(Rot);
 		AddMovementInput(MoveDir);
+	}
+	else
+	{
+		Attack(AttackTarget);
 	}
 }
 
@@ -63,10 +67,16 @@ void ABossMonster::OnDamaged()
 {
 }
 
-//void ABossMonster::Attack(AMyPlayer* Target)
-//{
-//}
-//
+void ABossMonster::Attack(AMyPlayer* Target)
+{
+	if (IsAttacking)
+		return;
+
+	Super::Attack(Target);
+	IsAttacking = true;
+	AnimInst->PlayAttackMontage(0);
+}
+
 //void ABossMonster::Die(AMyPlayer* Player)
 //{
 //}

@@ -18,10 +18,15 @@ public:
 	UBossAnimInstance();
 
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
-	void PlayAttackMontage();
+	void PlayAttackMontage(int32 SectionIndex);
 	void PlayDamagedMontage();
 	void PlayDeathMontage();
+	FName GetAttackMontageName(int32 SectionIndex);
+	void JumpToSection(int32 SectionIndex);
 
+public:
+	UFUNCTION()
+	void AnimNotify_HitEnded();
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
 		float Speed;
@@ -30,11 +35,11 @@ public:
 		bool bStuned;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
-		UAnimMontage* AttackMontage;
+	UAnimMontage* AttackMontage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
-		UAnimMontage* DamagedMontage;
+	UAnimMontage* DamagedMontage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
-		UAnimMontage* DeathMontage;
+	UAnimMontage* DeathMontage;
 };
