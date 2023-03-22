@@ -9,7 +9,9 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Npc.h"
+#include "Define.h"
 #include "MyPlayer.generated.h"
+
 
 UCLASS()
 class MYPROJECT_API AMyPlayer : public ACharacter

@@ -303,15 +303,15 @@ void AMyPlayer::StartCoolDown(int Type)
 	switch (Type)
 	{
 	case 0:
-		SkillCoolTimes[0] = 11;
+		SkillCoolTimes[PLAYERSKILL_Q] = 11;
 		GetWorldTimerManager().SetTimer(QTimerHandle, this, &AMyPlayer::CoolDownQ, 1.f, true);
 		break;
 	case 1:
-		SkillCoolTimes[1] = 16;
+		SkillCoolTimes[PLAYERSKILL_R] = 16;
 		GetWorldTimerManager().SetTimer(RTimerHandle, this, &AMyPlayer::CoolDownR, 1.f, true);
 		break;
 	case 2:
-		SkillCoolTimes[3] = 15;
+		SkillCoolTimes[2] = 15;
 		GetWorldTimerManager().SetTimer(ETimerHandle, this, &AMyPlayer::CoolDownE, 1.f, true);
 		break;
 	}
@@ -320,11 +320,11 @@ void AMyPlayer::StartCoolDown(int Type)
 
 void AMyPlayer::CoolDownQ()
 {
-	SkillCoolTimes[0]--;
+	SkillCoolTimes[PLAYERSKILL_Q]--;
 
-	if (SkillCoolTimes[0] <= 0)
+	if (SkillCoolTimes[PLAYERSKILL_Q] <= 0)
 	{
-		SkillCoolTimes[0] = 0;
+		SkillCoolTimes[PLAYERSKILL_Q] = 0;
 		GetWorldTimerManager().ClearTimer(QTimerHandle);
 	}
 	else
@@ -332,16 +332,16 @@ void AMyPlayer::CoolDownQ()
 		GetWorldTimerManager().SetTimer(QTimerHandle, this, &AMyPlayer::CoolDownQ, 1.f, true);
 	}
 
-	GameMode->QSkillUpdate(SkillCoolTimes[0]);
+	GameMode->QSkillUpdate(SkillCoolTimes[PLAYERSKILL_Q]);
 }
 
 void AMyPlayer::CoolDownR()
 {
-	SkillCoolTimes[1]--;
+	SkillCoolTimes[PLAYERSKILL_R]--;
 
-	if (SkillCoolTimes[1] <= 0)
+	if (SkillCoolTimes[PLAYERSKILL_R] <= 0)
 	{
-		SkillCoolTimes[1] = 0;
+		SkillCoolTimes[PLAYERSKILL_R] = 0;
 		GetWorldTimerManager().ClearTimer(RTimerHandle);
 	}
 	else
@@ -349,7 +349,7 @@ void AMyPlayer::CoolDownR()
 		GetWorldTimerManager().SetTimer(RTimerHandle, this, &AMyPlayer::CoolDownR, 1.f, true);
 	}
 
-	GameMode->RSkillUpdate(SkillCoolTimes[1]);
+	GameMode->RSkillUpdate(SkillCoolTimes[PLAYERSKILL_R]);
 }
 
 void AMyPlayer::CoolDownE()
@@ -451,7 +451,7 @@ void AMyPlayer::FindNextWeaponIndex()
 {
 	// if 인벤토리가 가득 찼을 때 처리 TODO
 
-	for (int i = 0; i < 24; i++)
+	for (int i = 0; i < INVENTORYNUMBER; i++)
 	{
 		if (WeaponList[i] == nullptr)
 		{
@@ -463,7 +463,7 @@ void AMyPlayer::FindNextWeaponIndex()
 
 void AMyPlayer::FindNextArmorIndex()
 {
-	for (int i = 0; i < 24; i++)
+	for (int i = 0; i < INVENTORYNUMBER; i++)
 	{
 		if (ArmorList[i] == nullptr)
 		{
@@ -475,7 +475,7 @@ void AMyPlayer::FindNextArmorIndex()
 
 void AMyPlayer::FindNextUseIndex()
 {
-	for (int i = 0; i < 24; i++)
+	for (int i = 0; i < INVENTORYNUMBER; i++)
 	{
 		if (UseItemList[i] == nullptr)
 		{
