@@ -37,6 +37,9 @@ public:
 	void Skill4();
 
 	void Skill1Fire();
+
+	void Skill3Targeting();
+	void Skill3Fire(FVector Transform);
 	void SetAttacking(bool Value) { IsAttacking = Value; }
 
 
@@ -62,6 +65,9 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AProjectile> ProjectileClass;
+
+	UPROPERTY(EditAnywhere)
+	class UParticleSystem* Emitter;
 
 
 	

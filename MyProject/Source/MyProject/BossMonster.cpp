@@ -7,6 +7,9 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "BossAnimInstance.h"
 #include "Projectile.h"
+#include "Kismet/GameplayStatics.h"
+#include "Particles/ParticleSystemComponent.h"
+
 
 
 ABossMonster::ABossMonster()
@@ -22,6 +25,12 @@ ABossMonster::ABossMonster()
 	if (SM.Succeeded())
 	{
 		GetMesh()->SetSkeletalMesh(SM.Object);
+	}
+
+	static ConstructorHelpers::FObjectFinder<UParticleSystem> PARTICLE(TEXT("ParticleSystem'/Game/ParagonGreystone/FX/Particles/Greystone/Abilities/Ultimate/FX/P_Greystone_HToKill_Trail.P_Greystone_HToKill_Trail'"));
+	if (PARTICLE.Succeeded())
+	{
+		Emitter = PARTICLE.Object;
 	}
 	//AIControllerClass = AEnemyKwang::StaticClass();
 	//AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
@@ -61,7 +70,7 @@ void ABossMonster::Tick(float DeltaTime)
 	else
 	{
 		//Attack(AttackTarget);
-		Skill1();
+		Skill3();
 	}
 }
 
@@ -154,4 +163,27 @@ void ABossMonster::Skill1Fire()
 		Projectile->SetIsOwnerPlayer(false);
 		Projectile->FireInDirection(LaunchDirection);
 	}
+}
+
+void ABossMonster::Skill3Targeting()
+{
+	FVector TargetPlace;
+
+	TargetPlace = AttackTarget->GetTargetLocation();
+
+
+	// ÁÂÇ¥¿¡ °ğ ¹º°¡ ¶³¾îÁø´Ù´Â ÀÌÆåÆ® ¹ß»ı ½ÃÅ°±â
+	
+	//
+
+	Skill3Fire(TargetPlace);
+}
+
+void ABossMonster::Skill3Fire(FVector Transform)
+{
+	const FTransform Trans(Transform);
+
+
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Emitter, Trans);
+
 }
