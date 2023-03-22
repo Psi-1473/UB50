@@ -30,6 +30,10 @@ public:
 
 	UFUNCTION()
 	void AnimNotify_Fire();
+
+	UFUNCTION()
+	void AnimNotify_Skill3Fire();
+
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
 		float Speed;
