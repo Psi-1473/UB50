@@ -32,6 +32,15 @@ public:
 	void CheckEnemy();
 	void SetPlayer(class AMyPlayer* MyOwner) { OwnerPlayer = MyOwner; }
 
+	void SetType(int32 Value) { ProjectileType = Value; }
+	void SetIsOwnerPlayer(bool Value) { IsOwnerPlayer = Value; }
+
+
+
+private:
+	int32 ProjectileType;
+	bool IsOwnerPlayer;
+
 
 private:
 	UPROPERTY(EditAnywhere)
@@ -42,8 +51,6 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	class UStaticMeshComponent* MeshComp;
-
-	
 
 	UPROPERTY()
 	class AMyPlayer* OwnerPlayer;

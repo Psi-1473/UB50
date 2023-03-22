@@ -251,6 +251,7 @@ void AMyPlayer::Fire()
 		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Fire : Skill Q Fire"));
 		FVector LaunchDirection = GetActorForwardVector();
 		Projectile->SetPlayer(this);
+		Projectile->SetIsOwnerPlayer(true);
 		Projectile->FireInDirection(LaunchDirection);
 	}
 }

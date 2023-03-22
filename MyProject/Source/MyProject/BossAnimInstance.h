@@ -27,6 +27,9 @@ public:
 public:
 	UFUNCTION()
 	void AnimNotify_HitEnded();
+
+	UFUNCTION()
+	void AnimNotify_Fire();
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
 		float Speed;

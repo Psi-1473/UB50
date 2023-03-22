@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "BossAnimInstance.h"
+#include "Projectile.h"
 
 
 ABossMonster::ABossMonster()
@@ -59,7 +60,8 @@ void ABossMonster::Tick(float DeltaTime)
 	}
 	else
 	{
-		Attack(AttackTarget);
+		//Attack(AttackTarget);
+		Skill1();
 	}
 }
 
@@ -92,4 +94,64 @@ bool ABossMonster::CanUseSkill()
 int ABossMonster::PickUsableSkill()
 {
 	return 0;
+}
+
+void ABossMonster::UseSkill(int SkillNum)
+{
+	switch (SkillNum)
+	{
+	case 0:
+		Skill1();
+		break;
+	case 1:
+		Skill2();
+		break;
+	case 2:
+		Skill3();
+		break;
+	case 3:
+		Skill4();
+		break;
+	}
+}
+
+void ABossMonster::Skill1()
+{
+	IsAttacking = true;
+	AnimInst->PlayAttackMontage(1);
+}
+
+void ABossMonster::Skill2()
+{
+	AnimInst->PlayAttackMontage(2);
+}
+
+void ABossMonster::Skill3()
+{
+	AnimInst->PlayAttackMontage(3);
+}
+
+void ABossMonster::Skill4()
+{
+	AnimInst->PlayAttackMontage(4);
+}
+
+void ABossMonster::Skill1Fire()
+{
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Owner = this;
+	SpawnParams.Instigator = GetInstigator();
+	FVector CameraLocation;
+	FRotator CameraRotation;
+	GetActorEyesViewPoint(CameraLocation, CameraRotation);
+	FVector MuzzleLocation = CameraLocation + FTransform(CameraRotation).TransformVector(MuzzleOffset);
+	AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileClass, MuzzleLocation, CameraRotation, SpawnParams);
+
+	if (Projectile)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Boss : Skill Fire"));
+		FVector LaunchDirection = GetActorForwardVector();
+		Projectile->SetIsOwnerPlayer(false);
+		Projectile->FireInDirection(LaunchDirection);
+	}
 }

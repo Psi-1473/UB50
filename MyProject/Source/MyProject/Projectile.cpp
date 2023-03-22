@@ -52,27 +52,40 @@ AProjectile::AProjectile()
 
 void AProjectile::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	
+
 	if (OtherActor && (OtherActor != this) && OtherComp)
 	{
-		auto Enemy = Cast<AMonster>(OtherActor);
-		if (Enemy)
+		if (IsOwnerPlayer)
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Fire : Skill Q Hit"));
-			FDamageEvent DamageEvent;
-			if (OwnerPlayer == nullptr)
+			auto Enemy = Cast<AMonster>(OtherActor);
+			if (Enemy)
 			{
-				auto MyPlayer = Cast<AMyPlayer>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
-				SetPlayer(MyPlayer);
+				GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Fire : Skill Q Hit"));
+				FDamageEvent DamageEvent;
+				if (OwnerPlayer == nullptr)
+				{
+					auto MyPlayer = Cast<AMyPlayer>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+					SetPlayer(MyPlayer);
+				}
+				Enemy->TakeDamage(10, DamageEvent, OwnerPlayer->GetController(), OwnerPlayer);
 			}
-			Enemy->TakeDamage(10, DamageEvent, OwnerPlayer->GetController(), OwnerPlayer);
+		}
+		else
+		{
+			auto TargetPlayer = Cast<AMyPlayer>(OtherActor);
+			if (TargetPlayer)
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Player : Skill Hit "));
+				FDamageEvent DamageEvent;
+				//TargetPlayer->TakeDamage(10, DamageEvent, OwnerPlayer->GetController(), OwnerPlayer);
+			}
 		}
 	}
 }
 
 void AProjectile::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Fire : Skill Q Hit End"));
+	
 }
 
 // Called when the game starts or when spawned

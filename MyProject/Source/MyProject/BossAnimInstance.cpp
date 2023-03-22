@@ -29,7 +29,7 @@ void UBossAnimInstance::PlayAttackMontage(int32 SectionIndex)
 	if (!Montage_IsPlaying(AttackMontage))
 	{
 		Montage_Play(AttackMontage, 1.f);
-		//JumpToSection(SectionIndex);
+		JumpToSection(SectionIndex);
 	}
 }
 
@@ -61,4 +61,12 @@ void UBossAnimInstance::AnimNotify_HitEnded()
 	auto Boss = Cast<ABossMonster>(pawn);
 
 	Boss->SetAttacking(false);
+}
+
+void UBossAnimInstance::AnimNotify_Fire()
+{
+	auto pawn = TryGetPawnOwner();
+	auto Boss = Cast<ABossMonster>(pawn);
+
+	Boss->Skill1Fire();
 }

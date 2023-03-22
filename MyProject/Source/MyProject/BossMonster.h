@@ -36,6 +36,7 @@ public:
 	void Skill3();
 	void Skill4();
 
+	void Skill1Fire();
 	void SetAttacking(bool Value) { IsAttacking = Value; }
 
 
@@ -52,8 +53,15 @@ private:
 	bool CanBeStuned;
 	bool CanBeStiffed;
 	bool IsAttacking;
+
 	UPROPERTY()
 	class AMyPlayer* AttackTarget;
+
+	UPROPERTY(EditAnywhere)
+	FVector MuzzleOffset;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AProjectile> ProjectileClass;
 
 
 	
