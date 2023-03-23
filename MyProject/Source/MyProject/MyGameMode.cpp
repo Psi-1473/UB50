@@ -23,6 +23,8 @@ AMyGameMode::AMyGameMode()
 			CurrentWidget->AddToViewport();
 		}
 	}
+
+	UIManager = NewObject<UManager_UI>();
 }
 
 void AMyGameMode::BeginPlay()

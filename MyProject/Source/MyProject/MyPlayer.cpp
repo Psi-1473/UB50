@@ -111,30 +111,34 @@ void AMyPlayer::PopupInventory()
 	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
 	if (bOnInventory)
 	{
-		Inven->RemoveFromViewport();
-		bOnInventory = false;
-		GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);
+		//Inven->RemoveFromViewport();
+		//bOnInventory = false;
+		//GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);
 	}
 	else
 	{
-		Inven = CreateWidget(GetWorld(), Inventory);
-		
-		UE_LOG(LogTemp, Warning, TEXT("GameMode CurrentWidget Succeeded!"));
-		Inven->AddToViewport();
-		auto WInven = Cast<UWidget_Inventory>(Inven);
-		WInven->CreateSlot();
-		WInven->ChangeGold(Gold);
+		GameMode->UIManager->PopupInventory(GetWorld(), Gold, EquipWeaponId, EquipArmorId, GInstance);
 		bOnInventory = true;
-
-		if (EquipWeaponId != -1)
-			WInven->ChangeWeapon(EquipWeaponId, GInstance);
-
-		if (EquipArmorId != -1)
-			WInven->ChangeWeapon(EquipArmorId, GInstance);
-
-		GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
+		//Inven = CreateWidget(GetWorld(), Inventory);
+		//
+		//UE_LOG(LogTemp, Warning, TEXT("GameMode CurrentWidget Succeeded!"));
+		//Inven->AddToViewport();
+		//auto WInven = Cast<UWidget_Inventory>(Inven);
+		//WInven->CreateSlot();
+		//WInven->ChangeGold(Gold);
+		
+		//
+		//if (EquipWeaponId != -1)
+		//	WInven->ChangeWeapon(EquipWeaponId, GInstance);
+		//
+		//if (EquipArmorId != -1)
+		//	WInven->ChangeWeapon(EquipArmorId, GInstance);
+		//
+		//GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
 		//	// Add to Viewport ¹Ý´ë = RemoveFromViewport
 		//
+
+		
 	}
 }
 void AMyPlayer::Attack()

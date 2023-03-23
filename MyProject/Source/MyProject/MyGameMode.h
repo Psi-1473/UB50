@@ -5,11 +5,14 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "MyPlayer.h"
+#include "Manager_UI.h"
 #include "MyGameMode.generated.h"
+
 
 /**
  * 
  */
+
 UCLASS()
 class MYPROJECT_API AMyGameMode : public AGameModeBase
 {
@@ -28,4 +31,8 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	UUserWidget* CurrentWidget;
+
+	UManager_UI* UIManager;
+
+	
 };
