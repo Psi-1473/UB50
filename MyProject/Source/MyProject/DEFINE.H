@@ -12,3 +12,14 @@ const int PLAYERSKILL_R = 1;
 const int PLAYERSKILL_E = 2;
 
 const int INVENTORYNUMBER = 24;
+
+
+
+const enum BossCoolTime
+{
+	ALLSKILL = 10,
+	SKILL1 = 20,
+	SKILL2 = 30,
+	SKILL3 = 30,
+	SKILL4 = 40,
+};

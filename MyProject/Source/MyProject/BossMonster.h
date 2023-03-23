@@ -42,6 +42,11 @@ public:
 	void Skill3Fire(FVector Transform);
 	void SetAttacking(bool Value) { IsAttacking = Value; }
 
+	void CoolTimeZero1();
+	void CoolTimeZero2();
+	void CoolTimeZero3();
+	void CoolTimeZero4();
+	void ActionCoolTimeZero();
 
 
 protected:
@@ -49,13 +54,18 @@ protected:
 	class UBossAnimInstance* AnimInst;
 
 private:
-	float ActionCoolTime;
 	float SkillActionCoolTime;
-	TArray<float> SkillCooltimes;
+	TArray<bool> UsableSkills;
 
 	bool CanBeStuned;
 	bool CanBeStiffed;
+
+public:
+	UPROPERTY(EditAnywhere)
 	bool IsAttacking;
+private:
+
+	bool CanSkills = true;
 
 	UPROPERTY()
 	class AMyPlayer* AttackTarget;
@@ -69,6 +79,17 @@ private:
 	UPROPERTY(EditAnywhere)
 	class UParticleSystem* Emitter;
 
+	UPROPERTY()
+	FTimerHandle SkillTimerHandle;
+
+	UPROPERTY()
+	FTimerHandle Skill1TimerHandle;
+	UPROPERTY()
+	FTimerHandle Skill2TimerHandle;
+	UPROPERTY()
+	FTimerHandle Skill3TimerHandle;
+	UPROPERTY()
+	FTimerHandle Skill4TimerHandle;
 
 	
 };
