@@ -13,6 +13,12 @@ const int PLAYERSKILL_E = 2;
 
 const int INVENTORYNUMBER = 24;
 
+const enum PlayerItemType
+{
+	WEAPON = 0,
+	ARMOR = 1,
+	USEITEM = 2,
+};
 
 
 const enum BossCoolTime

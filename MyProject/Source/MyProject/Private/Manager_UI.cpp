@@ -7,6 +7,7 @@
 #include "../Widget_Inventory.h"
 #include "../Widget_InvenSlot.h"
 #include "../MyGameInstance.h"
+#include "../Define.h"
 
 UManager_UI::UManager_UI()
 {
@@ -22,6 +23,31 @@ UManager_UI::UManager_UI()
 	}
 }
 
+void UManager_UI::UpdateInventory(int NextSlot)
+{
+	if (InvenNum == -1)
+		return;
+
+	auto MyInven = Cast<UWidget_Inventory>(Widgets[InvenNum]);
+
+	switch (MyInven->GetInvenType())
+	{
+	case WEAPON:
+		MyInven->Slots[MyInven->GetWeaponIndex()]->SetWeaponItem();
+		MyInven->SetInvenIndex(WEAPON, NextSlot);
+		UE_LOG(LogTemp, Warning, TEXT("NextSlot -> %d"), MyInven->GetWeaponIndex());
+		break;
+	case ARMOR:
+		MyInven->Slots[MyInven->GetArmorIndex()]->SetArmorItem();
+		MyInven->SetInvenIndex(ARMOR, NextSlot);
+		break;
+	case USEITEM:
+		MyInven->Slots[MyInven->GetUseIndex()]->SetUseItem();
+		MyInven->SetInvenIndex(USEITEM, NextSlot);
+		break;
+	}
+}
+
 void UManager_UI::PopupUI(UWorld* World, TSubclassOf<UUserWidget> WidgetType)
 {
 	
@@ -31,11 +57,6 @@ void UManager_UI::PopupUI(UWorld* World, TSubclassOf<UUserWidget> WidgetType)
 	Widgets.Top()->AddToViewport();
 
 
-	//auto WInven = Cast<UWidget_Inventory>(Inven);
-	//WInven->CreateSlot();
-	//WInven->ChangeGold(Gold);
-	//bOnInventory = true;
-	//
 	//if (EquipWeaponId != -1)
 	//	WInven->ChangeWeapon(EquipWeaponId, GInstance);
 	//
@@ -49,11 +70,8 @@ void UManager_UI::PopupInventory(UWorld* World, int Gold, int EquipWeaponId, int
 {
 	
 	PopupUI(World, Inventory);
-	auto WInven = Cast<UWidget_Inventory>(Inven);
-	WInven->CreateSlot();
-	//WInven->ChangeGold(Gold);
-	//
-	//
+	InvenNum = Widgets.Num() - 1;
+
 	//if (EquipWeaponId != -1)
 	//	WInven->ChangeWeapon(EquipWeaponId, GInstance);
 	//

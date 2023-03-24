@@ -95,13 +95,13 @@ void UWidget_ShopSlot::BuyItem()
 
 	switch (MyType)
 	{
-	case 0:
+	case WEAPON:
 		MyPlayer->AddItemWeapon(MyId);
 		break;
-	case 1:
+	case ARMOR:
 		MyPlayer->AddItemArmor(MyId);
 		break;
-	case 2:
+	case USEITEM:
 		MyPlayer->AddItemUse(MyId);
 		break;
 	default:

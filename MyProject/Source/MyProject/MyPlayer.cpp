@@ -119,26 +119,6 @@ void AMyPlayer::PopupInventory()
 	{
 		GameMode->UIManager->PopupInventory(GetWorld(), Gold, EquipWeaponId, EquipArmorId, GInstance);
 		bOnInventory = true;
-		//Inven = CreateWidget(GetWorld(), Inventory);
-		//
-		//UE_LOG(LogTemp, Warning, TEXT("GameMode CurrentWidget Succeeded!"));
-		//Inven->AddToViewport();
-		//auto WInven = Cast<UWidget_Inventory>(Inven);
-		//WInven->CreateSlot();
-		//WInven->ChangeGold(Gold);
-		
-		//
-		//if (EquipWeaponId != -1)
-		//	WInven->ChangeWeapon(EquipWeaponId, GInstance);
-		//
-		//if (EquipArmorId != -1)
-		//	WInven->ChangeWeapon(EquipArmorId, GInstance);
-		//
-		//GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
-		//	// Add to Viewport 반대 = RemoveFromViewport
-		//
-
-		
 	}
 }
 void AMyPlayer::Attack()
@@ -416,78 +396,54 @@ void AMyPlayer::Interact()
 void AMyPlayer::AddItemWeapon(int Id)
 {
 	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
-	WeaponList[WeaponIndex] = GInstance->GetWeaponData(Id);
+	int Idx = FindNextInvenIndex(WEAPON);
+	WeaponList[Idx] = GInstance->GetWeaponData(Id);
 	if (bOnInventory)
-	{
-		auto MyInven = Cast<UWidget_Inventory>(Inven);
-		if(MyInven->GetInvenType() == 0)
-			MyInven->Slots[WeaponIndex]->SetWeaponItem();
-	}
-	FindNextWeaponIndex();
+		GameMode->UIManager->UpdateInventory(FindNextInvenIndex(WEAPON));
 }
 
 void AMyPlayer::AddItemArmor(int Id)
 {
 	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
-	ArmorList[ArmorIndex] = GInstance->GetArmorData(Id);
+	int Idx = FindNextInvenIndex(ARMOR);
+	ArmorList[Idx] = GInstance->GetArmorData(Id);
 	if (bOnInventory)
-	{
-		auto MyInven = Cast<UWidget_Inventory>(Inven);
-		if (MyInven->GetInvenType() == 1)
-			MyInven->Slots[ArmorIndex]->SetArmorItem();
-	}
-	FindNextArmorIndex();
+		GameMode->UIManager->UpdateInventory(FindNextInvenIndex(ARMOR));
 }
 
 void AMyPlayer::AddItemUse(int Id)
 {
 	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
-	UseItemList[UseItemIndex] = GInstance->GetUseData(Id);
+	int Idx = FindNextInvenIndex(USEITEM);
+	UseItemList[Idx] = GInstance->GetUseData(Id);
 	if (bOnInventory)
-	{
-		auto MyInven = Cast<UWidget_Inventory>(Inven);
-		if (MyInven->GetInvenType() == 2)
-			MyInven->Slots[UseItemIndex]->SetUseItem();
-	}
-	FindNextUseIndex();
+		GameMode->UIManager->UpdateInventory(FindNextInvenIndex(USEITEM));
 }
 
-void AMyPlayer::FindNextWeaponIndex()
-{
-	// if 인벤토리가 가득 찼을 때 처리 TODO
 
+int AMyPlayer::FindNextInvenIndex(int ItemType)
+{
+	// 인벤토리가 가득 찼을 때 처리.
 	for (int i = 0; i < INVENTORYNUMBER; i++)
 	{
-		if (WeaponList[i] == nullptr)
+		switch (ItemType)
 		{
-			WeaponIndex = i;
-			return;
+		case WEAPON:
+			if (WeaponList[i] == nullptr)
+				return i;
+			break;
+		case ARMOR:
+			if (ArmorList[i] == nullptr)
+				return i;
+			break;
+		case USEITEM:
+			if (UseItemList[i] == nullptr)
+				return i;
+			break;
 		}
 	}
-}
 
-void AMyPlayer::FindNextArmorIndex()
-{
-	for (int i = 0; i < INVENTORYNUMBER; i++)
-	{
-		if (ArmorList[i] == nullptr)
-		{
-		ArmorIndex = i;
-		return;
-		}
-	}
-}
-
-void AMyPlayer::FindNextUseIndex()
-{
-	for (int i = 0; i < INVENTORYNUMBER; i++)
-	{
-		if (UseItemList[i] == nullptr)
-		{
-			UseItemIndex = i;
-			return;
-		}
-	}
+	return -1;
 }
 
 bool AMyPlayer::DraggingSwap(int from, int to)

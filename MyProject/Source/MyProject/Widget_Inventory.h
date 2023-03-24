@@ -29,6 +29,10 @@ public:
 	void RefreshSlot(int8 ItemType); // 아이템 리스트랑 비교해서 아이템 들어있으면 아이템 없으면 null로
 	
 public:
+	int GetWeaponIndex() { return WeaponIndex; }
+	int GetArmorIndex() { return ArmorIndex; }
+	int GetUseIndex() { return UseIndex; }
+public:
 	UFUNCTION()
 	void RefreshToWeapon();
 
@@ -41,6 +45,9 @@ public:
 	void ChangeGold(int Value);
 	void ChangeWeapon(int Id, class UMyGameInstance* GInstance);
 	void ChangeArmor(int Id, class UMyGameInstance* GInstance);
+
+
+	void SetInvenIndex(int ItemType, int Value);
 
 
 private:
@@ -68,9 +75,18 @@ private:
 	UPROPERTY()
 	int8 TypeIndex = 0; // 0 - 무기, 1 - 장비, 2 - 소모품
 
+
+	int WeaponIndex = 0;
+	int ArmorIndex = 0;
+	int UseIndex = 0;
+
 	int MaxInvenSlot = 24;
 	int Gold;
 	
+
+private:
+	class AMyPlayer* OwnerPlayer;
+
 public:
 	UPROPERTY()
 	TArray<class UWidget_InvenSlot*> Slots;

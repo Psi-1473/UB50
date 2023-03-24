@@ -55,9 +55,8 @@ public:
 	void AddItemWeapon(int Id);
 	void AddItemArmor(int Id);
 	void AddItemUse(int Id);
-	void FindNextWeaponIndex();
-	void FindNextArmorIndex();
-	void FindNextUseIndex();
+
+	int FindNextInvenIndex(int ItemType);
 	//Temp
 	bool DraggingSwap(int from, int to);
 
@@ -66,6 +65,9 @@ public:
 	void EquipWeapon(int Id, int Idx);
 	void EquipArmor(int Id, int Idx);
 	void UseItem(int Id, int Idx);
+
+	int GetEquipWeaponId() { return EquipWeaponId; }
+	int GetEquipArmorId() { return EquipArmorId; }
 
 private:
 	void PopupInventory();

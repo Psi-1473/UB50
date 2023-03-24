@@ -19,12 +19,18 @@ public:
 
 	void PopupInventory(UWorld* World, int Gold, int EquipWeaponId, int EquipArmorId, class UMyGameInstance* GInstance);
 	void RemoveUI();
+
+
+	// 인벤토리
+	void UpdateInventory(int NextSlot);
+	
 private:
 	void PopupUI(UWorld* World, TSubclassOf<UUserWidget> WidgetType);
 private:
 
 	TSubclassOf<UUserWidget> Inventory;
-	UUserWidget* Inven;
+	int InvenNum;
+	//UUserWidget* Inven;
 
 	TSubclassOf<UUserWidget> Conversation;
 	UUserWidget* Conv;

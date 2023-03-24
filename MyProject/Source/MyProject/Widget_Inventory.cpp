@@ -9,6 +9,9 @@
 #include "DragWidget.h"
 #include "MyGameInstance.h"
 #include "Components/Image.h"
+#include "MyPlayer.h"
+#include "Kismet/GameplayStatics.h"
+
 
 void UWidget_Inventory::NativeConstruct()
 {
@@ -17,6 +20,17 @@ void UWidget_Inventory::NativeConstruct()
 	Btn_Weapon->OnClicked.AddDynamic(this, &UWidget_Inventory::RefreshToWeapon);
 	Btn_Armor->OnClicked.AddDynamic(this, &UWidget_Inventory::RefreshToArmor);
 	Btn_Use->OnClicked.AddDynamic(this, &UWidget_Inventory::RefreshToUse);
+
+	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	auto MyPlayer = Cast<AMyPlayer>(Char);
+
+	OwnerPlayer = MyPlayer;
+	CreateSlot();
+	ChangeGold(MyPlayer->Gold);
+	UMyGameInstance* GInstance = Cast<UMyGameInstance>(MyPlayer->GetGameInstance());
+	ChangeWeapon(MyPlayer->GetEquipWeaponId(), GInstance);
+	ChangeArmor(MyPlayer->GetEquipArmorId(), GInstance);
+	
 }
 
 bool UWidget_Inventory::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
@@ -110,13 +124,32 @@ void UWidget_Inventory::ChangeGold(int Value)
 
 void UWidget_Inventory::ChangeWeapon(int Id, UMyGameInstance* GInstance)
 {
-
+	if (Id == -1)
+		return;
 	Img_EquipWeapon->Brush = GInstance->GetWeaponImage(Id)->Brush;
 }
 
 void UWidget_Inventory::ChangeArmor(int Id, UMyGameInstance* GInstance)
 {
+	if (Id == -1)
+		return;
 	Img_EquipArmor->Brush = GInstance->GetArmorImage(Id)->Brush;
+}
+
+void UWidget_Inventory::SetInvenIndex(int ItemType, int Value)
+{
+	switch (ItemType)
+	{
+	case WEAPON:
+		WeaponIndex = Value;
+		break;
+	case ARMOR:
+		ArmorIndex = Value;
+		break;
+	case USEITEM:
+		UseIndex = Value;
+		break;
+	}
 }
 
 
