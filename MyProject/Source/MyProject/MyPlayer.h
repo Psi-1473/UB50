@@ -29,49 +29,74 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+public:
+
 	void Attack();
 	void SetCombo(bool Val) { bCombo = Val; }
 	void EndAttack();
 	void AttackCheck();
-	void OnDamaged();
+
+	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+	
+
+	void ActivateSkill(int SkillNum);
 	void SkillR();
 	void SkillQ();
 	void Fire();
 	void SkillRAttackCheck();
 
+
+private:
 	void StartCoolDown(int Type);
 	void CoolDownQ();
 	void CoolDownR();
 	void CoolDownE();
-	void CheckCoolTime(int SkillNum);
+
+
+	void Interact();
+	void PopupInventory();
+
+	void OnDamaged();
+
 
 public:
-	void SetDamaged(bool Value) { bDamaged = Value; }
-	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
-	void SetNpc(ANpc* NewNpc = nullptr){ CanInteractNpc = NewNpc; }
-	int GetGold() { return Gold; }
-	void SetGold(int Value) { Gold = Value; }
-	void Interact();
+	void OpenUI(int UIType);
+	void CloseUI(int UIType);
+	void EquipWeapon(int Id, int Idx);
+	void EquipArmor(int Id, int Idx);
+	void UseItem(int Id, int Idx);
+
 	void AddItemWeapon(int Id);
 	void AddItemArmor(int Id);
 	void AddItemUse(int Id);
 
 	int FindNextInvenIndex(int ItemType);
-	//Temp
 	bool DraggingSwap(int from, int to);
 
 	void ChangeGold(int Value);
 
-	void EquipWeapon(int Id, int Idx);
-	void EquipArmor(int Id, int Idx);
-	void UseItem(int Id, int Idx);
+	
+
+public:
+	void SetDamaged(bool Value) { bDamaged = Value; }
+	void SetNpc(ANpc* NewNpc = nullptr){ CanInteractNpc = NewNpc; }
+	void SetGold(int Value) { Gold = Value; }
+	void SetOnInventory(bool Value) { bOnInventory = Value; }
+	void SetInteracting(bool Value) { bInteract = Value; }
+
+	int GetGold() { return Gold; }
+	class ANpc* GetInteractNpc() { return CanInteractNpc; }
+
+	bool GetOnInventory() { return bOnInventory; }
+	bool GetInteracting() { return bInteract; }
+	
+	//Temp
 
 	int GetEquipWeaponId() { return EquipWeaponId; }
 	int GetEquipArmorId() { return EquipArmorId; }
 
 private:
-	void PopupInventory();
-
 	UFUNCTION()
 	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
 

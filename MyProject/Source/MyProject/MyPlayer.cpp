@@ -102,25 +102,11 @@ void AMyPlayer::Tick(float DeltaTime)
 void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	PlayerInputComponent->BindAction(TEXT("Inventory"), EInputEvent::IE_Pressed, this, &AMyPlayer::PopupInventory);
-	PlayerInputComponent->BindAction(TEXT("Interact"), EInputEvent::IE_Pressed, this, &AMyPlayer::Interact);
+	//PlayerInputComponent->BindAction(TEXT("Inventory"), EInputEvent::IE_Pressed, this, &AMyPlayer::PopupInventory);
+	//PlayerInputComponent->BindAction(TEXT("Interact"), EInputEvent::IE_Pressed, this, &AMyPlayer::Interact);
 
 }
-void AMyPlayer::PopupInventory()
-{
-	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
-	if (bOnInventory)
-	{
-		//Inven->RemoveFromViewport();
-		//bOnInventory = false;
-		//GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);
-	}
-	else
-	{
-		GameMode->UIManager->PopupInventory(GetWorld(), Gold, EquipWeaponId, EquipArmorId, GInstance);
-		bOnInventory = true;
-	}
-}
+
 void AMyPlayer::Attack()
 {
 	if (AttackIndex >= 3)
@@ -187,36 +173,36 @@ void AMyPlayer::AttackCheck()
 		}
 	}
 }
-void AMyPlayer::OnDamaged()
+float AMyPlayer::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	bDamaged = true;
-	IsAttacking = false;
-	bCombo = false;
-	AttackIndex = 0;
+	Stat->OnAttacked(Damage);
+	OnDamaged();
 
+	if (GameMode)
+	{
+		GameMode->UIUpdate_Hp(Stat->GetHpRatio());
+	}
+	return Damage;
+}
 
-	AnimInst->PlayDamagedMontage();
+void AMyPlayer::ActivateSkill(int SkillNum)
+{
+	if (SkillCoolTimes[SkillNum] > 0)
+		return;
+
+	AnimInst->PlaySkillMontage(SkillNum);
+	bSkill = true;
+	StartCoolDown(SkillNum);
 }
 
 void AMyPlayer::SkillR()
 {
-	if (SkillCoolTimes[1] > 0)
-		return;
-
-	AnimInst->PlaySkillMontage(0);
-	bSkill = true;
-	StartCoolDown(1);
+	ActivateSkill(PLAYERSKILL_R);
 }
 
 void AMyPlayer::SkillQ()
 {
-	// 임시
-	if (SkillCoolTimes[0] > 0)
-		return;
-
-	AnimInst->PlaySkillMontage(1);
-	bSkill = true;
-	StartCoolDown(0);
+	ActivateSkill(PLAYERSKILL_Q);
 }
 
 void AMyPlayer::Fire()
@@ -287,16 +273,16 @@ void AMyPlayer::StartCoolDown(int Type)
 {
 	switch (Type)
 	{
-	case 0:
-		SkillCoolTimes[PLAYERSKILL_Q] = 11;
-		GetWorldTimerManager().SetTimer(QTimerHandle, this, &AMyPlayer::CoolDownQ, 1.f, true);
-		break;
-	case 1:
+	case PLAYERSKILL_R:
 		SkillCoolTimes[PLAYERSKILL_R] = 16;
 		GetWorldTimerManager().SetTimer(RTimerHandle, this, &AMyPlayer::CoolDownR, 1.f, true);
 		break;
-	case 2:
-		SkillCoolTimes[2] = 15;
+	case PLAYERSKILL_Q:
+		SkillCoolTimes[PLAYERSKILL_Q] = 11;
+		GetWorldTimerManager().SetTimer(QTimerHandle, this, &AMyPlayer::CoolDownQ, 1.f, true);
+		break;
+	case PLAYERSKILL_E:
+		SkillCoolTimes[PLAYERSKILL_E] = 15;
 		GetWorldTimerManager().SetTimer(ETimerHandle, this, &AMyPlayer::CoolDownE, 1.f, true);
 		break;
 	}
@@ -342,10 +328,47 @@ void AMyPlayer::CoolDownE()
 	//
 }
 
-void AMyPlayer::CheckCoolTime(int SkillNum)
+void AMyPlayer::OnDamaged()
 {
+	bDamaged = true;
+	IsAttacking = false;
+	bCombo = false;
+	AttackIndex = 0;
+
+	AnimInst->PlayDamagedMontage();
 }
 
+
+void AMyPlayer::Interact()
+{
+	if (CanInteractNpc == nullptr)
+		return;
+
+	if (bInteract)
+	{
+		CloseUI(CONVERSATION);
+		bInteract = false;
+	}
+	else
+	{
+		OpenUI(CONVERSATION);
+		bInteract = true;
+	}
+}
+
+void AMyPlayer::PopupInventory()
+{
+	if (bOnInventory)
+	{
+		CloseUI(INVENTORY);
+		bOnInventory = false;
+	}
+	else
+	{
+		OpenUI(INVENTORY);
+		bOnInventory = true;
+	}
+}
 void AMyPlayer::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 {
 	//IsAttacking = false;
@@ -358,39 +381,75 @@ void AMyPlayer::OnAttackMontageStarted(UAnimMontage* Montage, bool bInterrupted)
 	bCombo = false;
 }
 
-float AMyPlayer::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+void AMyPlayer::OpenUI(int UIType)
 {
-	Stat->OnAttacked(Damage);
-	OnDamaged();
-
-	if (GameMode)
-	{
-		GameMode->UIUpdate_Hp(Stat->GetHpRatio());
-	}
-	return Damage;
+	GameMode->UIManager->PopupUI(GetWorld(), UIType);
+	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
 }
 
-void AMyPlayer::Interact()
+void AMyPlayer::CloseUI(int UIType)
 {
-	if (CanInteractNpc == nullptr)
+	GameMode->UIManager->CloseUI(UIType);
+	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);
+}
+
+void AMyPlayer::EquipWeapon(int Id, int Idx)
+{
+	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
+	auto MyInven = Cast<UWidget_Inventory>(GameMode->UIManager->GetInven());
+
+	if (GInstance->GetWeaponData(Id) == nullptr)
 		return;
-	if (bInteract)
+
+	if (EquipWeaponId != -1)
 	{
-		Conv->RemoveFromViewport();
-		bInteract = false;
-		GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);
+		// 장착된 아이템 해제
+		WeaponList[Idx] = GInstance->GetWeaponData(EquipWeaponId);
 	}
 	else
 	{
-		Conv = CreateWidget(GetWorld(), Conversation);
-
-		Conv->AddToViewport();
-		UWidget_Shop* Shop = Cast<UWidget_Shop>(Conv);
-		Shop->CreateSlot(CanInteractNpc);
-		bInteract = true;
-		GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
+		WeaponList[Idx] = nullptr;
 	}
 
+	MyInven->Slots[Idx]->SetWeaponItem();
+	MyInven->ChangeWeapon(Id, GInstance);
+	EquipWeaponId = Id;
+	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Weapon Equip!"));
+}
+
+void AMyPlayer::EquipArmor(int Id, int Idx)
+{
+	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
+	auto MyInven = Cast<UWidget_Inventory>(GameMode->UIManager->GetInven());
+
+	if (GInstance->GetArmorData(Id) == nullptr)
+		return;
+
+	if (EquipArmorId != -1)
+	{
+		// 장착된 아이템 해제
+		ArmorList[Idx] = GInstance->GetArmorData(EquipArmorId);
+	}
+	else
+	{
+		ArmorList[Idx] = nullptr;
+	}
+
+	MyInven->Slots[Idx]->SetArmorItem();
+	MyInven->ChangeArmor(Id, GInstance);
+	EquipArmorId = Id;
+	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Armor Equip!"));
+}
+
+void AMyPlayer::UseItem(int Id, int Idx)
+{
+	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
+	if (GInstance->GetUseData(Id) == nullptr)
+		return;
+
+
+	// 아이템 정보를 받아와서 
+	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("item Use!"));
 }
 
 void AMyPlayer::AddItemWeapon(int Id)
@@ -420,7 +479,6 @@ void AMyPlayer::AddItemUse(int Id)
 		GameMode->UIManager->UpdateInventory(FindNextInvenIndex(USEITEM));
 }
 
-
 int AMyPlayer::FindNextInvenIndex(int ItemType)
 {
 	// 인벤토리가 가득 찼을 때 처리.
@@ -448,7 +506,7 @@ int AMyPlayer::FindNextInvenIndex(int ItemType)
 
 bool AMyPlayer::DraggingSwap(int from, int to)
 {
-	auto MyInven = Cast<UWidget_Inventory>(Inven);
+	auto MyInven = Cast<UWidget_Inventory>(GameMode->UIManager->GetInven());
 	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
 	int FromId;
 	int ToId;
@@ -516,68 +574,7 @@ void AMyPlayer::ChangeGold(int Value)
 
 	if (bOnInventory)
 	{
-		auto MyInven = Cast<UWidget_Inventory>(Inven);
-		MyInven->ChangeGold(Value);
+		GameMode->UIManager->ChangeInvenGold(Value);
 	}
 }
-
-void AMyPlayer::EquipWeapon(int Id, int Idx)
-{
-	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
-	auto MyInven = Cast<UWidget_Inventory>(Inven);
-
-	if (GInstance->GetWeaponData(Id) == nullptr)
-		return;
-
-	if (EquipWeaponId != -1)
-	{
-		// 장착된 아이템 해제
-		WeaponList[Idx] = GInstance->GetWeaponData(EquipWeaponId);
-	}
-	else
-	{
-		WeaponList[Idx] = nullptr;	
-	}
-
-	MyInven->Slots[Idx]->SetWeaponItem();
-	MyInven->ChangeWeapon(Id, GInstance);
-	EquipWeaponId = Id;
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Weapon Equip!"));
-}
-
-void AMyPlayer::EquipArmor(int Id, int Idx)
-{
-	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
-	auto MyInven = Cast<UWidget_Inventory>(Inven);
-
-	if (GInstance->GetArmorData(Id) == nullptr)
-		return;
-
-	if (EquipArmorId != -1)
-	{
-		// 장착된 아이템 해제
-		ArmorList[Idx] = GInstance->GetArmorData(EquipArmorId);
-	}
-	else
-	{
-		ArmorList[Idx] = nullptr;
-	}
-
-	MyInven->Slots[Idx]->SetArmorItem();
-	MyInven->ChangeArmor(Id, GInstance);
-	EquipArmorId = Id;
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Armor Equip!"));
-}
-
-void AMyPlayer::UseItem(int Id, int Idx)
-{
-	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
-	if (GInstance->GetUseData(Id) == nullptr)
-		return;
-
-
-	// 아이템 정보를 받아와서 
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("item Use!"));
-}
-
 

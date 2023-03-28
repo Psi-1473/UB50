@@ -17,20 +17,25 @@ class MYPROJECT_API UManager_UI : public UObject
 public:
 	UManager_UI();
 
-	void PopupInventory(UWorld* World, int Gold, int EquipWeaponId, int EquipArmorId, class UMyGameInstance* GInstance);
-	void RemoveUI();
+	void PopupUI(UWorld* World, int UIType);
+	void CloseUI(int UIType);
 
 
 	// 인벤토리
 	void UpdateInventory(int NextSlot);
-	
+	void ChangeInvenGold(int Value);
+
 private:
-	void PopupUI(UWorld* World, TSubclassOf<UUserWidget> WidgetType);
+	void RemoveUI(UUserWidget* Widget);
+	
+public:
+	UUserWidget* GetInven() { return Inven; }
+
 private:
 
 	TSubclassOf<UUserWidget> Inventory;
 	int InvenNum;
-	//UUserWidget* Inven;
+	UUserWidget* Inven;
 
 	TSubclassOf<UUserWidget> Conversation;
 	UUserWidget* Conv;

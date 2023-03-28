@@ -1144,7 +1144,7 @@
       "url": "https://json.schemastore.org/crowdin.json"
     },
     {
-      "name": "Crowdsec collection chema",
+      "name": "Crowdsec collection Schema",
       "description": "A YAML schema for Crowdsec collection configuration files",
       "fileMatch": ["**/collections/*/*.yaml"],
       "url": "https://raw.githubusercontent.com/crowdsecurity/crowdsec-yaml-schemas/main/collection_schema.yaml"
@@ -1162,7 +1162,7 @@
       "url": "https://raw.githubusercontent.com/crowdsecurity/crowdsec-yaml-schemas/main/parser_schema.yaml"
     },
     {
-      "name": "Crowdsec collection chema",
+      "name": "Crowdsec scenario Schema",
       "description": "A YAML schema for Crowdsec scenario configuration files",
       "fileMatch": ["**/scenarioss/*/*.yaml"],
       "url": "https://raw.githubusercontent.com/crowdsecurity/crowdsec-yaml-schemas/main/scenario_schema.yaml"
@@ -1648,6 +1648,15 @@
       "description": "YAML schema for GitHub Actions",
       "fileMatch": ["action.yml", "action.yaml"],
       "url": "https://json.schemastore.org/github-action.json"
+    },
+    {
+      "name": "GitHub Discussion",
+      "description": "YAML schema for GitHub Discussions",
+      "fileMatch": [
+        "**/.github/DISCUSSION_TEMPLATE/*.yml",
+        "**/.github/DISCUSSION_TEMPLATE/*.yaml"
+      ],
+      "url": "https://json.schemastore.org/github-discussion.json"
     },
     {
       "name": "GitHub Funding",
@@ -2973,7 +2982,8 @@
       "fileMatch": [".rr*.yml", ".rr*.yaml"],
       "versions": {
         "1.0": "https://cdn.jsdelivr.net/gh/roadrunner-server/roadrunner@latest/schemas/config/1.0.schema.json",
-        "2.0": "https://cdn.jsdelivr.net/gh/roadrunner-server/roadrunner@latest/schemas/config/2.0.schema.json"
+        "2.0": "https://cdn.jsdelivr.net/gh/roadrunner-server/roadrunner@latest/schemas/config/2.0.schema.json",
+        "3.0": "https://cdn.jsdelivr.net/gh/roadrunner-server/roadrunner@latest/schemas/config/3.0.schema.json"
       }
     },
     {
@@ -3295,6 +3305,12 @@
       "description": "Swagger API 2.0 schema",
       "fileMatch": ["swagger.json"],
       "url": "https://json.schemastore.org/swagger-2.0.json"
+    },
+    {
+      "name": "task.json",
+      "description": "VSCode Task file",
+      "fileMatch": ["task.json"],
+      "url": "https://json.schemastore.org/task.json"
     },
     {
       "name": "Talisman configuration",

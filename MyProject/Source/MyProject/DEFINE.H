@@ -7,8 +7,8 @@
 /**
  * 
  */
-const int PLAYERSKILL_Q = 0;
-const int PLAYERSKILL_R = 1;
+const int PLAYERSKILL_R = 0;
+const int PLAYERSKILL_Q = 1;
 const int PLAYERSKILL_E = 2;
 
 const int INVENTORYNUMBER = 24;
@@ -20,7 +20,20 @@ const enum PlayerItemType
 	USEITEM = 2,
 };
 
+const enum STATE
+{
+	IDLE,
+	MOVING,
+	ATTACK,
+	SKILL,
+};
 
+const enum UIType
+{
+	INVENTORY = 1,
+	CONVERSATION = 2,
+	SHOP = 3,
+};
 const enum BossCoolTime
 {
 	ALLSKILL = 10,

@@ -48,37 +48,50 @@ void UManager_UI::UpdateInventory(int NextSlot)
 	}
 }
 
-void UManager_UI::PopupUI(UWorld* World, TSubclassOf<UUserWidget> WidgetType)
+void UManager_UI::ChangeInvenGold(int Value)
 {
+	auto MyInven = Cast<UWidget_Inventory>(Inven);
+
+	if (MyInven == nullptr)
+		return;
+
+	MyInven->ChangeGold(Value);
+}
+
+void UManager_UI::PopupUI(UWorld* World, int UIType)
+{
+	switch (UIType)
+	{
+	case INVENTORY:
+		Inven = CreateWidget(World, Inventory);
+		Inven->AddToViewport();
+		break;
+	case CONVERSATION:
+		Conv = CreateWidget(World, Conversation);
+		Conv->AddToViewport();
+		break;
+	}
 	
-	Widgets.Add(CreateWidget(World, Inventory));
-
-	UE_LOG(LogTemp, Warning, TEXT("GameMode CurrentWidget Succeeded!"));
-	Widgets.Top()->AddToViewport();
-
-
-	//if (EquipWeaponId != -1)
-	//	WInven->ChangeWeapon(EquipWeaponId, GInstance);
-	//
-	//if (EquipArmorId != -1)
-	//	WInven->ChangeWeapon(EquipArmorId, GInstance);
-
 	World->GetFirstPlayerController()->SetShowMouseCursor(true);
 }
 
-void UManager_UI::PopupInventory(UWorld* World, int Gold, int EquipWeaponId, int EquipArmorId, UMyGameInstance* GInstance)
-{
-	
-	PopupUI(World, Inventory);
-	InvenNum = Widgets.Num() - 1;
 
-	//if (EquipWeaponId != -1)
-	//	WInven->ChangeWeapon(EquipWeaponId, GInstance);
-	//
-	//if (EquipArmorId != -1)
-	//	WInven->ChangeWeapon(EquipArmorId, GInstance);
+void UManager_UI::CloseUI(int UIType)
+{
+	switch (UIType)
+	{
+	case INVENTORY:
+		RemoveUI(Inven);
+		break;
+	case CONVERSATION:
+		RemoveUI(Conv);
+		break;
+	default:
+		break;
+	}
 }
 
-void UManager_UI::RemoveUI()
+void UManager_UI::RemoveUI(UUserWidget* Widget)
 {
+	Widget->RemoveFromViewport();
 }

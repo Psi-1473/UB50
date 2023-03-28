@@ -6,6 +6,8 @@
 #include "Widget_ShopSlot.h"
 #include "Npc.h"
 #include "MyGameInstance.h"
+#include "MyPlayer.h"
+#include "Kismet/GameplayStatics.h"
 
 UWidget_Shop::UWidget_Shop(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
@@ -24,7 +26,9 @@ void UWidget_Shop::NativeOnInitialized()
 
 void UWidget_Shop::NativeConstruct()
 {
-
+	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	auto MyPlayer = Cast<AMyPlayer>(Char);
+	CreateSlot(MyPlayer->GetInteractNpc());
 }
 
 void UWidget_Shop::NativeDestruct()
@@ -34,6 +38,8 @@ void UWidget_Shop::NativeDestruct()
 
 void UWidget_Shop::CreateSlot(ANpc* NPC)
 {
+	if (NPC == nullptr)
+		return;
 	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
 
 	int ItemType = NPC->ItemType;

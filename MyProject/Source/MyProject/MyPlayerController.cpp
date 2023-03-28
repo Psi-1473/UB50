@@ -28,6 +28,8 @@ void AMyPlayerController::SetupInputComponent()
 	InputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &AMyPlayerController::ClickAttack);
 	InputComponent->BindAction(TEXT("Skill1"), EInputEvent::IE_Pressed, this, &AMyPlayerController::ClickRSkill);
 	InputComponent->BindAction(TEXT("Skill2"), EInputEvent::IE_Pressed, this, &AMyPlayerController::ClickQSkill);
+	InputComponent->BindAction(TEXT("Inventory"), EInputEvent::IE_Pressed, this, &AMyPlayerController::PopupInventory);
+	InputComponent->BindAction(TEXT("Interact"), EInputEvent::IE_Pressed, this, &AMyPlayerController::Interact);
 }
 
 void AMyPlayerController::MoveForward(float Value)
@@ -117,5 +119,36 @@ void AMyPlayerController::ClickQSkill()
 	return;
 
 	MyPlayer->SkillQ();
+}
+
+void AMyPlayerController::Interact()
+{
+	if (MyPlayer->GetInteractNpc() == nullptr)
+		return;
+
+	if (MyPlayer->GetInteracting())
+	{
+		MyPlayer->CloseUI(CONVERSATION);
+		MyPlayer->SetInteracting(false);
+	}
+	else
+	{
+		MyPlayer->OpenUI(CONVERSATION);
+		MyPlayer->SetInteracting(true);
+	}
+}
+
+void AMyPlayerController::PopupInventory()
+{
+	if (MyPlayer->GetOnInventory())
+	{
+		MyPlayer->CloseUI(INVENTORY);
+		MyPlayer->SetOnInventory(false);
+	}
+	else
+	{
+		MyPlayer->OpenUI(INVENTORY);
+		MyPlayer->SetOnInventory(true);
+	}
 }
 
