@@ -58,7 +58,6 @@ AMyPlayer::AMyPlayer()
 		Conversation = CW.Class;
 	}
 
-	
 
 	WeaponList.Init(nullptr, 24);
 	ArmorList.Init(nullptr, 24);
@@ -96,15 +95,11 @@ void AMyPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-
 }
 
 void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	//PlayerInputComponent->BindAction(TEXT("Inventory"), EInputEvent::IE_Pressed, this, &AMyPlayer::PopupInventory);
-	//PlayerInputComponent->BindAction(TEXT("Interact"), EInputEvent::IE_Pressed, this, &AMyPlayer::Interact);
-
 }
 
 void AMyPlayer::Attack()
@@ -338,37 +333,6 @@ void AMyPlayer::OnDamaged()
 	AnimInst->PlayDamagedMontage();
 }
 
-
-void AMyPlayer::Interact()
-{
-	if (CanInteractNpc == nullptr)
-		return;
-
-	if (bInteract)
-	{
-		CloseUI(CONVERSATION);
-		bInteract = false;
-	}
-	else
-	{
-		OpenUI(CONVERSATION);
-		bInteract = true;
-	}
-}
-
-void AMyPlayer::PopupInventory()
-{
-	if (bOnInventory)
-	{
-		CloseUI(INVENTORY);
-		bOnInventory = false;
-	}
-	else
-	{
-		OpenUI(INVENTORY);
-		bOnInventory = true;
-	}
-}
 void AMyPlayer::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 {
 	//IsAttacking = false;
@@ -402,14 +366,9 @@ void AMyPlayer::EquipWeapon(int Id, int Idx)
 		return;
 
 	if (EquipWeaponId != -1)
-	{
-		// 장착된 아이템 해제
 		WeaponList[Idx] = GInstance->GetWeaponData(EquipWeaponId);
-	}
 	else
-	{
 		WeaponList[Idx] = nullptr;
-	}
 
 	MyInven->Slots[Idx]->SetWeaponItem();
 	MyInven->ChangeWeapon(Id, GInstance);
@@ -426,14 +385,9 @@ void AMyPlayer::EquipArmor(int Id, int Idx)
 		return;
 
 	if (EquipArmorId != -1)
-	{
-		// 장착된 아이템 해제
 		ArmorList[Idx] = GInstance->GetArmorData(EquipArmorId);
-	}
 	else
-	{
 		ArmorList[Idx] = nullptr;
-	}
 
 	MyInven->Slots[Idx]->SetArmorItem();
 	MyInven->ChangeArmor(Id, GInstance);
@@ -450,6 +404,10 @@ void AMyPlayer::UseItem(int Id, int Idx)
 
 	// 아이템 정보를 받아와서 
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("item Use!"));
+}
+
+void AMyPlayer::AddItem(int id, int ItemType)
+{
 }
 
 void AMyPlayer::AddItemWeapon(int Id)
@@ -510,9 +468,10 @@ bool AMyPlayer::DraggingSwap(int from, int to)
 	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
 	int FromId;
 	int ToId;
+
 	switch (MyInven->GetInvenType())
 	{
-	case 0:
+	case WEAPON:
 		FromId = WeaponList[from]->Id;
 
 		if (WeaponList[to] == nullptr)
@@ -530,7 +489,7 @@ bool AMyPlayer::DraggingSwap(int from, int to)
 		MyInven->Slots[from]->SetWeaponItem();
 
 		break;
-	case 1:
+	case ARMOR:
 		FromId = ArmorList[from]->Id;
 		if (ArmorList[to] == nullptr)
 		{
@@ -546,7 +505,7 @@ bool AMyPlayer::DraggingSwap(int from, int to)
 		MyInven->Slots[from]->SetArmorItem();
 		MyInven->Slots[to]->SetArmorItem();
 		break;
-	case 2:
+	case USEITEM:
 		FromId = UseItemList[from]->Id;
 
 		if (UseItemList[to] == nullptr)

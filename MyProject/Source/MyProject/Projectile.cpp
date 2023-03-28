@@ -17,13 +17,6 @@ AProjectile::AProjectile()
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> SM(TEXT("StaticMesh'/Game/ParagonGreystone/FX/Meshes/Heroes/Greystone/Abilities/SM_Greystone_WhirlBase_01.SM_Greystone_WhirlBase_01'"));
 
-	
-
-	//MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
-	//
-	//if (SM.Succeeded())
-	//	MeshComp->SetStaticMesh(SM.Object);
-
 	BoxCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComponent"));
 	BoxCollider->BodyInstance.SetCollisionProfileName(TEXT("Projectile"));
 

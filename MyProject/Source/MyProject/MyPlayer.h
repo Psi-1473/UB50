@@ -53,12 +53,7 @@ private:
 	void CoolDownR();
 	void CoolDownE();
 
-
-	void Interact();
-	void PopupInventory();
-
 	void OnDamaged();
-
 
 public:
 	void OpenUI(int UIType);
@@ -67,6 +62,7 @@ public:
 	void EquipArmor(int Id, int Idx);
 	void UseItem(int Id, int Idx);
 
+	void AddItem(int id, int ItemType);
 	void AddItemWeapon(int Id);
 	void AddItemArmor(int Id);
 	void AddItemUse(int Id);
