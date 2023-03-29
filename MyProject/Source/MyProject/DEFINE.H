@@ -26,6 +26,7 @@ const enum STATE
 	MOVING,
 	ATTACK,
 	SKILL,
+	DAMAGED,
 };
 
 const enum UIType
