@@ -80,8 +80,10 @@ public:
 	void SetGold(int Value) { Gold = Value; }
 	void SetOnInventory(bool Value) { bOnInventory = Value; }
 	void SetInteracting(bool Value) { bInteract = Value; }
+	void SetState(STATE Value) { PlayerState = Value; }
 
 	int GetGold() { return Gold; }
+	STATE GetState() { return PlayerState; }
 	class ANpc* GetInteractNpc() { return CanInteractNpc; }
 
 	bool GetOnInventory() { return bOnInventory; }
@@ -181,6 +183,8 @@ public:
 private:
 	UPROPERTY()
 	ANpc* CanInteractNpc;
+
+	STATE PlayerState;
 
 	int EquipWeaponId = -1;
 	int EquipArmorId = -1;

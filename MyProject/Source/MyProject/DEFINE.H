@@ -7,6 +7,8 @@
 /**
  * 
  */
+const int ID_NONE = -1;
+
 const int PLAYERSKILL_R = 0;
 const int PLAYERSKILL_Q = 1;
 const int PLAYERSKILL_E = 2;
