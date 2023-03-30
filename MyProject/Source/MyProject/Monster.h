@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "DEFINE.H"
 #include "Monster.generated.h"
 
 DECLARE_MULTICAST_DELEGATE(FOnAttackEnd);
@@ -32,29 +33,29 @@ public:
 	virtual void OnStun(float Tick);
 	void OffStun();
 
+	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 public:
-	void SetDamaged(bool Value) { IsDamaged = Value; }
 	void SetState(STATE Value) { MonsterState = Value; }
 
-	bool GetDamaged() { return IsDamaged; }
 	STATE GetState() { return MonsterState; }
 
-	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+	
 
 	UFUNCTION()
 		void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
 
 	UFUNCTION()
 		void OnAttackMontageStarted(UAnimMontage* Montage, bool bInterrupted);
+
+
 public:
 	UPROPERTY(VisibleAnywhere)
 	class UEnemyStatComponent* Stat;
 
 	UAnimMontage* AttackMontage;
 protected:
-
 	UPROPERTY()
-	bool IsDamaged = false;
+	class AMyPlayer* AttackTarget;
 
 	UPROPERTY()
 	bool IsDied = false;

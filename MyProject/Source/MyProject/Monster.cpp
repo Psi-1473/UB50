@@ -9,6 +9,7 @@
 #include "Widget_Hp.h"
 #include "GameFrameWork/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AMonster::AMonster()
@@ -21,12 +22,16 @@ AMonster::AMonster()
 void AMonster::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-
 }
 
 void AMonster::BeginPlay()
 {
 	Super::BeginPlay();
+
+	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	auto MyPlayer = Cast<AMyPlayer>(Char);
+
+	AttackTarget = MyPlayer;
 }
 
 // Called every frame
@@ -37,10 +42,8 @@ void AMonster::Tick(float DeltaTime)
 
 
 void AMonster::OnDamaged()
-{
-	
+{	
 	GetCharacterMovement()->StopMovementImmediately();
-	IsDamaged = true;
 }
 
 void AMonster::Attack(AMyPlayer* Target)
@@ -130,7 +133,6 @@ void AMonster::OffStun()
 {
 	bStuned = false;
 }
-
 
 
 float AMonster::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)

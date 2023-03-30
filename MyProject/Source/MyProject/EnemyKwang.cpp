@@ -32,14 +32,14 @@ void AEnemyKwang::OnPossess(APawn* InPawn)
 	Super::OnPossess(InPawn);
 
 	// 블랙보드 사용
-	BlackboardComp = Blackboard;
-	if (UseBlackboard(BlackboardData, BlackboardComp))
-	{
-		if (RunBehaviorTree(BehaviorTree))
-		{
-			// To do
-		}
-	}
+	//BlackboardComp = Blackboard;
+	//if (UseBlackboard(BlackboardData, BlackboardComp))
+	//{
+	//	if (RunBehaviorTree(BehaviorTree))
+	//	{
+	//		// To do
+	//	}
+	//}
 
 
 }
@@ -55,22 +55,22 @@ void AEnemyKwang::OnUnPossess()
 
 void AEnemyKwang::Tick(float DeltaSeconds)
 {
-	Super::Tick(DeltaSeconds);
-	UObject* Target;
-	Target = BlackboardComp->GetValueAsObject(FName(TEXT("Target")));
-	if (Target == nullptr)
-		return;
-
-	//FVector PawnLocation = GetOwner()->GetActorLocation();
-	FVector TargetLocation = Cast<AActor>(Target)->GetActorLocation();
-
-	float DistanceToPlayer = (GetPawn()->GetActorLocation() - TargetLocation).Size();
-
-	if (DistanceToPlayer > 1500)
-	{
-		BlackboardComp->SetValueAsObject(FName(TEXT("Target")), nullptr);
-		auto OwnerPawn = Cast<AMonster>(GetPawn());
-		OwnerPawn->GetCharacterMovement()->StopMovementImmediately();
-	}
+	//Super::Tick(DeltaSeconds);
+	//UObject* Target;
+	//Target = BlackboardComp->GetValueAsObject(FName(TEXT("Target")));
+	//if (Target == nullptr)
+	//	return;
+	//
+	////FVector PawnLocation = GetOwner()->GetActorLocation();
+	//FVector TargetLocation = Cast<AActor>(Target)->GetActorLocation();
+	//
+	//float DistanceToPlayer = (GetPawn()->GetActorLocation() - TargetLocation).Size();
+	//
+	//if (DistanceToPlayer > 1500)
+	//{
+	//	BlackboardComp->SetValueAsObject(FName(TEXT("Target")), nullptr);
+	//	auto OwnerPawn = Cast<AMonster>(GetPawn());
+	//	OwnerPawn->GetCharacterMovement()->StopMovementImmediately();
+	//}
 
 }

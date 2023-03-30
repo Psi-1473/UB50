@@ -50,10 +50,9 @@ void UEnemyAnimInstance::PlayAttackMontage()
 
 void UEnemyAnimInstance::PlayDamagedMontage()
 {
-	if (!Montage_IsPlaying(DamagedMontage))
-	{
-		Montage_Play(DamagedMontage, 1.f);
-	}
+	if (Montage_IsPlaying(AttackMontage))
+		StopAllMontages(0.f);
+	Montage_Play(DamagedMontage, 1.f);
 }
 
 void UEnemyAnimInstance::PlayDeathMontage()
@@ -71,7 +70,7 @@ void UEnemyAnimInstance::AnimNotify_HitEnded()
 	auto pawn = TryGetPawnOwner();
 
 	AEnemyCharKwang* Pawn = Cast<AEnemyCharKwang>(pawn);
-	Pawn->SetDamaged(false);
+	Pawn->SetState(IDLE);
 }
 
 void UEnemyAnimInstance::AnimNotify_HitCheck()

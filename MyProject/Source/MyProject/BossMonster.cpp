@@ -52,6 +52,7 @@ void ABossMonster::BeginPlay()
 
 	AttackTarget = MyPlayer;
 	
+
 	
 }
 

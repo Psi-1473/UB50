@@ -45,11 +45,14 @@ void ASpawnMonster::SetSpawner(AMonsterSpawner* Spawner)
 void ASpawnMonster::OnDamaged()
 {
 	Super::OnDamaged();
+	SetState(DAMAGED);
 	AnimInst->PlayDamagedMontage();
 }
 
 void ASpawnMonster::Attack(AMyPlayer* Target)
 {
+	if (MonsterState == DAMAGED || MonsterState == DIED)
+		return;
 	Super::Attack(Target);
 	AnimInst->PlayAttackMontage();
 }

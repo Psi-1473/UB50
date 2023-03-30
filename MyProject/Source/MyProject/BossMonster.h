@@ -64,11 +64,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	bool IsAttacking;
 private:
-
 	bool CanSkills = true;
-
-	UPROPERTY()
-	class AMyPlayer* AttackTarget;
 
 	UPROPERTY(EditAnywhere)
 	FVector MuzzleOffset;

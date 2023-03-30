@@ -9,6 +9,10 @@
 #include "Widget_Hp.h"
 #include "Components/WidgetComponent.h"
 #include "MonsterSpawner.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "NavigationSystem.h"
+#include "Blueprint/AIBlueprintHelperLibrary.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AEnemyCharKwang::AEnemyCharKwang()
@@ -28,9 +32,6 @@ AEnemyCharKwang::AEnemyCharKwang()
 
 	AIControllerClass = AEnemyKwang::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
-
-
-	
 }
 
 void AEnemyCharKwang::PostInitializeComponents()
@@ -54,12 +55,43 @@ void AEnemyCharKwang::PostInitializeComponents()
 void AEnemyCharKwang::BeginPlay()
 {
 	Super::BeginPlay();
+	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	AMyPlayer* MyPlayer = Cast<AMyPlayer>(Char);
 
+	AttackTarget = MyPlayer;
+	MonsterState = IDLE;
 }
 
 void AEnemyCharKwang::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (AttackTarget == nullptr)
+		return;
+
+	switch (MonsterState)
+	{
+	case IDLE:
+		UpdateIdle();
+		break;
+	case PATROL:
+		UpdatePatrol();
+		break;
+	case MOVING:
+		UpdateMoving();
+		break;
+	case ATTACKREADY:
+		UpdateAttack();
+		break;
+	case SKILL:
+		break;
+	case DAMAGED:
+		break;
+	case DIED:
+		break;
+	default:
+		break;
+	}
 
 }
 
@@ -67,6 +99,78 @@ void AEnemyCharKwang::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
+
+void AEnemyCharKwang::UpdateIdle()
+{
+	UE_LOG(LogTemp, Log, TEXT("IDLE"));
+	if (GetDistanceTo(AttackTarget) < 400)
+		SetState(MOVING);
+	else
+	{
+		SetPatrolPos();
+		Rot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), PatrolPosition);
+		SetState(PATROL);
+	}
+}
+
+void AEnemyCharKwang::UpdatePatrol()
+{
+	UE_LOG(LogTemp, Log, TEXT("PATROL"));
+	FVector MoveDir = PatrolPosition - GetActorLocation();
+
+	SetActorRotation(Rot);
+	AddMovementInput(MoveDir);
+
+	if (GetDistanceTo(AttackTarget) < 500)
+		SetState(MOVING);
+
+	if (ArriveToPatrolPos())
+		SetState(IDLE);
+}
+
+void AEnemyCharKwang::UpdateMoving()
+{
+	UE_LOG(LogTemp, Log, TEXT("MOVING"));
+	FVector MoveDir = AttackTarget->GetActorLocation() - GetActorLocation();
+	Rot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), AttackTarget->GetActorLocation());
+
+	SetActorRotation(Rot);
+	AddMovementInput(MoveDir);
+
+	if (GetDistanceTo(AttackTarget) > 1000)
+		SetState(IDLE);
+
+	if (GetDistanceTo(AttackTarget) < 170)
+		SetState(ATTACKREADY);
+}
+
+void AEnemyCharKwang::UpdateAttack()
+{
+	SetState(ATTACK);
+	Attack(AttackTarget);
+}
+
+void AEnemyCharKwang::SetPatrolPos()
+{
+	FNavLocation RandomLocation;
+	auto SpawnerLocation = GetSpawner()->GetLocation();
+
+	UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetNavigationSystem(GetWorld());
+
+	NavSystem->GetRandomPointInNavigableRadius(SpawnerLocation, 500.f, RandomLocation);
+	PatrolPosition = RandomLocation.Location;
+}
+
+bool AEnemyCharKwang::ArriveToPatrolPos()
+{
+	float DistanceToPos = (GetActorLocation() - PatrolPosition).Size();
+
+	if (DistanceToPos < 100)
+		return true;
+	else
+		return false;
+}
+
 
 
 

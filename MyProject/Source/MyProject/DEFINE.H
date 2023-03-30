@@ -25,10 +25,13 @@ const enum PlayerItemType
 const enum STATE
 {
 	IDLE,
+	PATROL,
 	MOVING,
+	ATTACKREADY,
 	ATTACK,
 	SKILL,
 	DAMAGED,
+	DIED,
 };
 
 const enum UIType
