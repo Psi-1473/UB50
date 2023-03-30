@@ -34,7 +34,11 @@ public:
 
 public:
 	void SetDamaged(bool Value) { IsDamaged = Value; }
+	void SetState(STATE Value) { MonsterState = Value; }
+
 	bool GetDamaged() { return IsDamaged; }
+	STATE GetState() { return MonsterState; }
+
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 	UFUNCTION()
@@ -66,5 +70,7 @@ protected:
 public:
 	UPROPERTY()
 	bool bStuned;
+
+	STATE MonsterState;
 
 };
