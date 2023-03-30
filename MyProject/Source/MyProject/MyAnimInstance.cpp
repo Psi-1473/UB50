@@ -35,12 +35,17 @@ void UMyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		if (Character)
 		{
 
+			if (Speed >= 0.1)
+				Character->SetState(MOVING);
+
+			if (Speed <= 0 && Character->GetState() == MOVING)
+				Character->SetState(IDLE);
+
 			Horizontal = Character->Horizontal;
 			Vertical = Character->Vertical;
 			bSprint = Character->bIsSprint;
 		}
 	}
-	
 }
 
 void UMyAnimInstance::PlayAttackMontage()
@@ -112,7 +117,7 @@ void UMyAnimInstance::AnimNotify_HitCheck()
 void UMyAnimInstance::AnimNotify_HitEnded()
 {
 	auto MyCharacter = Cast<AMyPlayer>(TryGetPawnOwner());
-	MyCharacter->SetDamaged(false);
+	MyCharacter->SetState(IDLE);
 
 }
 
@@ -133,7 +138,7 @@ void UMyAnimInstance::AnimNotify_Fire()
 void UMyAnimInstance::AnimNotify_SkillEnd()
 {
 	auto MyCharacter = Cast<AMyPlayer>(TryGetPawnOwner());
-	MyCharacter->bSkill = false;
+	MyCharacter->SetState(IDLE);
 }
 
 FName UMyAnimInstance::GetAttackMontageName(int32 SectionIndex)

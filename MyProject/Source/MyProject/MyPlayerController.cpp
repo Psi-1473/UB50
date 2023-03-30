@@ -34,13 +34,13 @@ void AMyPlayerController::SetupInputComponent()
 
 void AMyPlayerController::MoveForward(float Value)
 {
-	if (MyPlayer->bDamaged)
+	if (MyPlayer->GetState() == DAMAGED)
 		return;
 
-	if (MyPlayer->IsAttacking)
+	if (MyPlayer->GetState() == ATTACK)
 		return;
 
-	if (MyPlayer->bSkill)
+	if (MyPlayer->GetState() == SKILL)
 		return;
 
 	MyPlayer->Vertical = Value;
@@ -49,13 +49,13 @@ void AMyPlayerController::MoveForward(float Value)
 }
 void AMyPlayerController::MoveRight(float Value)
 {
-	if (MyPlayer->bDamaged)
+	if (MyPlayer->GetState() == DAMAGED)
 		return;
 
-	if (MyPlayer->IsAttacking)
+	if (MyPlayer->GetState() == ATTACK)
 		return;
 
-	if (MyPlayer->bSkill)
+	if (MyPlayer->GetState() == SKILL)
 		return;
 
 	MyPlayer->Horizontal = Value;
@@ -86,10 +86,10 @@ void AMyPlayerController::OffSprint()
 
 void AMyPlayerController::ClickAttack()
 {
-	if (MyPlayer->bSkill)
+	if (MyPlayer->GetState() == SKILL)
 		return;
 
-	if (MyPlayer->IsAttacking == false)
+	if (MyPlayer->GetState() != ATTACK)//ÄÞº¸ºÎºÐ
 	{
 		MyPlayer->Attack();
 	}
@@ -101,22 +101,22 @@ void AMyPlayerController::ClickAttack()
 
 void AMyPlayerController::ClickRSkill()
 {
-	if (MyPlayer->IsAttacking)
+	if (MyPlayer->GetState() == ATTACK)
 		return;
 
-	if (MyPlayer->bSkill)
-	return;
+	if (MyPlayer->GetState() == SKILL)
+		return;
 
 	MyPlayer->SkillR();
 }
 
 void AMyPlayerController::ClickQSkill()
 {
-	if (MyPlayer->IsAttacking)
+	if (MyPlayer->GetState() == ATTACK)
 		return;
 
-	if (MyPlayer->bSkill)
-	return;
+	if (MyPlayer->GetState() == SKILL)
+		return;
 
 	MyPlayer->SkillQ();
 }

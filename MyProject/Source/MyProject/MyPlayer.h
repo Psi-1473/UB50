@@ -71,11 +71,11 @@ public:
 	bool DraggingSwap(int from, int to);
 
 	void ChangeGold(int Value);
+	void StopMoving();
 
 	
 
 public:
-	void SetDamaged(bool Value) { bDamaged = Value; }
 	void SetNpc(ANpc* NewNpc = nullptr){ CanInteractNpc = NewNpc; }
 	void SetGold(int Value) { Gold = Value; }
 	void SetOnInventory(bool Value) { bOnInventory = Value; }
@@ -102,6 +102,8 @@ private:
 	void OnAttackMontageStarted(UAnimMontage* Montage, bool bInterrupted);
 
 public:
+
+	// 어택 스킬 데미지 관련 불리언 다 지우고 빌드
 	UPROPERTY(EditAnywhere)
 	bool bIsSprint = false;
 
@@ -110,14 +112,6 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	float Vertical;
-	UPROPERTY(EditAnywhere)
-	bool IsAttacking = false;
-
-	UPROPERTY(EditAnywhere)
-	bool bSkill = false;
-
-	UPROPERTY(EditAnywhere)
-	bool bDamaged = false;
 
 	UPROPERTY(EditAnywhere)
 	bool bCombo = false;

@@ -16,6 +16,7 @@
 #include "Projectile.h"
 #include "GameFrameWork/Actor.h"
 #include "MyPlayerController.h"
+#include "GameFrameWork/CharacterMovementComponent.h"
 
 // Sets default values
 AMyPlayer::AMyPlayer()
@@ -107,22 +108,24 @@ void AMyPlayer::Attack()
 	if (AttackIndex >= 3)
 		return;
 
-	if (bDamaged)
+	if (PlayerState == DAMAGED)
 		return;
 
 	if (bOnInventory)
 		return;
 
 	bCombo = false;
-	IsAttacking = true;
 
+	StopMoving();
+	SetState(ATTACK);
+	
 	AnimInst->PlayAttackMontage();
 	AnimInst->JumpToSection(AttackIndex);
 	AttackIndex++;
 }
 void AMyPlayer::EndAttack()
 {
-	IsAttacking = false;
+	SetState(IDLE);
 	bCombo = false;
 	AttackIndex = 0;
 }
@@ -172,7 +175,7 @@ float AMyPlayer::TakeDamage(float Damage, FDamageEvent const& DamageEvent, ACont
 {
 	Stat->OnAttacked(Damage);
 	OnDamaged();
-
+	SetState(DAMAGED);
 	if (GameMode)
 	{
 		GameMode->UIUpdate_Hp(Stat->GetHpRatio());
@@ -185,8 +188,9 @@ void AMyPlayer::ActivateSkill(int SkillNum)
 	if (SkillCoolTimes[SkillNum] > 0)
 		return;
 
+	StopMoving();
 	AnimInst->PlaySkillMontage(SkillNum);
-	bSkill = true;
+	SetState(SKILL);
 	StartCoolDown(SkillNum);
 }
 
@@ -325,8 +329,7 @@ void AMyPlayer::CoolDownE()
 
 void AMyPlayer::OnDamaged()
 {
-	bDamaged = true;
-	IsAttacking = false;
+	SetState(DAMAGED);
 	bCombo = false;
 	AttackIndex = 0;
 
@@ -535,5 +538,10 @@ void AMyPlayer::ChangeGold(int Value)
 	{
 		GameMode->UIManager->ChangeInvenGold(Value);
 	}
+}
+
+void AMyPlayer::StopMoving()
+{
+	GetCharacterMovement()->StopMovementImmediately();
 }
 
