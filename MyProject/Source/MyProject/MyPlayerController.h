@@ -25,6 +25,7 @@ private:
 	void ClickAttack();
 	void ClickRSkill();
 	void ClickQSkill();
+	void ClickESkill();
 	void PopupInventory();
 	void Interact();
 	//void PopupInventory();

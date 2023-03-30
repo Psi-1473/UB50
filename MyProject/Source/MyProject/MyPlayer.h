@@ -41,12 +41,11 @@ public:
 	
 
 	void ActivateSkill(int SkillNum);
-	void SkillR();
-	void SkillQ();
 	void Fire();
 	void SkillRAttackCheck();
+	void SkillEAttackCheck();
 
-
+	TArray<FHitResult> BoxHitResults(float X, float Y, float Z, bool IsPlayerCenter);
 private:
 	void StartCoolDown(int Type);
 	void CoolDownQ();

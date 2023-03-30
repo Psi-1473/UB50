@@ -194,16 +194,6 @@ void AMyPlayer::ActivateSkill(int SkillNum)
 	StartCoolDown(SkillNum);
 }
 
-void AMyPlayer::SkillR()
-{
-	ActivateSkill(PLAYERSKILL_R);
-}
-
-void AMyPlayer::SkillQ()
-{
-	ActivateSkill(PLAYERSKILL_Q);
-}
-
 void AMyPlayer::Fire()
 {
 	FActorSpawnParameters SpawnParams;
@@ -231,30 +221,9 @@ void AMyPlayer::SkillRAttackCheck()
 	float AttackY = 100.f;
 	float AttackZ = 200.f;
 
-	TArray<FHitResult> HitResults;
-	FCollisionQueryParams Params(NAME_None, false, this);
-	FVector BoxVector(AttackX, AttackY, AttackZ);
+	TArray<FHitResult> HitResults = BoxHitResults(AttackX, AttackY, AttackZ, false);
 
-	bool bResult = GetWorld()->SweepMultiByChannel(
-		OUT HitResults,
-		GetActorLocation(),
-		GetActorLocation() + GetActorForwardVector() * AttackX,
-		FQuat::Identity,
-		ECollisionChannel::ECC_GameTraceChannel2,
-		FCollisionShape::MakeBox(BoxVector),
-		Params);
-
-	FVector Vec = GetActorForwardVector() * AttackX;
-	FVector Center = GetActorLocation() + Vec * 0.5f;
-	FQuat Rotation = FRotationMatrix::MakeFromZ(Vec).ToQuat();
-	FColor DrawColor;
-
-	if (bResult)
-		DrawColor = FColor::Green;
-	else
-		DrawColor = FColor::Red;
-
-	if (bResult && !HitResults.IsEmpty())
+	if (HitResults.IsEmpty())
 	{
 		for (FHitResult HitResult : HitResults)
 		{
@@ -265,7 +234,62 @@ void AMyPlayer::SkillRAttackCheck()
 		}
 	}
 
+}
+
+void AMyPlayer::SkillEAttackCheck()
+{
+}
+
+TArray<FHitResult> AMyPlayer::BoxHitResults(float X, float Y, float Z, bool IsPlayerCenter)
+{
+	TArray<FHitResult> HitResults;
+	FCollisionQueryParams Params(NAME_None, false, this);
+	
+	FVector BoxVector(X, Y, Z);
+	FVector StartVector = GetActorLocation();
+	FVector Vec = GetActorForwardVector() * X;
+
+	if (IsPlayerCenter)
+	{
+		StartVector -= FVector(X / 2, 0, 0);
+		Vec /= 2;
+	}
+	FVector EndVector = GetActorLocation() + Vec;
+
+
+	bool bResult = GetWorld()->SweepMultiByChannel(
+		OUT HitResults,
+		GetActorLocation(),
+		GetActorLocation() + GetActorForwardVector() * X,
+		FQuat::Identity,
+		ECollisionChannel::ECC_GameTraceChannel2,
+		FCollisionShape::MakeBox(BoxVector),
+		Params);
+
+	FVector Center = GetActorLocation() + Vec * 0.5f;
+	if (IsPlayerCenter) Center = GetActorLocation();
+	FQuat Rotation = FRotationMatrix::MakeFromZ(Vec).ToQuat();
+	FColor DrawColor;
+
+	if (bResult)
+		DrawColor = FColor::Green;
+	else
+		DrawColor = FColor::Red;
+
 	DrawDebugBox(GetWorld(), Center, BoxVector, Rotation, DrawColor, false, 2.f);
+
+	return HitResults;
+
+	//if (bResult && !HitResults.IsEmpty())
+	//{
+	//	for (FHitResult HitResult : HitResults)
+	//	{
+	//		UE_LOG(LogTemp, Log, TEXT("Hit Actor : %s"), *HitResult.GetActor()->GetName());
+	//		AMonster* Enemy = Cast<AMonster>(HitResult.GetActor());
+	//		FDamageEvent DamageEvent;
+	//		Enemy->OnStun(2.f);
+	//	}
+	//}
 }
 
 void AMyPlayer::StartCoolDown(int Type)
@@ -281,7 +305,7 @@ void AMyPlayer::StartCoolDown(int Type)
 		GetWorldTimerManager().SetTimer(QTimerHandle, this, &AMyPlayer::CoolDownQ, 1.f, true);
 		break;
 	case PLAYERSKILL_E:
-		SkillCoolTimes[PLAYERSKILL_E] = 15;
+		SkillCoolTimes[PLAYERSKILL_E] = 21;
 		GetWorldTimerManager().SetTimer(ETimerHandle, this, &AMyPlayer::CoolDownE, 1.f, true);
 		break;
 	}
@@ -324,7 +348,19 @@ void AMyPlayer::CoolDownR()
 
 void AMyPlayer::CoolDownE()
 {
-	//
+	SkillCoolTimes[PLAYERSKILL_E]--;
+
+	if (SkillCoolTimes[PLAYERSKILL_E] <= 0)
+	{
+		SkillCoolTimes[PLAYERSKILL_E] = 0;
+		GetWorldTimerManager().ClearTimer(ETimerHandle);
+	}
+	else
+	{
+		GetWorldTimerManager().SetTimer(ETimerHandle, this, &AMyPlayer::CoolDownE, 1.f, true);
+	}
+
+	GameMode->RSkillUpdate(SkillCoolTimes[PLAYERSKILL_R]);
 }
 
 void AMyPlayer::OnDamaged()

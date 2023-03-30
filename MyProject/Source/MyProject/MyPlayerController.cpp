@@ -28,6 +28,7 @@ void AMyPlayerController::SetupInputComponent()
 	InputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &AMyPlayerController::ClickAttack);
 	InputComponent->BindAction(TEXT("Skill1"), EInputEvent::IE_Pressed, this, &AMyPlayerController::ClickRSkill);
 	InputComponent->BindAction(TEXT("Skill2"), EInputEvent::IE_Pressed, this, &AMyPlayerController::ClickQSkill);
+	InputComponent->BindAction(TEXT("Skill3"), EInputEvent::IE_Pressed, this, &AMyPlayerController::ClickESkill);
 	InputComponent->BindAction(TEXT("Inventory"), EInputEvent::IE_Pressed, this, &AMyPlayerController::PopupInventory);
 	InputComponent->BindAction(TEXT("Interact"), EInputEvent::IE_Pressed, this, &AMyPlayerController::Interact);
 }
@@ -107,7 +108,7 @@ void AMyPlayerController::ClickRSkill()
 	if (MyPlayer->GetState() == SKILL)
 		return;
 
-	MyPlayer->SkillR();
+	MyPlayer->ActivateSkill(PLAYERSKILL_R);
 }
 
 void AMyPlayerController::ClickQSkill()
@@ -118,7 +119,18 @@ void AMyPlayerController::ClickQSkill()
 	if (MyPlayer->GetState() == SKILL)
 		return;
 
-	MyPlayer->SkillQ();
+	MyPlayer->ActivateSkill(PLAYERSKILL_Q);
+}
+
+void AMyPlayerController::ClickESkill()
+{
+	if (MyPlayer->GetState() == ATTACK)
+		return;
+
+	if (MyPlayer->GetState() == SKILL)
+		return;
+
+	MyPlayer->ActivateSkill(PLAYERSKILL_E);
 }
 
 void AMyPlayerController::Interact()
