@@ -49,3 +49,11 @@ const enum BossCoolTime
 	SKILL3 = 30,
 	SKILL4 = 40,
 };
+
+const enum BossSkill
+{
+	SKILL_1 = 1,
+	SKILL_2 = 2,
+	SKILL_3 = 3,
+	SKILL_4 = 4,
+};

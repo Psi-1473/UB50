@@ -32,8 +32,6 @@ ABossMonster::ABossMonster()
 	{
 		Emitter = PARTICLE.Object;
 	}
-	//AIControllerClass = AEnemyKwang::StaticClass();
-	//AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
 	UsableSkills.Init(true, 5);
 }
@@ -51,9 +49,6 @@ void ABossMonster::BeginPlay()
 	auto MyPlayer = Cast<AMyPlayer>(Char);
 
 	AttackTarget = MyPlayer;
-	
-
-	
 }
 
 void ABossMonster::Tick(float DeltaTime)
@@ -160,6 +155,8 @@ void ABossMonster::UseSkill(int SkillNum)
 void ABossMonster::Skill1()
 {
 	IsAttacking = true;
+	FRotator Rot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), AttackTarget->GetActorLocation());
+	SetActorRotation(Rot);
 	AnimInst->PlayAttackMontage(1);
 	UsableSkills[1] = false;
 	CanSkills = false;
@@ -171,6 +168,8 @@ void ABossMonster::Skill1()
 void ABossMonster::Skill2()
 {
 	IsAttacking = true;
+	FRotator Rot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), AttackTarget->GetActorLocation());
+	SetActorRotation(Rot);
 	AnimInst->PlayAttackMontage(2);
 	UsableSkills[2] = false;
 	CanSkills = false;
@@ -182,6 +181,8 @@ void ABossMonster::Skill2()
 void ABossMonster::Skill3()
 {
 	IsAttacking = true;
+	FRotator Rot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), AttackTarget->GetActorLocation());
+	SetActorRotation(Rot);
 	AnimInst->PlayAttackMontage(3);
 	UsableSkills[3] = false;
 	CanSkills = false;
@@ -193,6 +194,8 @@ void ABossMonster::Skill3()
 void ABossMonster::Skill4()
 {
 	IsAttacking = true;
+	FRotator Rot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), AttackTarget->GetActorLocation());
+	SetActorRotation(Rot);
 	AnimInst->PlayAttackMontage(4);
 	UsableSkills[4] = false;
 	CanSkills = false;
@@ -227,7 +230,7 @@ void ABossMonster::Skill3Targeting()
 
 	TargetPlace = AttackTarget->GetTargetLocation();
 
-
+	
 	// ÁÂÇ¥¿¡ °ð ¹º°¡ ¶³¾îÁø´Ù´Â ÀÌÆåÆ® ¹ß»ý ½ÃÅ°±â
 	
 	//
@@ -282,6 +285,47 @@ void ABossMonster::Skill3Fire(FVector Transform)
 
 }
 
+void ABossMonster::Skill4Charge()
+{
+	if (Projectiles.Num() == 0)
+		MuzzleLocation4 = GetActorLocation() + FVector(50, -70, 170);
+	else if (Projectiles.Num() < 3)
+		MuzzleLocation4 += FVector(-50, 40, 30);
+	else
+		MuzzleLocation4 += FVector(-50, -40, -30);
+
+	if (Projectiles.Num() == 5)
+	{
+		GetWorld()->GetTimerManager().ClearTimer(ProjectileTimer);
+		return;
+	}
+	else
+	{
+		Projectiles.Add(CreateProjectile(Skill4ProjectileClass, MuzzleLocation4, GetActorRotation()));
+		GetWorld()->GetTimerManager().SetTimer(ProjectileTimer, this, &ABossMonster::Skill4Charge, 0.1f, true);
+	}
+}
+
+void ABossMonster::Skill4Fire()
+{
+	if (Projectiles.Num() <= 0)
+	{
+		GetWorld()->GetTimerManager().ClearTimer(ProjectileTimer);
+		return;
+	}
+	FVector Dir = AttackTarget->GetActorLocation() - Projectiles[0]->GetActorLocation();
+	Dir.Normalize();
+	AProjectile* GoProjectile = Projectiles.Pop();
+	GoProjectile->FireAndDestroy(Dir, 4000, 1.f);
+
+	GetWorld()->GetTimerManager().SetTimer(ProjectileTimer, this, &ABossMonster::Skill4Fire, 0.1f, true);
+}
+
+void ABossMonster::SkillCoolTimeZero(BossSkill SkillType)
+{
+	UsableSkills[SkillType] = true;
+}
+
 void ABossMonster::CoolTimeZero1()
 {
 	UsableSkills[1] = true;
@@ -311,3 +355,15 @@ void ABossMonster::ActionCoolTimeZero()
 	CanSkills = true;
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Action CoolTime Reset"));
 }
+
+AProjectile* ABossMonster::CreateProjectile(TSubclassOf<class AProjectile> ClassOfProjectile, FVector Muzzle, FRotator Rot)
+{
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Owner = this;
+	SpawnParams.Instigator = GetInstigator();
+
+
+	AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(ClassOfProjectile, Muzzle, Rot, SpawnParams);
+	return Projectile;
+}
+

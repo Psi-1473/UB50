@@ -40,13 +40,23 @@ public:
 
 	void Skill3Targeting();
 	void Skill3Fire(FVector Transform);
+
+	void Skill4Charge();
+	void Skill4Fire();
+
 	void SetAttacking(bool Value) { IsAttacking = Value; }
+
+	void SkillCoolTimeZero(BossSkill SkillType);
 
 	void CoolTimeZero1();
 	void CoolTimeZero2();
 	void CoolTimeZero3();
 	void CoolTimeZero4();
 	void ActionCoolTimeZero();
+
+
+private:
+	class AProjectile* CreateProjectile(TSubclassOf<class AProjectile> ClassOfProjectile, FVector Muzzle, FRotator Rot);
 
 
 protected:
@@ -70,7 +80,14 @@ private:
 	FVector MuzzleOffset;
 
 	UPROPERTY(EditAnywhere)
+	FVector MuzzleLocation4;
+
+	TArray<AProjectile*> Projectiles;
+	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AProjectile> ProjectileClass;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AProjectile> Skill4ProjectileClass;
 
 	UPROPERTY(EditAnywhere)
 	class UParticleSystem* Emitter;
@@ -86,6 +103,9 @@ private:
 	FTimerHandle Skill3TimerHandle;
 	UPROPERTY()
 	FTimerHandle Skill4TimerHandle;
+
+	UPROPERTY()
+	FTimerHandle ProjectileTimer;
 
 	
 };

@@ -78,3 +78,19 @@ void UBossAnimInstance::AnimNotify_Skill3Fire()
 
 	Boss->Skill3Targeting();
 }
+
+void UBossAnimInstance::AnimNotify_Skill4Fire()
+{
+	auto pawn = TryGetPawnOwner();
+	auto Boss = Cast<ABossMonster>(pawn);
+
+	Boss->Skill4Fire();
+}
+
+void UBossAnimInstance::AnimNotify_CreateProjectile()
+{
+	auto pawn = TryGetPawnOwner();
+	auto Boss = Cast<ABossMonster>(pawn);
+
+	Boss->Skill4Charge();
+}

@@ -34,6 +34,12 @@ public:
 	UFUNCTION()
 	void AnimNotify_Skill3Fire();
 
+	UFUNCTION()
+	void AnimNotify_Skill4Fire();
+
+	UFUNCTION()
+	void AnimNotify_CreateProjectile();
+
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
 		float Speed;

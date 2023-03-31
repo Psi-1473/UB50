@@ -85,7 +85,6 @@ void AProjectile::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* Othe
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	//GetWorldTimerManager().SetTimer(DestroyTimerHandle, this, &AProjectile::DestroyProjectile, 2.0f, true);
 }
 
 // Called every frame
@@ -98,6 +97,14 @@ void AProjectile::Tick(float DeltaTime)
 void AProjectile::FireInDirection(const FVector& ShootDirection)
 {
 	ProjectileMovementComponent->Velocity = ShootDirection * ProjectileMovementComponent->InitialSpeed;
+}
+
+void AProjectile::FireAndDestroy(const FVector& ShootDirection, float Speed, float DestroyTime)
+{
+	ProjectileMovementComponent->InitialSpeed = Speed;
+	ProjectileMovementComponent->MaxSpeed = Speed;
+	ProjectileMovementComponent->Velocity = ShootDirection * Speed;
+	GetWorldTimerManager().SetTimer(DestroyTimerHandle, this, &AProjectile::DestroyProjectile, DestroyTime, false);
 }
 
 void AProjectile::DestroyProjectile()

@@ -27,7 +27,10 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
 	void FireInDirection(const FVector& ShootDirection);
+	void FireAndDestroy(const FVector& ShootDirection, float Speed, float DestroyTime);
+
 	void DestroyProjectile();
 	void CheckEnemy();
 	void SetPlayer(class AMyPlayer* MyOwner) { OwnerPlayer = MyOwner; }
