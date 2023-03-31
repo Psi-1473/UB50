@@ -36,7 +36,10 @@ void UEnemyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	auto Character = Cast<AMonster>(pawn);
 	if (Character)
 	{
-		bStuned = Character->bStuned;
+		if (Character->GetState() == STUNED)
+			bStuned = true;
+		else
+			bStuned = false;
 	}
 }
 

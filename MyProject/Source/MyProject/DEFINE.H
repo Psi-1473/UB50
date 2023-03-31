@@ -31,6 +31,7 @@ const enum STATE
 	ATTACK,
 	SKILL,
 	DAMAGED,
+	STUNED,
 	DIED,
 };
 

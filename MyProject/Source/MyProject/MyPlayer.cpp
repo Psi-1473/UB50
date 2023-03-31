@@ -223,7 +223,7 @@ void AMyPlayer::SkillRAttackCheck()
 
 	TArray<FHitResult> HitResults = BoxHitResults(AttackX, AttackY, AttackZ, false);
 
-	if (HitResults.IsEmpty())
+	if (!HitResults.IsEmpty())
 	{
 		for (FHitResult HitResult : HitResults)
 		{
@@ -238,6 +238,21 @@ void AMyPlayer::SkillRAttackCheck()
 
 void AMyPlayer::SkillEAttackCheck()
 {
+	float AttackX = 1000.f;
+	float AttackY = 1000.f;
+	float AttackZ = 1000.f;
+
+	TArray<FHitResult> HitResults = BoxHitResults(AttackX, AttackY, AttackZ, true);
+	if (!HitResults.IsEmpty())
+	{
+		for (FHitResult HitResult : HitResults)
+		{
+			UE_LOG(LogTemp, Log, TEXT("E Hit Actor : %s"), *HitResult.GetActor()->GetName());
+			AMonster* Enemy = Cast<AMonster>(HitResult.GetActor());
+			FDamageEvent DamageEvent;
+			Enemy->OnStun(2.f);
+		}
+	}
 }
 
 TArray<FHitResult> AMyPlayer::BoxHitResults(float X, float Y, float Z, bool IsPlayerCenter)
@@ -268,7 +283,7 @@ TArray<FHitResult> AMyPlayer::BoxHitResults(float X, float Y, float Z, bool IsPl
 
 	FVector Center = GetActorLocation() + Vec * 0.5f;
 	if (IsPlayerCenter) Center = GetActorLocation();
-	FQuat Rotation = FRotationMatrix::MakeFromZ(Vec).ToQuat();
+	FQuat Rotation = FRotationMatrix::MakeFromZ(GetActorForwardVector() * X).ToQuat();
 	FColor DrawColor;
 
 	if (bResult)
@@ -279,17 +294,6 @@ TArray<FHitResult> AMyPlayer::BoxHitResults(float X, float Y, float Z, bool IsPl
 	DrawDebugBox(GetWorld(), Center, BoxVector, Rotation, DrawColor, false, 2.f);
 
 	return HitResults;
-
-	//if (bResult && !HitResults.IsEmpty())
-	//{
-	//	for (FHitResult HitResult : HitResults)
-	//	{
-	//		UE_LOG(LogTemp, Log, TEXT("Hit Actor : %s"), *HitResult.GetActor()->GetName());
-	//		AMonster* Enemy = Cast<AMonster>(HitResult.GetActor());
-	//		FDamageEvent DamageEvent;
-	//		Enemy->OnStun(2.f);
-	//	}
-	//}
 }
 
 void AMyPlayer::StartCoolDown(int Type)
@@ -305,7 +309,7 @@ void AMyPlayer::StartCoolDown(int Type)
 		GetWorldTimerManager().SetTimer(QTimerHandle, this, &AMyPlayer::CoolDownQ, 1.f, true);
 		break;
 	case PLAYERSKILL_E:
-		SkillCoolTimes[PLAYERSKILL_E] = 21;
+		SkillCoolTimes[PLAYERSKILL_E] = 6;
 		GetWorldTimerManager().SetTimer(ETimerHandle, this, &AMyPlayer::CoolDownE, 1.f, true);
 		break;
 	}

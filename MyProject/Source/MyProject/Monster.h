@@ -69,9 +69,6 @@ protected:
 	UPROPERTY()
 	FTimerHandle StunTimerHandle;
 public:
-	UPROPERTY()
-	bool bStuned;
-
 	STATE MonsterState;
 
 };

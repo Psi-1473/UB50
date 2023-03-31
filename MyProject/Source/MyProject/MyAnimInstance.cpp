@@ -128,6 +128,13 @@ void UMyAnimInstance::AnimNotify_RHitCheck()
 	MyCharacter->SkillRAttackCheck();
 }
 
+void UMyAnimInstance::AnimNotify_EHitCheck()
+{
+	auto MyCharacter = Cast<AMyPlayer>(TryGetPawnOwner());
+
+	MyCharacter->SkillEAttackCheck();
+}
+
 void UMyAnimInstance::AnimNotify_Fire()
 {
 	auto MyCharacter = Cast<AMyPlayer>(TryGetPawnOwner());

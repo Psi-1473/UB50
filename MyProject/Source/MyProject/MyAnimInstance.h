@@ -41,6 +41,9 @@ public:
 	void AnimNotify_RHitCheck();
 
 	UFUNCTION()
+	void AnimNotify_EHitCheck();
+
+	UFUNCTION()
 	void AnimNotify_Fire();
 
 	UFUNCTION()

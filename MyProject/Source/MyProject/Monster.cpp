@@ -122,7 +122,7 @@ void AMonster::DropItemOrGold(AMyPlayer* Player)
 
 void AMonster::OnStun(float Tick)
 {
-	bStuned = true;
+	SetState(STUNED);
 	GetWorldTimerManager().SetTimer(StunTimerHandle, this, &AMonster::OffStun, Tick, true);
 	
 	GetCharacterMovement()->StopMovementImmediately();
@@ -131,7 +131,7 @@ void AMonster::OnStun(float Tick)
 
 void AMonster::OffStun()
 {
-	bStuned = false;
+	SetState(IDLE);
 }
 
 
