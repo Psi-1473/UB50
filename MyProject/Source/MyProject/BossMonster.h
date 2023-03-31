@@ -46,6 +46,7 @@ public:
 
 	void SetAttacking(bool Value) { IsAttacking = Value; }
 
+	UFUNCTION()
 	void SkillCoolTimeZero(BossSkill SkillType);
 
 	void CoolTimeZero1();
