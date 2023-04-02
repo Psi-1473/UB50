@@ -152,6 +152,9 @@ void AMyPlayerController::Interact()
 
 void AMyPlayerController::PopupInventory()
 {
+	if(MyPlayer == nullptr)
+		MyPlayer = Cast<AMyPlayer>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+
 	if (MyPlayer->GetOnInventory())
 	{
 		MyPlayer->CloseUI(INVENTORY);

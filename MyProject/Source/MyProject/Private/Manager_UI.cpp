@@ -72,7 +72,7 @@ void UManager_UI::PopupUI(UWorld* World, int UIType)
 		break;
 	}
 	
-	World->GetFirstPlayerController()->SetShowMouseCursor(true);
+	//World->GetFirstPlayerController()->SetShowMouseCursor(true);
 }
 
 
@@ -93,5 +93,7 @@ void UManager_UI::CloseUI(int UIType)
 
 void UManager_UI::RemoveUI(UUserWidget* Widget)
 {
+	if (Widget == nullptr)
+		return;
 	Widget->RemoveFromViewport();
 }
