@@ -27,11 +27,18 @@ ABossMonster::ABossMonster()
 		GetMesh()->SetSkeletalMesh(SM.Object);
 	}
 
-	static ConstructorHelpers::FObjectFinder<UParticleSystem> PARTICLE(TEXT("ParticleSystem'/Game/ParagonGreystone/FX/Particles/Greystone/Abilities/Ultimate/FX/P_Greystone_HToKill_Trail.P_Greystone_HToKill_Trail'"));
-	if (PARTICLE.Succeeded())
+	static ConstructorHelpers::FObjectFinder<UParticleSystem> PARTICLE2(TEXT("ParticleSystem'/Game/ParagonGreystone/FX/Particles/Greystone/Skins/Novaborn/P_Greystone_Novaborn_UltimateActive.P_Greystone_Novaborn_UltimateActive'"));
+	if (PARTICLE2.Succeeded())
 	{
-		Emitter = PARTICLE.Object;
+		Skill2Emitter = PARTICLE2.Object;
 	}
+	static ConstructorHelpers::FObjectFinder<UParticleSystem> PARTICLE3(TEXT("ParticleSystem'/Game/ParagonGreystone/FX/Particles/Greystone/Abilities/Ultimate/FX/P_Greystone_HToKill_Trail.P_Greystone_HToKill_Trail'"));
+	if (PARTICLE3.Succeeded())
+	{
+		Skill3Emitter = PARTICLE3.Object;
+	}
+
+	
 
 	UsableSkills.Init(true, 5);
 }
@@ -224,6 +231,57 @@ void ABossMonster::Skill1Fire()
 	}
 }
 
+void ABossMonster::Skill2Ready()
+{
+	FVector EmitPos = GetActorLocation() + GetActorForwardVector() * 100;
+	const FTransform Trans(EmitPos);
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Skill2Emitter, Trans);
+}
+
+void ABossMonster::Skill2Fire()
+{
+	float AttackX = 100.f;
+	float AttackY = 100.f;
+	float AttackZ = 500.f;
+
+	FHitResult HitResult;
+	FCollisionQueryParams Params(NAME_None, false, this);
+	FVector BoxVector(AttackX, AttackY, AttackZ);
+
+	FVector StartVector = GetActorLocation() + GetActorForwardVector() * 200;
+
+	bool bResult = GetWorld()->SweepSingleByChannel(
+		OUT HitResult,
+		StartVector,
+		StartVector + GetActorForwardVector() * AttackZ,
+		FQuat::Identity,
+		ECollisionChannel::ECC_GameTraceChannel2,
+		FCollisionShape::MakeBox(BoxVector),
+		Params);
+
+	FVector Vec = GetActorForwardVector() * AttackZ;
+	FVector Center = StartVector + Vec * 0.5f;
+	FQuat Rotation = FRotationMatrix::MakeFromZ(Vec).ToQuat();
+	FColor DrawColor;
+
+	if (bResult)
+		DrawColor = FColor::Green;
+	else
+		DrawColor = FColor::Red;
+
+	if (bResult)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Hit Actor : %s"), *HitResult.GetActor()->GetName());
+		AMyPlayer* HitPlayer = Cast<AMyPlayer>(HitResult.GetActor());
+		FDamageEvent DamageEvent;
+		//HitPlayer->OnStun(2.f);
+		if(HitPlayer)
+			GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Player Hit"));
+	}
+
+	DrawDebugBox(GetWorld(), Center, BoxVector, Rotation, DrawColor, false, 2.f);
+}
+
 void ABossMonster::Skill3Targeting()
 {
 	FVector TargetPlace;
@@ -243,7 +301,7 @@ void ABossMonster::Skill3Fire(FVector Transform)
 	const FTransform Trans(Transform);
 
 
-	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Emitter, Trans);
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Skill3Emitter, Trans);
 	float AttackX = 100.f;
 	float AttackY = 100.f;
 	float AttackZ = 100.f;
@@ -257,7 +315,7 @@ void ABossMonster::Skill3Fire(FVector Transform)
 		Transform,
 		Transform + GetActorForwardVector() * AttackX,
 		FQuat::Identity,
-		ECollisionChannel::ECC_GameTraceChannel3,
+		ECollisionChannel::ECC_GameTraceChannel2,
 		FCollisionShape::MakeBox(BoxVector),
 		Params);
 
@@ -277,7 +335,8 @@ void ABossMonster::Skill3Fire(FVector Transform)
 		AMyPlayer* HitPlayer = Cast<AMyPlayer>(HitResult.GetActor());
 		FDamageEvent DamageEvent;
 		//HitPlayer->OnStun(2.f);
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Player Hit"));
+		if(HitPlayer)
+			GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Player Hit"));
 	}
 
 	DrawDebugBox(GetWorld(), Center, BoxVector, Rotation, DrawColor, false, 2.f);

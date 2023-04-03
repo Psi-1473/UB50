@@ -38,6 +38,9 @@ public:
 
 	void Skill1Fire();
 
+	void Skill2Ready();
+	void Skill2Fire();
+
 	void Skill3Targeting();
 	void Skill3Fire(FVector Transform);
 
@@ -90,7 +93,10 @@ private:
 	TSubclassOf<class AProjectile> Skill4ProjectileClass;
 
 	UPROPERTY(EditAnywhere)
-	class UParticleSystem* Emitter;
+	class UParticleSystem* Skill2Emitter;
+
+	UPROPERTY(EditAnywhere)
+	class UParticleSystem* Skill3Emitter;
 
 	UPROPERTY()
 	FTimerHandle SkillTimerHandle;

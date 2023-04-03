@@ -102,7 +102,6 @@ void AEnemyCharKwang::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 void AEnemyCharKwang::UpdateIdle()
 {
-	UE_LOG(LogTemp, Log, TEXT("IDLE"));
 	if (GetDistanceTo(AttackTarget) < 400)
 		SetState(MOVING);
 	else
@@ -115,7 +114,6 @@ void AEnemyCharKwang::UpdateIdle()
 
 void AEnemyCharKwang::UpdatePatrol()
 {
-	UE_LOG(LogTemp, Log, TEXT("PATROL"));
 	FVector MoveDir = PatrolPosition - GetActorLocation();
 
 	SetActorRotation(Rot);
@@ -130,7 +128,6 @@ void AEnemyCharKwang::UpdatePatrol()
 
 void AEnemyCharKwang::UpdateMoving()
 {
-	UE_LOG(LogTemp, Log, TEXT("MOVING"));
 	FVector MoveDir = AttackTarget->GetActorLocation() - GetActorLocation();
 	Rot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), AttackTarget->GetActorLocation());
 

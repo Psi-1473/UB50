@@ -32,6 +32,12 @@ public:
 	void AnimNotify_Fire();
 
 	UFUNCTION()
+	void AnimNotify_Skill2Ready();
+
+	UFUNCTION()
+	void AnimNotify_Skill2Fire();
+
+	UFUNCTION()
 	void AnimNotify_Skill3Fire();
 
 	UFUNCTION()

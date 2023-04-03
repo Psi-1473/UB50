@@ -43,9 +43,9 @@ const enum UIType
 };
 const enum BossCoolTime
 {
-	ALLSKILL = 10,
+	ALLSKILL = 5,
 	SKILL1 = 20,
-	SKILL2 = 30,
+	SKILL2 = 1,
 	SKILL3 = 30,
 	SKILL4 = 40,
 };

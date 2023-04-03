@@ -71,6 +71,22 @@ void UBossAnimInstance::AnimNotify_Fire()
 	Boss->Skill1Fire();
 }
 
+void UBossAnimInstance::AnimNotify_Skill2Ready()
+{
+	auto pawn = TryGetPawnOwner();
+	auto Boss = Cast<ABossMonster>(pawn);
+
+	Boss->Skill2Ready();
+}
+
+void UBossAnimInstance::AnimNotify_Skill2Fire()
+{
+	auto pawn = TryGetPawnOwner();
+	auto Boss = Cast<ABossMonster>(pawn);
+
+	Boss->Skill2Fire();
+}
+
 void UBossAnimInstance::AnimNotify_Skill3Fire()
 {
 	auto pawn = TryGetPawnOwner();
