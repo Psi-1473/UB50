@@ -47,6 +47,7 @@ void AEnemyCharKwang::PostInitializeComponents()
 	}
 
 	HpBar->InitWidget();
+	Stat->SetMonster(TEXT("Kwang"));
 
 	auto Bar = Cast<UWidget_Hp>(HpBar->GetUserWidgetObject());
 	Bar->BindWidget_Enemy(Stat);

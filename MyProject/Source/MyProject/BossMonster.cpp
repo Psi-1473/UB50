@@ -8,6 +8,7 @@
 #include "BossAnimInstance.h"
 #include "Projectile.h"
 #include "Kismet/GameplayStatics.h"
+#include "EnemyStatComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 
 
@@ -39,14 +40,16 @@ ABossMonster::ABossMonster()
 	}
 
 	
-
+	Stat->SetMonster("Sevarog");
 	UsableSkills.Init(true, 5);
 }
 
 void ABossMonster::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-	AnimInst = Cast<UBossAnimInstance>(GetMesh()->GetAnimInstance());;
+	AnimInst = Cast<UBossAnimInstance>(GetMesh()->GetAnimInstance());
+
+
 }
 
 void ABossMonster::BeginPlay()

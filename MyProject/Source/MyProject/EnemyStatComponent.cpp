@@ -20,24 +20,23 @@ UEnemyStatComponent::UEnemyStatComponent()
 // Called when the game starts
 void UEnemyStatComponent::BeginPlay()
 {
-	Super::BeginPlay();
+	UActorComponent::BeginPlay();
 
 	// ...
 }
 
 void UEnemyStatComponent::InitializeComponent()
 {
-	Level = 1;
-	SetLevel(Level);
+
 }
 
-void UEnemyStatComponent::SetLevel(int32 NewLevel)
+void UEnemyStatComponent::SetMonster(FString MobName)
 {
 	auto MyGameInstance = Cast<UMyGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	// TODO 얘가 컴포넌트니까 오너 폰 받아와서 걔를 통해 데이터 불러오기 
 	if (MyGameInstance)
 	{
-		auto StatData = MyGameInstance->GetEnemyData("Kwang");
+		auto StatData = MyGameInstance->GetEnemyData(MobName);
 		if (StatData)
 		{
 			Name = StatData->Name;

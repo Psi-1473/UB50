@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Monster.h"
 #include "EnemyStatComponent.generated.h"
 
 
@@ -22,7 +23,7 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void InitializeComponent() override;
 public:
-	void SetLevel(int32 NewLevel);
+	void SetMonster(FString MobName);
 	void SetHp(float NewHp);
 	void OnAttacked(float DamagedAmount);
 
