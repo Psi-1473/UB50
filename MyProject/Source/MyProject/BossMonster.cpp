@@ -40,7 +40,7 @@ ABossMonster::ABossMonster()
 	}
 
 	
-	Stat->SetMonster("Sevarog");
+	Stat->SetMonster(TEXT("Sevarog"));
 	UsableSkills.Init(true, 5);
 }
 

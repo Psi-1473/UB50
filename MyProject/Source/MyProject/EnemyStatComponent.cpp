@@ -41,7 +41,7 @@ void UEnemyStatComponent::SetMonster(FString MobName)
 		{
 			Name = StatData->Name;
 			Level = StatData->Level;
-			MaxHp = 100;
+			MaxHp = StatData->MaxHp;
 			SetHp(MaxHp);
 			Attack = StatData->Attack;
 			MaxGold = StatData->MaxGold;

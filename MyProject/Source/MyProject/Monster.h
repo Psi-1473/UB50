@@ -28,6 +28,7 @@ public:
 	virtual void OnDamaged();
 	virtual void Attack(class AMyPlayer* Target);
 	void AttackCheck();
+
 	virtual void Die(class AMyPlayer* Player);
 	void DropItemOrGold(class AMyPlayer* Player);
 	virtual void OnStun(float Tick);
