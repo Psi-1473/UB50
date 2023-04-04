@@ -255,7 +255,7 @@ void ABossMonster::Skill2Fire()
 		StartVector,
 		StartVector + GetActorForwardVector() * AttackZ,
 		FQuat::Identity,
-		ECollisionChannel::ECC_GameTraceChannel2,
+		ECollisionChannel::ECC_GameTraceChannel6,
 		FCollisionShape::MakeBox(BoxVector),
 		Params);
 
@@ -315,7 +315,7 @@ void ABossMonster::Skill3Fire(FVector Transform)
 		Transform,
 		Transform + GetActorForwardVector() * AttackX,
 		FQuat::Identity,
-		ECollisionChannel::ECC_GameTraceChannel2,
+		ECollisionChannel::ECC_GameTraceChannel6,
 		FCollisionShape::MakeBox(BoxVector),
 		Params);
 
@@ -331,12 +331,11 @@ void ABossMonster::Skill3Fire(FVector Transform)
 
 	if (bResult)
 	{
-		UE_LOG(LogTemp, Log, TEXT("Hit Actor : %s"), *HitResult.GetActor()->GetName());
 		AMyPlayer* HitPlayer = Cast<AMyPlayer>(HitResult.GetActor());
-		FDamageEvent DamageEvent;
-		//HitPlayer->OnStun(2.f);
-		if(HitPlayer)
+		if (HitPlayer)
 			GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Player Hit"));
+		//FDamageEvent DamageEvent;
+		////HitPlayer->OnStun(2.f);
 	}
 
 	DrawDebugBox(GetWorld(), Center, BoxVector, Rotation, DrawColor, false, 2.f);
