@@ -23,7 +23,7 @@ public:
 	 
 	virtual void OnDamaged() override;
 	virtual void Attack(class AMyPlayer* Target) override;
-	//virtual void Die(class AMyPlayer* Player) override;
+	virtual void Die(class AMyPlayer* Player) override;
 
 public:
 	bool CanUseSkill();

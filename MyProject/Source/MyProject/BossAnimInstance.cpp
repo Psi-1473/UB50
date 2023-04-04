@@ -14,7 +14,12 @@ UBossAnimInstance::UBossAnimInstance()
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> DM(TEXT("AnimMontage'/Game/Blueprints/Animations/Enemy/AM_BossDamaged.AM_BossDamaged'"));
 
 	if (AM.Succeeded())
-		AttackMontage = AM.Object;
+		DamagedMontage = DM.Object;
+
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> Death(TEXT("AnimMontage'/Game/Blueprints/Animations/Enemy/AM_BossDie.AM_BossDie'"));
+
+	if (AM.Succeeded())
+		DeathMontage = Death.Object;
 }
 
 void UBossAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -40,10 +45,15 @@ void UBossAnimInstance::PlayAttackMontage(int32 SectionIndex)
 
 void UBossAnimInstance::PlayDamagedMontage()
 {
+	Montage_Play(DamagedMontage, 1.f);
 }
 
 void UBossAnimInstance::PlayDeathMontage()
 {
+	if (!Montage_IsPlaying(DeathMontage))
+	{
+		Montage_Play(DeathMontage, 1.f);
+	}
 }
 
 FName UBossAnimInstance::GetAttackMontageName(int32 SectionIndex)
@@ -66,6 +76,13 @@ void UBossAnimInstance::AnimNotify_HitEnded()
 	auto Boss = Cast<ABossMonster>(pawn);
 
 	Boss->SetState(IDLE);
+}
+
+void UBossAnimInstance::AnimNotify_Death()
+{
+	auto pawn = TryGetPawnOwner();
+	auto Boss = Cast<ABossMonster>(pawn);
+	Boss->Destroy();
 }
 
 void UBossAnimInstance::AnimNotify_Fire()

@@ -40,13 +40,14 @@ ABossMonster::ABossMonster()
 	}
 
 	
-	Stat->SetMonster(TEXT("Sevarog"));
+	
 	UsableSkills.Init(true, 5);
 }
 
 void ABossMonster::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
+	Stat->SetMonster(TEXT("Sevarog"));
 	AnimInst = Cast<UBossAnimInstance>(GetMesh()->GetAnimInstance());
 
 
@@ -64,42 +65,17 @@ void ABossMonster::BeginPlay()
 void ABossMonster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	//if (IsAttacking)
-	//	return;
-	//
-	//// 스킬 사용 가능?
-	//if (CanUseSkill())
-	//{
-	//	UseSkill(PickUsableSkill());
-	//}
-	//else
-	//{
-	//	FVector MoveDir = AttackTarget->GetActorLocation() - GetActorLocation();
-	//	FRotator Rot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), AttackTarget->GetActorLocation());
-	//
-	//	if (GetDistanceTo(AttackTarget) > 300 && IsAttacking == false)
-	//	{
-	//		SetActorRotation(Rot);
-	//		AddMovementInput(MoveDir);
-	//	}
-	//	else
-	//	{
-	//		Attack(AttackTarget);
-	//	}
-	//}
-
-	
 }
 
 void ABossMonster::OnDamaged()
 {
 	Super::OnDamaged();
 
-	if (!CanBeStiffed)
-		return;
+	//if (!CanBeStiffed)
+	//	return;
 
 	SetState(DAMAGED);
+	AnimInst->StopAllMontages(0.f);
 	AnimInst->PlayDamagedMontage();
 }
 
@@ -109,9 +85,11 @@ void ABossMonster::Attack(AMyPlayer* Target)
 	AnimInst->PlayAttackMontage(0);
 }
 
-//void ABossMonster::Die(AMyPlayer* Player)
-//{
-//}
+void ABossMonster::Die(AMyPlayer* Player)
+{
+	Super::Die(Player);
+	AnimInst->PlayDeathMontage();
+}
 
 bool ABossMonster::CanUseSkill()
 {
@@ -444,8 +422,6 @@ void ABossMonster::UpdateMoving()
 
 	SetActorRotation(Rot);
 	AddMovementInput(MoveDir);
-
-	
 
 	if (GetDistanceTo(AttackTarget) < 170)
 		SetState(ATTACKREADY);

@@ -29,6 +29,9 @@ public:
 	void AnimNotify_HitEnded();
 
 	UFUNCTION()
+	void AnimNotify_Death();
+
+	UFUNCTION()
 	void AnimNotify_Fire();
 
 	UFUNCTION()
