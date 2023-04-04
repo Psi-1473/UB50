@@ -35,6 +35,12 @@ public:
 	void OffStun();
 
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
+protected:
+	virtual void UpdateIdle();
+	virtual void UpdatePatrol();
+	virtual void UpdateMoving();
+	virtual void UpdateAttack();
 public:
 	void SetState(STATE Value) { MonsterState = Value; }
 

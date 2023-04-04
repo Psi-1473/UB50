@@ -27,16 +27,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
-	void UpdateIdle();
-	void UpdatePatrol();
-	void UpdateMoving();
-	void UpdateAttack();
 
-	void SetPatrolPos();
-	bool ArriveToPatrolPos();
 
-private:
-	FVector PatrolPosition;
-	FRotator Rot;
+
 	
 };

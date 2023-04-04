@@ -10,6 +10,11 @@ UBossAnimInstance::UBossAnimInstance()
 
 	if (AM.Succeeded())
 		AttackMontage = AM.Object;
+
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> DM(TEXT("AnimMontage'/Game/Blueprints/Animations/Enemy/AM_BossDamaged.AM_BossDamaged'"));
+
+	if (AM.Succeeded())
+		AttackMontage = AM.Object;
 }
 
 void UBossAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -60,7 +65,7 @@ void UBossAnimInstance::AnimNotify_HitEnded()
 	auto pawn = TryGetPawnOwner();
 	auto Boss = Cast<ABossMonster>(pawn);
 
-	Boss->SetAttacking(false);
+	Boss->SetState(IDLE);
 }
 
 void UBossAnimInstance::AnimNotify_Fire()

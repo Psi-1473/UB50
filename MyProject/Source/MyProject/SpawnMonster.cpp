@@ -6,6 +6,11 @@
 #include "Components/WidgetComponent.h"
 #include "Widget_Hp.h"
 #include "EnemyAnimInstance.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "Blueprint/AIBlueprintHelperLibrary.h"
+#include "NavigationSystem.h"
+#include "MyPlayer.h"
 
 ASpawnMonster::ASpawnMonster()
 {
@@ -68,4 +73,72 @@ void ASpawnMonster::OnStun(float Tick)
 {
 	Super::OnStun(Tick);
 	AnimInst->StopAllMontages(0.f);
+}
+
+void ASpawnMonster::UpdateIdle()
+{
+	if (GetDistanceTo(AttackTarget) < 400)
+		SetState(MOVING);
+	else
+	{
+		SetPatrolPos();
+		Rot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), PatrolPosition);
+		SetState(PATROL);
+	}
+}
+
+void ASpawnMonster::UpdatePatrol()
+{
+	FVector MoveDir = PatrolPosition - GetActorLocation();
+
+	SetActorRotation(Rot);
+	AddMovementInput(MoveDir);
+
+	if (GetDistanceTo(AttackTarget) < 500)
+		SetState(MOVING);
+
+	if (ArriveToPatrolPos())
+		SetState(IDLE);
+}
+
+void ASpawnMonster::UpdateMoving()
+{
+	FVector MoveDir = AttackTarget->GetActorLocation() - GetActorLocation();
+	Rot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), AttackTarget->GetActorLocation());
+
+	SetActorRotation(Rot);
+	AddMovementInput(MoveDir);
+
+	if (GetDistanceTo(AttackTarget) > 1000)
+		SetState(IDLE);
+
+	if (GetDistanceTo(AttackTarget) < 170)
+		SetState(ATTACKREADY);
+}
+
+void ASpawnMonster::UpdateAttack()
+{
+	SetState(ATTACK);
+	Attack(AttackTarget);
+}
+
+void ASpawnMonster::SetPatrolPos()
+{
+	FNavLocation RandomLocation;
+	auto SpawnerLocation = GetSpawner()->GetLocation();
+
+	UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetNavigationSystem(GetWorld());
+
+	NavSystem->GetRandomPointInNavigableRadius(SpawnerLocation, 500.f, RandomLocation);
+	PatrolPosition = RandomLocation.Location;
+}
+
+bool ASpawnMonster::ArriveToPatrolPos()
+{
+	float DistanceToPos = (GetActorLocation() - PatrolPosition).Size();
+
+	if (DistanceToPos < 100)
+		return true;
+	else
+		return false;
 }

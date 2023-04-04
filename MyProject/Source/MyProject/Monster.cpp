@@ -38,6 +38,33 @@ void AMonster::BeginPlay()
 void AMonster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (AttackTarget == nullptr)
+		return;
+
+	switch (MonsterState)
+	{
+	case IDLE:
+		UpdateIdle();
+		break;
+	case PATROL:
+		UpdatePatrol();
+		break;
+	case MOVING:
+		UpdateMoving();
+		break;
+	case ATTACKREADY:
+		UpdateAttack();
+		break;
+	case SKILL:
+		break;
+	case DAMAGED:
+		break;
+	case DIED:
+		break;
+	default:
+		break;
+	}
 }
 
 
@@ -147,6 +174,22 @@ float AMonster::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContr
 	}
 
 	return Damage;
+}
+
+void AMonster::UpdateIdle()
+{
+}
+
+void AMonster::UpdatePatrol()
+{
+}
+
+void AMonster::UpdateMoving()
+{
+}
+
+void AMonster::UpdateAttack()
+{
 }
 
 void AMonster::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)

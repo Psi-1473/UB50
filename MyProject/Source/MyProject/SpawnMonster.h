@@ -28,6 +28,20 @@ public:
 	virtual void OnStun(float Tick) override;
 
 protected:
+	virtual void UpdateIdle() override;
+	virtual void UpdatePatrol() override;
+	virtual void UpdateMoving() override;
+	virtual void UpdateAttack() override;
+
+
+	void SetPatrolPos();
+	bool ArriveToPatrolPos();
+
+protected:
+	FVector PatrolPosition;
+	FRotator Rot;
+
+protected:
 	UPROPERTY()
 	class UEnemyAnimInstance* AnimInst;
 

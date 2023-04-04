@@ -65,44 +65,47 @@ void ABossMonster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (IsAttacking)
-		return;
-
-	// 스킬 사용 가능?
-	if (CanUseSkill())
-	{
-		UseSkill(PickUsableSkill());
-	}
-	else
-	{
-		FVector MoveDir = AttackTarget->GetActorLocation() - GetActorLocation();
-		FRotator Rot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), AttackTarget->GetActorLocation());
-
-		if (GetDistanceTo(AttackTarget) > 300 && IsAttacking == false)
-		{
-			SetActorRotation(Rot);
-			AddMovementInput(MoveDir);
-		}
-		else
-		{
-			Attack(AttackTarget);
-		}
-	}
+	//if (IsAttacking)
+	//	return;
+	//
+	//// 스킬 사용 가능?
+	//if (CanUseSkill())
+	//{
+	//	UseSkill(PickUsableSkill());
+	//}
+	//else
+	//{
+	//	FVector MoveDir = AttackTarget->GetActorLocation() - GetActorLocation();
+	//	FRotator Rot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), AttackTarget->GetActorLocation());
+	//
+	//	if (GetDistanceTo(AttackTarget) > 300 && IsAttacking == false)
+	//	{
+	//		SetActorRotation(Rot);
+	//		AddMovementInput(MoveDir);
+	//	}
+	//	else
+	//	{
+	//		Attack(AttackTarget);
+	//	}
+	//}
 
 	
 }
 
 void ABossMonster::OnDamaged()
 {
+	Super::OnDamaged();
+
+	if (!CanBeStiffed)
+		return;
+
+	SetState(DAMAGED);
+	AnimInst->PlayDamagedMontage();
 }
 
 void ABossMonster::Attack(AMyPlayer* Target)
 {
-	if (IsAttacking)
-		return;
-
 	Super::Attack(Target);
-	IsAttacking = true;
 	AnimInst->PlayAttackMontage(0);
 }
 
@@ -145,6 +148,7 @@ int ABossMonster::PickUsableSkill()
 
 void ABossMonster::UseSkill(int SkillNum)
 {
+	SetState(SKILL);
 	switch (SkillNum)
 	{
 	case 1:
@@ -164,7 +168,6 @@ void ABossMonster::UseSkill(int SkillNum)
 
 void ABossMonster::Skill1()
 {
-	IsAttacking = true;
 	FRotator Rot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), AttackTarget->GetActorLocation());
 	SetActorRotation(Rot);
 	AnimInst->PlayAttackMontage(1);
@@ -177,7 +180,6 @@ void ABossMonster::Skill1()
 
 void ABossMonster::Skill2()
 {
-	IsAttacking = true;
 	FRotator Rot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), AttackTarget->GetActorLocation());
 	SetActorRotation(Rot);
 	AnimInst->PlayAttackMontage(2);
@@ -190,7 +192,6 @@ void ABossMonster::Skill2()
 
 void ABossMonster::Skill3()
 {
-	IsAttacking = true;
 	FRotator Rot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), AttackTarget->GetActorLocation());
 	SetActorRotation(Rot);
 	AnimInst->PlayAttackMontage(3);
@@ -203,7 +204,6 @@ void ABossMonster::Skill3()
 
 void ABossMonster::Skill4()
 {
-	IsAttacking = true;
 	FRotator Rot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), AttackTarget->GetActorLocation());
 	SetActorRotation(Rot);
 	AnimInst->PlayAttackMontage(4);
@@ -415,6 +415,47 @@ void ABossMonster::ActionCoolTimeZero()
 {
 	CanSkills = true;
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Action CoolTime Reset"));
+}
+
+void ABossMonster::UpdateIdle()
+{
+	if (AttackTarget == nullptr)
+		return;
+	
+	if (CanUseSkill())
+	{
+		UseSkill(PickUsableSkill());
+	}
+	else
+		SetState(MOVING);
+
+}
+
+void ABossMonster::UpdateMoving()
+{
+	FVector MoveDir = AttackTarget->GetActorLocation() - GetActorLocation();
+	FRotator Rot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), AttackTarget->GetActorLocation());
+
+	if (CanUseSkill())
+	{
+		UseSkill(PickUsableSkill());
+		return;
+	}
+
+	SetActorRotation(Rot);
+	AddMovementInput(MoveDir);
+
+	
+
+	if (GetDistanceTo(AttackTarget) < 170)
+		SetState(ATTACKREADY);
+}
+
+void ABossMonster::UpdateAttack()
+{
+	UE_LOG(LogTemp, Warning, TEXT("ATTACK READY"));
+	SetState(ATTACK);
+	Attack(AttackTarget);
 }
 
 AProjectile* ABossMonster::CreateProjectile(TSubclassOf<class AProjectile> ClassOfProjectile, FVector Muzzle, FRotator Rot)

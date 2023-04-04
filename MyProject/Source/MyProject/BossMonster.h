@@ -20,7 +20,7 @@ public:
 	virtual void PostInitializeComponents() override;
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
-
+	 
 	virtual void OnDamaged() override;
 	virtual void Attack(class AMyPlayer* Target) override;
 	//virtual void Die(class AMyPlayer* Player) override;
@@ -47,8 +47,6 @@ public:
 	void Skill4Charge();
 	void Skill4Fire();
 
-	void SetAttacking(bool Value) { IsAttacking = Value; }
-
 	void SkillCoolTimeZero(BossSkill SkillType);
 
 	void CoolTimeZero1();
@@ -57,7 +55,10 @@ public:
 	void CoolTimeZero4();
 	void ActionCoolTimeZero();
 
-
+protected:
+	virtual void UpdateIdle() override;
+	virtual void UpdateMoving() override;
+	virtual void UpdateAttack() override;
 private:
 	class AProjectile* CreateProjectile(TSubclassOf<class AProjectile> ClassOfProjectile, FVector Muzzle, FRotator Rot);
 
@@ -73,9 +74,6 @@ private:
 	bool CanBeStuned;
 	bool CanBeStiffed;
 
-public:
-	UPROPERTY(EditAnywhere)
-	bool IsAttacking;
 private:
 	bool CanSkills = true;
 
