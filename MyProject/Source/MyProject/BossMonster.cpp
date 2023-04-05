@@ -9,6 +9,7 @@
 #include "Projectile.h"
 #include "Kismet/GameplayStatics.h"
 #include "EnemyStatComponent.h"
+#include "NavigationSystem.h"
 #include "Particles/ParticleSystemComponent.h"
 
 
@@ -38,8 +39,13 @@ ABossMonster::ABossMonster()
 	{
 		Skill3Emitter = PARTICLE3.Object;
 	}
-
 	
+
+	static ConstructorHelpers::FObjectFinder<UParticleSystem> PARTICLE3TARGET(TEXT("ParticleSystem'/Game/ParagonGreystone/FX/Particles/Greystone/Abilities/LeapAOE/FX/P_Greystone_LeapAOE_Start.P_Greystone_LeapAOE_Start'"));
+	if (PARTICLE3.Succeeded())
+	{
+		Skill3TargetEmitter = PARTICLE3TARGET.Object;
+	}
 	
 	UsableSkills.Init(true, 5);
 }
@@ -265,24 +271,24 @@ void ABossMonster::Skill2Fire()
 
 void ABossMonster::Skill3Targeting()
 {
-	FVector TargetPlace;
+	FVector TargetPlace = GetActorLocation();
 
-	TargetPlace = AttackTarget->GetTargetLocation();
+	UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetNavigationSystem(GetWorld());
 
-	
-	// ÁÂÇ¥¿¡ °ð ¹º°¡ ¶³¾îÁø´Ù´Â ÀÌÆåÆ® ¹ß»ý ½ÃÅ°±â
-	
-	//
+	FNavLocation RandomLocation;
 
-	Skill3Fire(TargetPlace);
+	for (int i = 0; i < 5; i++)
+	{
+		NavSystem->GetRandomPointInNavigableRadius(TargetPlace, 1500.f, RandomLocation);
+		RandomLocation.Location.Z += 50;
+		Skill3Transform.Add(RandomLocation.Location);
+		FTransform Trans(RandomLocation.Location);
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Skill3Emitter, Trans);
+	}
 }
 
-void ABossMonster::Skill3Fire(FVector Transform)
+void ABossMonster::Skill3Fire()
 {
-	const FTransform Trans(Transform);
-
-
-	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Skill3Emitter, Trans);
 	float AttackX = 100.f;
 	float AttackY = 100.f;
 	float AttackZ = 100.f;
@@ -291,37 +297,41 @@ void ABossMonster::Skill3Fire(FVector Transform)
 	FCollisionQueryParams Params(NAME_None, false, this);
 	FVector BoxVector(AttackX, AttackY, AttackZ);
 
-	bool bResult = GetWorld()->SweepSingleByChannel(
-		OUT HitResult,
-		Transform,
-		Transform + GetActorForwardVector() * AttackX,
-		FQuat::Identity,
-		ECollisionChannel::ECC_GameTraceChannel6,
-		FCollisionShape::MakeBox(BoxVector),
-		Params);
-
-	FVector Vec = GetActorForwardVector() * AttackX;
-	FVector Center = Transform + Vec * 0.5f;
-	FQuat Rotation = FRotationMatrix::MakeFromZ(Vec).ToQuat();
-	FColor DrawColor;
-
-	if (bResult)
-		DrawColor = FColor::Green;
-	else
-		DrawColor = FColor::Red;
-
-	if (bResult)
+	for (int i = 0; i < 5; i++)
 	{
-		AMyPlayer* HitPlayer = Cast<AMyPlayer>(HitResult.GetActor());
-		if (HitPlayer)
-			GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Player Hit"));
-		//FDamageEvent DamageEvent;
-		////HitPlayer->OnStun(2.f);
+		FTransform Trans(Skill3Transform.Top());
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Skill3Emitter, Trans);
+		bool bResult = GetWorld()->SweepSingleByChannel(
+			OUT HitResult,
+			Skill3Transform.Top(),
+			Skill3Transform.Top() + GetActorForwardVector() * AttackX,
+			FQuat::Identity,
+			ECollisionChannel::ECC_GameTraceChannel6,
+			FCollisionShape::MakeBox(BoxVector),
+			Params);
+
+		FVector Vec = GetActorForwardVector() * AttackX;
+		FVector Center = Skill3Transform[i] + Vec * 0.5f;
+		FQuat Rotation = FRotationMatrix::MakeFromZ(Vec).ToQuat();
+		FColor DrawColor;
+
+		if (bResult)
+			DrawColor = FColor::Green;
+		else
+			DrawColor = FColor::Red;
+
+		if (bResult)
+		{
+			AMyPlayer* HitPlayer = Cast<AMyPlayer>(HitResult.GetActor());
+			if (HitPlayer)
+				GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Player Hit"));
+			//FDamageEvent DamageEvent;
+			////HitPlayer->OnStun(2.f);
+		}
+
+		DrawDebugBox(GetWorld(), Center, BoxVector, Rotation, DrawColor, false, 2.f);
+		Skill3Transform.Pop();
 	}
-
-	DrawDebugBox(GetWorld(), Center, BoxVector, Rotation, DrawColor, false, 2.f);
-
-
 }
 
 void ABossMonster::Skill4Charge()

@@ -38,17 +38,8 @@ FVector AMonsterSpawner::FindSpawnSpot()
 {
 	UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetNavigationSystem(GetWorld());
 
-	//if (NavSystem == nullptr)
-	//	return;
-
 	FNavLocation RandomLocation;
 
-	//if (NavSystem->GetRandomPointInNavigableRadius(FVector::ZeroVector, 500.f, RandomLocation))
-	//{
-	//	return RandomLocation.Location;
-	//}
-	//FVector::ZeroVector
-	
 	NavSystem->GetRandomPointInNavigableRadius(SpawnerLocation, 500.f, RandomLocation);
 	RandomLocation.Location.Z += 50;
 	return RandomLocation.Location;

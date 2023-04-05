@@ -42,7 +42,7 @@ public:
 	void Skill2Fire();
 
 	void Skill3Targeting();
-	void Skill3Fire(FVector Transform);
+	void Skill3Fire();
 
 	void Skill4Charge();
 	void Skill4Fire();
@@ -77,6 +77,8 @@ private:
 private:
 	bool CanSkills = true;
 
+	TArray<FVector> Skill3Transform;
+
 	UPROPERTY(EditAnywhere)
 	FVector MuzzleOffset;
 
@@ -95,6 +97,9 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	class UParticleSystem* Skill3Emitter;
+
+	UPROPERTY(EditAnywhere)
+	class UParticleSystem* Skill3TargetEmitter;
 
 	UPROPERTY()
 	FTimerHandle SkillTimerHandle;
