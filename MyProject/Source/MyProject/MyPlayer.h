@@ -10,6 +10,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Npc.h"
 #include "Define.h"
+#include "Portal.h"
 #include "MyPlayer.generated.h"
 
 
@@ -80,10 +81,12 @@ public:
 	void SetOnInventory(bool Value) { bOnInventory = Value; }
 	void SetInteracting(bool Value) { bInteract = Value; }
 	void SetState(STATE Value) { PlayerState = Value; }
+	void SetPortal(APortal* PortalValue) { Portal = PortalValue; }
 
 	int GetGold() { return Gold; }
 	STATE GetState() { return PlayerState; }
 	class ANpc* GetInteractNpc() { return CanInteractNpc; }
+	class APortal* GetPortal() { return Portal; }
 
 	bool GetOnInventory() { return bOnInventory; }
 	bool GetInteracting() { return bInteract; }
@@ -176,6 +179,8 @@ public:
 private:
 	UPROPERTY()
 	ANpc* CanInteractNpc;
+
+	APortal* Portal;
 
 	STATE PlayerState;
 

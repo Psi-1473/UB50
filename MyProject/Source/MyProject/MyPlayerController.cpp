@@ -135,6 +135,11 @@ void AMyPlayerController::ClickESkill()
 
 void AMyPlayerController::Interact()
 {
+	if (MyPlayer->GetPortal() != nullptr)
+	{
+		MyPlayer->GetPortal()->MoveToOtherLevel();
+	}
+
 	if (MyPlayer->GetInteractNpc() == nullptr)
 		return;
 

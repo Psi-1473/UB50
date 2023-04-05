@@ -25,6 +25,7 @@ void AMonsterSpawner::CheckMobCount()
 	if (MobCountToSpawn <= 0)
 		return;
 
+	UE_LOG(LogTemp, Warning, TEXT("Check Mob Count!"));
 	for (int i = 0; i < MobCountToSpawn; i++)
 	{
 		FVector SpawnSpot = FindSpawnSpot();
@@ -49,15 +50,19 @@ FVector AMonsterSpawner::FindSpawnSpot()
 	//FVector::ZeroVector
 	
 	NavSystem->GetRandomPointInNavigableRadius(SpawnerLocation, 500.f, RandomLocation);
+	RandomLocation.Location.Z += 50;
 	return RandomLocation.Location;
 }
 
 void AMonsterSpawner::SpawnMob(FVector Location)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Spawn Mob!"));
 	FTransform SpawnTrans;
 	SpawnTrans.SetLocation(Location);
 	AActor* Mob = GetWorld()->SpawnActor<AActor>(ActorToSpawn, SpawnTrans);
 	auto Kwang = Cast<ASpawnMonster>(Mob);
+	if (Kwang == nullptr)
+		return;
 	Kwang->SetSpawner(this);
 }
 
