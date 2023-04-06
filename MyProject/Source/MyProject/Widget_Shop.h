@@ -19,12 +19,18 @@ public:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
+
 	void CreateSlot(class ANpc* NPC);
 	
+	UFUNCTION()
+	void CloseUI();
 
 private:
 	UPROPERTY(meta = (BindWidget))
 	class UScrollBox* Scroll_List;
+
+	UPROPERTY(meta = (BindWidget))
+	class UButton* Btn_Exit;
 
 	TSubclassOf<UUserWidget> BP_Slot;
 	UUserWidget* Slot;

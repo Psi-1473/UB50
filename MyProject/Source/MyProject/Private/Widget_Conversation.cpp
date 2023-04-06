@@ -10,6 +10,7 @@
 #include "Kismet/GameplayStatics.h"
 
 
+
 void UWidget_Conversation::NativePreConstruct()
 {
 	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
@@ -34,11 +35,5 @@ void UWidget_Conversation::NativeConstruct()
 	Txt_Name->SetText(NameText);
 }
 
-void UWidget_Conversation::OpenShopUI()
-{
-	AMyGameMode* GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-	auto MyPlayer = Cast<AMyPlayer>(Char);
-	GameMode->UIManager->PopupUI(MyPlayer->GetWorld(), SHOP);
-}
+
 

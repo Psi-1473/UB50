@@ -42,6 +42,9 @@ public:
 	UFUNCTION()
 	void RefreshToUse();
 
+	UFUNCTION()
+	void CloseUI();
+
 	void ChangeGold(int Value);
 	void ChangeWeapon(int Id, class UMyGameInstance* GInstance);
 	void ChangeArmor(int Id, class UMyGameInstance* GInstance);
@@ -61,7 +64,10 @@ private:
 	class UButton* Btn_Armor;
 
 	UPROPERTY(meta = (BindWidget))
-	class UButton* Btn_Use; // 잠시 방어구로 사용
+	class UButton* Btn_Use;
+
+	UPROPERTY(meta = (BindWidget))
+	class UButton* Btn_Exit;
 
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* Txt_Gold;

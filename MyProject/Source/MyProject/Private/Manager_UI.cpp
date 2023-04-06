@@ -95,6 +95,10 @@ void UManager_UI::CloseUI(int UIType)
 	case CONVERSATION:
 		RemoveUI(Conv);
 		break;
+	case SHOP:
+		if (Shop == nullptr) return;
+		RemoveUI(Shop);
+		break;
 	default:
 		break;
 	}
@@ -104,5 +108,8 @@ void UManager_UI::RemoveUI(UUserWidget* Widget)
 {
 	if (Widget == nullptr)
 		return;
+
+
 	Widget->RemoveFromViewport();
+	Widget = nullptr;
 }

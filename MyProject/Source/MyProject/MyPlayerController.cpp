@@ -146,6 +146,7 @@ void AMyPlayerController::Interact()
 	if (MyPlayer->GetInteracting())
 	{
 		MyPlayer->CloseUI(CONVERSATION);
+		MyPlayer->CloseUI(SHOP);
 		MyPlayer->SetInteracting(false);
 	}
 	else

@@ -7,6 +7,7 @@
 #include "Npc.h"
 #include "MyGameInstance.h"
 #include "MyPlayer.h"
+#include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
 
 UWidget_Shop::UWidget_Shop(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
@@ -29,6 +30,8 @@ void UWidget_Shop::NativeConstruct()
 	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	auto MyPlayer = Cast<AMyPlayer>(Char);
 	CreateSlot(MyPlayer->GetInteractNpc());
+
+	Btn_Exit->OnClicked.AddDynamic(this, &UWidget_Shop::CloseUI);
 }
 
 void UWidget_Shop::NativeDestruct()
@@ -53,4 +56,11 @@ void UWidget_Shop::CreateSlot(ANpc* NPC)
 		ShopSlot->InitializeSlot(GInstance, ItemType, NPC->GetItem(i));
 	}
 	UE_LOG(LogTemp, Warning, TEXT("Shop Slot"));
+}
+
+void UWidget_Shop::CloseUI()
+{
+	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	auto MyPlayer = Cast<AMyPlayer>(Char);
+	MyPlayer->CloseUI(SHOP);
 }

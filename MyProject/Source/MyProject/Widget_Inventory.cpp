@@ -13,6 +13,7 @@
 #include "Kismet/GameplayStatics.h"
 
 
+
 void UWidget_Inventory::NativeConstruct()
 {
 	Super::NativeConstruct();
@@ -20,6 +21,7 @@ void UWidget_Inventory::NativeConstruct()
 	Btn_Weapon->OnClicked.AddDynamic(this, &UWidget_Inventory::RefreshToWeapon);
 	Btn_Armor->OnClicked.AddDynamic(this, &UWidget_Inventory::RefreshToArmor);
 	Btn_Use->OnClicked.AddDynamic(this, &UWidget_Inventory::RefreshToUse);
+	Btn_Exit->OnClicked.AddDynamic(this, &UWidget_Inventory::CloseUI);
 
 	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	auto MyPlayer = Cast<AMyPlayer>(Char);
@@ -112,6 +114,12 @@ void UWidget_Inventory::RefreshToUse()
 	{
 		Slots[i]->SetUseItem();
 	}
+}
+
+void UWidget_Inventory::CloseUI()
+{
+	OwnerPlayer->CloseUI(INVENTORY);
+	OwnerPlayer->SetOnInventory(false);
 }
 
 void UWidget_Inventory::ChangeGold(int Value)

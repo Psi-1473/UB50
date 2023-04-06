@@ -18,10 +18,6 @@ protected:
 	virtual void NativePreConstruct() override;
 	virtual void NativeConstruct() override;
 
-public:
-	UFUNCTION()
-	void OpenShopUI();
-
 
 private:
 	UPROPERTY(meta = (BindWidget))
