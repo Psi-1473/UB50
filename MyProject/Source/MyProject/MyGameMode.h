@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "MyPlayer.h"
 #include "Manager_UI.h"
+#include "Manager_Quest.h"
 #include "MyGameMode.generated.h"
 
 
@@ -33,6 +34,6 @@ public:
 	UUserWidget* CurrentWidget;
 
 	UManager_UI* UIManager;
-
+	UManager_Quest* QuestManager;
 	
 };

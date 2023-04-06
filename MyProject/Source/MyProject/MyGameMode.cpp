@@ -25,12 +25,13 @@ AMyGameMode::AMyGameMode()
 	}
 
 	UIManager = NewObject<UManager_UI>();
+	QuestManager = NewObject<UManager_Quest>();
 }
 
 void AMyGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	QuestManager->LoadQuestData();
 
 }
 

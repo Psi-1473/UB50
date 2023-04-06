@@ -1,0 +1,36 @@
+{
+  "quests": [
+    {
+      "Id": 0,
+      "NpcId": 0,
+      "CompleteNpcId": 0,
+      "Type": "Normal",
+      "Name": "퀘스트 테스트1",
+      "Sub": "퀘스트 1",
+      "ConditionSub": "퀘스트 1",
+      "Gold": 100,
+      "Exp": 0,
+      "Locked": "False",
+      "Cleared": "False",
+      "TargetId": -1,
+      "TargetNum": 0,
+      "Next": 1
+    },
+    {
+      "Id": 1,
+      "NpcId": 0,
+      "CompleteNpcId": 0,
+      "Type": "Hunting",
+      "Name": "퀘스트 테스트2",
+      "Sub": "퀘스트2",
+      "ConditionSub": "퀘스트2",
+      "Gold": 100,
+      "Exp": 0,
+      "Locked": "True",
+      "Cleared": "False",
+      "TargetId": 0,
+      "TargetNum": 5,
+      "Next": 2
+    }
+  ]
+}
