@@ -30,7 +30,10 @@ public:
 
 	int GetTotalItemNum();
 	int GetItem(int Id);
-	bool IsShopNpc;
+
+	bool GetIsShop() { return IsShopNpc; }
+	FString GetName() { return NpcName; }
+	
 	
 	UPROPERTY(EditAnywhere)
 	int ItemType;
@@ -51,6 +54,8 @@ private:
 	// 가진 퀘스트 목록
 	// 상점 아이템 리스트
 	// 스크립트?
+	UPROPERTY(EditAnywhere)
+	bool IsShopNpc;
 
 	UPROPERTY(VisibleAnywhere)
 	class UWidgetComponent* InteractionKey;

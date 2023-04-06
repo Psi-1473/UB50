@@ -16,10 +16,15 @@ UManager_UI::UManager_UI()
 	{
 		Inventory = IW.Class;
 	}
-	static ConstructorHelpers::FClassFinder<UUserWidget> CW(TEXT("WidgetBlueprint'/Game/UI/WBP_Shop.WBP_Shop_C'"));
-	if (IW.Succeeded())
+	static ConstructorHelpers::FClassFinder<UUserWidget> CW(TEXT("WidgetBlueprint'/Game/UI/WBP_Conversation.WBP_Conversation_C'"));
+	if (CW.Succeeded())
 	{
 		Conversation = CW.Class;
+	}
+	static ConstructorHelpers::FClassFinder<UUserWidget> SW(TEXT("WidgetBlueprint'/Game/UI/WBP_Shop.WBP_Shop_C'"));
+	if (SW.Succeeded())
+	{
+		ShopUi = SW.Class;
 	}
 }
 
@@ -69,6 +74,10 @@ void UManager_UI::PopupUI(UWorld* World, int UIType)
 	case CONVERSATION:
 		Conv = CreateWidget(World, Conversation);
 		Conv->AddToViewport();
+		break;
+	case SHOP:
+		Shop = CreateWidget(World, ShopUi);
+		Shop->AddToViewport();
 		break;
 	}
 	

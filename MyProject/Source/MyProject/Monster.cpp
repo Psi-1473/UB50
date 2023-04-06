@@ -27,7 +27,6 @@ void AMonster::PostInitializeComponents()
 void AMonster::BeginPlay()
 {
 	Super::BeginPlay();
-
 	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	auto MyPlayer = Cast<AMyPlayer>(Char);
 

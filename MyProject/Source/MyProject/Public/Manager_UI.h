@@ -34,11 +34,14 @@ public:
 private:
 
 	TSubclassOf<UUserWidget> Inventory;
-	int InvenNum;
 	UUserWidget* Inven;
+	int InvenNum;
 
 	TSubclassOf<UUserWidget> Conversation;
 	UUserWidget* Conv;
+
+	TSubclassOf<UUserWidget> ShopUi;
+	UUserWidget* Shop;
 
 	TArray<UUserWidget*> Widgets;
 };
