@@ -279,7 +279,7 @@ void ABossMonster::Skill3Targeting()
 
 	for (int i = 0; i < 5; i++)
 	{
-		NavSystem->GetRandomPointInNavigableRadius(TargetPlace, 1500.f, RandomLocation);
+		NavSystem->GetRandomPointInNavigableRadius(TargetPlace, 1000.f, RandomLocation);
 		RandomLocation.Location.Z += 50;
 		Skill3Transform.Add(RandomLocation.Location);
 		FTransform Trans(RandomLocation.Location);
