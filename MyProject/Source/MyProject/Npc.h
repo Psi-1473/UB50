@@ -28,6 +28,8 @@ public:
 	UFUNCTION()
 	void OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+
+
 	int GetTotalItemNum();
 	int GetItem(int Id);
 
@@ -37,8 +39,12 @@ public:
 	
 	UPROPERTY(EditAnywhere)
 	int ItemType;
+private:
+	void InitNpcId();
 
 private:
+	int NpcId;
+
 	UPROPERTY()
 	FString NpcName;
 	
@@ -57,10 +63,16 @@ private:
 	UPROPERTY(EditAnywhere)
 	bool IsShopNpc;
 
+	TArray<int> PossibleQuests;
+	TArray<int> StartedQuests;
+	TArray<int> EndedQuests;
+	TArray<int> ImpossibleQuests;
+
+
+private:
 	UPROPERTY(VisibleAnywhere)
 	class UWidgetComponent* InteractionKey;
 
 	UPROPERTY(VisibleAnywhere)
 	class UBoxComponent* InteractBox;
-
 };

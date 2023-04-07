@@ -42,10 +42,23 @@ void UManager_Quest::LoadQuestData()
 				jsonItem->TryGetNumberField(TEXT("Next"), q.Next);
 
 				Quests.Add(q.Id, q);
+				if (QuestsByNpcId.Contains(q.NpcId))
+					QuestsByNpcId[q.NpcId].Add(q);
+				else
+				{
+					TArray<Quest> qa;
+					qa.Add(q);
+					QuestsByNpcId.Add(q.NpcId, qa);
+				}
 			}
 
 		UE_LOG(LogTemp, Log, TEXT("Quest Files Saved %d %d"), Quests[0].Gold, Quests[1].Gold);
+		UE_LOG(LogTemp, Log, TEXT("Quest Files Saved %d"), QuestsByNpcId[0].Num());
 	}
 
 
+}
+
+void UManager_Quest::SpreadToNpc()
+{
 }

@@ -38,6 +38,7 @@ public:
 
 public:
 	void LoadQuestData();
+	void SpreadToNpc();
 
 	Quest GetQuest(int id) { return Quests[id]; }
 
@@ -47,4 +48,5 @@ private:
 	TSharedPtr<FJsonObject> jsonObj;
 
 	TMap<int, Quest> Quests;
+	TMap<int, TArray<Quest>> QuestsByNpcId;
 };

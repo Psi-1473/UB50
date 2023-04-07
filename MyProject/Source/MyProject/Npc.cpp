@@ -45,7 +45,7 @@ ANpc::ANpc()
 void ANpc::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	InitNpcId();
 }
 
 // Called every frame
@@ -64,7 +64,6 @@ void ANpc::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ANpc::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Someone Entered"));
 	if (OtherActor && (OtherActor != this) && OtherComp)
 	{
 		auto Player = Cast<AMyPlayer>(OtherActor);
@@ -78,7 +77,6 @@ void ANpc::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActo
 
 void ANpc::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Someone Out"));
 	if (OtherActor && (OtherActor != this) && OtherComp)
 	{
 		auto Player = Cast<AMyPlayer>(OtherActor);
@@ -108,5 +106,19 @@ int ANpc::GetItem(int Id)
 		return ArmorId[Id];
 	else
 		return UseId[Id];
+}
+
+void ANpc::InitNpcId()
+{
+	FString MyName = GetActorNameOrLabel();
+	FString BaseName = TEXT("BP_Npc");
+	int FullNameLen = MyName.Len();
+	int Len = BaseName.Len();
+	int Count = FullNameLen = Len;
+	
+	FString IdName = MyName.Mid(Len, Count);
+	NpcId = FCString::Atoi(*IdName);
+	UE_LOG(LogTemp, Warning, TEXT("Npc Id Registered! : %s, %s, %s"), *MyName, *BaseName, *IdName);
+	UE_LOG(LogTemp, Warning, TEXT("Npc Id Registered! : %d"), NpcId);
 }
 
