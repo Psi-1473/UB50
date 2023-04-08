@@ -5,6 +5,9 @@
 #include "Components/WidgetComponent.h"
 #include "Components/BoxComponent.h"
 #include "MyPlayer.h"
+#include "MyGameMode.h"
+#include "Kismet/GameplayStatics.h"
+#include "Manager_Quest.h"
 
 // Sets default values
 ANpc::ANpc()
@@ -46,6 +49,7 @@ void ANpc::BeginPlay()
 {
 	Super::BeginPlay();
 	InitNpcId();
+	InitQuestInfo();
 }
 
 // Called every frame
@@ -118,7 +122,26 @@ void ANpc::InitNpcId()
 	
 	FString IdName = MyName.Mid(Len, Count);
 	NpcId = FCString::Atoi(*IdName);
-	UE_LOG(LogTemp, Warning, TEXT("Npc Id Registered! : %s, %s, %s"), *MyName, *BaseName, *IdName);
 	UE_LOG(LogTemp, Warning, TEXT("Npc Id Registered! : %d"), NpcId);
+}
+
+void ANpc::InitQuestInfo()
+{
+	AMyGameMode* GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	
+	if (GameMode->QuestManager->GetQuestsByNpcId(NpcId).IsEmpty())
+		return;
+
+	TArray<Quest> Quests = GameMode->QuestManager->GetQuestsByNpcId(NpcId);
+
+	for (int i = 0; i < Quests.Num(); i++)
+	{
+		if (Quests[i].Locked)
+			ImpossibleQuests.Add(Quests[i].Id);
+		else
+			PossibleQuests.Add(Quests[i].Id);
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("Quest Info Init Test : %d, %d"), ImpossibleQuests[0], PossibleQuests[0]);
 }
 

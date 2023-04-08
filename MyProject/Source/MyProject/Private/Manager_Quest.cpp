@@ -62,3 +62,10 @@ void UManager_Quest::LoadQuestData()
 void UManager_Quest::SpreadToNpc()
 {
 }
+
+TArray<Quest> UManager_Quest::GetQuestsByNpcId(int NpcId)
+{
+	if (QuestsByNpcId.Contains(NpcId))
+		return QuestsByNpcId[NpcId];
+	return TArray<Quest>();
+}

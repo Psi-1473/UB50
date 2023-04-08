@@ -41,7 +41,7 @@ public:
 	int ItemType;
 private:
 	void InitNpcId();
-
+	void InitQuestInfo();
 private:
 	int NpcId;
 
@@ -64,8 +64,8 @@ private:
 	bool IsShopNpc;
 
 	TArray<int> PossibleQuests;
-	TArray<int> StartedQuests;
-	TArray<int> EndedQuests;
+	//TArray<int> StartedQuests;
+	//TArray<int> EndedQuests;
 	TArray<int> ImpossibleQuests;
 
 

@@ -41,6 +41,7 @@ public:
 	void SpreadToNpc();
 
 	Quest GetQuest(int id) { return Quests[id]; }
+	TArray<Quest> GetQuestsByNpcId(int NpcId);
 
 private:
 	FString FileStr;
