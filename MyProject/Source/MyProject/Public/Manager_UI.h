@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+#include "../DEFINE.H"
 #include "Manager_UI.generated.h"
 
 /**
@@ -17,8 +18,8 @@ class MYPROJECT_API UManager_UI : public UObject
 public:
 	UManager_UI();
 
-	void PopupUI(UWorld* World, int UIType);
-	void CloseUI(int UIType);
+	void PopupUI(UWorld* World, UIType MyUIType);
+	void CloseUI(UIType MyUIType);
 
 
 	// 인벤토리

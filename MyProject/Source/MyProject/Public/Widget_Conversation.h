@@ -14,6 +14,9 @@ class MYPROJECT_API UWidget_Conversation : public UUserWidget
 {
 	GENERATED_BODY()
 	
+public:
+	UWidget_Conversation(const FObjectInitializer& ObjectInitializer);
+
 protected:
 	virtual void NativePreConstruct() override;
 	virtual void NativeConstruct() override;
@@ -31,4 +34,8 @@ private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> BP_Button;
 	UUserWidget* InteractButton;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UUserWidget> BP_QuestButton;
+	UUserWidget* QuestButton;
 };

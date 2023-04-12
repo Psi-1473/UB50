@@ -20,6 +20,8 @@ UWidget_Quest::UWidget_Quest(const FObjectInitializer& ObjectInitializer) : Supe
 void UWidget_Quest::NativeConstruct()
 {
 	SetNpcId();
+	CreateQuestList();
+	UE_LOG(LogTemp, Warning, TEXT("Open Quest UI : Native Constructed"));
 }
 
 void UWidget_Quest::SetNpcId()
@@ -27,10 +29,8 @@ void UWidget_Quest::SetNpcId()
 	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	auto MyPlayer = Cast<AMyPlayer>(Char);
 
-	if (MyPlayer->GetInteracting())
-	{
-		NpcId = MyPlayer->GetInteractNpc()->GetNpcId();
-	}
+	NpcId = MyPlayer->GetInteractNpc()->GetNpcId();
+	UE_LOG(LogTemp, Warning, TEXT("Open Quest UI : Interacting"));
 }
 
 void UWidget_Quest::CreateQuestList()

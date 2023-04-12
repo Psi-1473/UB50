@@ -145,13 +145,14 @@ void AMyPlayerController::Interact()
 
 	if (MyPlayer->GetInteracting())
 	{
-		MyPlayer->CloseUI(CONVERSATION);
-		MyPlayer->CloseUI(SHOP);
+		MyPlayer->CloseUI(UIType::CONVERSATION);
+		MyPlayer->CloseUI(UIType::SHOP);
+		MyPlayer->CloseUI(UIType::QUEST);
 		MyPlayer->SetInteracting(false);
 	}
 	else
 	{
-		MyPlayer->OpenUI(CONVERSATION);
+		MyPlayer->OpenUI(UIType::CONVERSATION);
 		MyPlayer->SetInteracting(true);
 	}
 }
@@ -163,12 +164,12 @@ void AMyPlayerController::PopupInventory()
 
 	if (MyPlayer->GetOnInventory())
 	{
-		MyPlayer->CloseUI(INVENTORY);
+		MyPlayer->CloseUI(UIType::INVENTORY);
 		MyPlayer->SetOnInventory(false);
 	}
 	else
 	{
-		MyPlayer->OpenUI(INVENTORY);
+		MyPlayer->OpenUI(UIType::INVENTORY);
 		MyPlayer->SetOnInventory(true);
 	}
 }

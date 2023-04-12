@@ -56,8 +56,8 @@ private:
 	void OnDamaged();
 
 public:
-	void OpenUI(int UIType);
-	void CloseUI(int UIType);
+	void OpenUI(UIType MyUIType);
+	void CloseUI(UIType MyUIType);
 	void EquipWeapon(int Id, int Idx);
 	void EquipArmor(int Id, int Idx);
 	void UseItem(int Id, int Idx);

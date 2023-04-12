@@ -62,5 +62,5 @@ void UWidget_Shop::CloseUI()
 {
 	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	auto MyPlayer = Cast<AMyPlayer>(Char);
-	MyPlayer->CloseUI(SHOP);
+	MyPlayer->CloseUI(UIType::SHOP);
 }

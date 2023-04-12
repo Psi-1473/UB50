@@ -35,12 +35,14 @@ const enum STATE
 	DIED,
 };
 
-const enum UIType
+UENUM(BlueprintType)
+enum class UIType : uint8
 {
-	INVENTORY = 1,
-	CONVERSATION = 2,
-	SHOP = 3,
-	QUEST = 4,
+	NONE = 0 UMETA(DisplayName = "None"),
+	INVENTORY = 1 UMETA(DisplayName = "Inventory"),
+	CONVERSATION = 2 UMETA(DisplayName = "Conversation"),
+	SHOP = 3 UMETA(DisplayName = "Shop"),
+	QUEST = 4 UMETA(DisplayName = "Quest"),
 };
 const enum BossCoolTime
 {

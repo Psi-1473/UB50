@@ -17,6 +17,6 @@ void UWidget_InteractButton::OpenShopUI()
 	AMyGameMode* GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	auto MyPlayer = Cast<AMyPlayer>(Char);
-	GameMode->UIManager->PopupUI(MyPlayer->GetWorld(), SHOP);
+	GameMode->UIManager->PopupUI(MyPlayer->GetWorld(), MyUiType);
 	UE_LOG(LogTemp, Warning, TEXT("Shop Button Clicked"));
 }

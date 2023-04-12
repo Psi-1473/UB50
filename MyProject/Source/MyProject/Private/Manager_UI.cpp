@@ -68,23 +68,23 @@ void UManager_UI::ChangeInvenGold(int Value)
 	MyInven->ChangeGold(Value);
 }
 
-void UManager_UI::PopupUI(UWorld* World, int UIType)
+void UManager_UI::PopupUI(UWorld* World, UIType MyUIType)
 {
-	switch (UIType)
+	switch (MyUIType)
 	{
-	case INVENTORY:
+	case UIType::INVENTORY:
 		Inven = CreateWidget(World, Inventory);
 		Inven->AddToViewport();
 		break;
-	case CONVERSATION:
+	case UIType::CONVERSATION:
 		Conv = CreateWidget(World, Conversation);
 		Conv->AddToViewport();
 		break;
-	case SHOP:
+	case UIType::SHOP:
 		Shop = CreateWidget(World, ShopUi);
 		Shop->AddToViewport();
 		break;
-	case QUEST:
+	case UIType::QUEST:
 		UIQuest = CreateWidget(World, QuestUi);
 		UIQuest->AddToViewport();
 		break;
@@ -95,20 +95,23 @@ void UManager_UI::PopupUI(UWorld* World, int UIType)
 }
 
 
-void UManager_UI::CloseUI(int UIType)
+void UManager_UI::CloseUI(UIType MyUIType)
 {
-	switch (UIType)
+	switch (MyUIType)
 	{
-	case INVENTORY:
+	case UIType::INVENTORY:
 		RemoveUI(Inven);
 		break;
-	case CONVERSATION:
+	case UIType::CONVERSATION:
 		RemoveUI(Conv);
 		break;
-	case SHOP:
+	case UIType::SHOP:
 		if (Shop == nullptr) return;
 		RemoveUI(Shop);
 		break;
+	case UIType::QUEST:
+		if (UIQuest == nullptr) return;
+		RemoveUI(UIQuest);
 	default:
 		break;
 	}

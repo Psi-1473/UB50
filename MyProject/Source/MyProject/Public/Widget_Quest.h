@@ -19,7 +19,7 @@ public:
 	virtual void NativeConstruct() override;
 
 
-private:
+public:
 	void SetNpcId();
 	void CreateQuestList();
 

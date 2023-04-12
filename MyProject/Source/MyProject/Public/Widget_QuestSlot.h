@@ -16,7 +16,7 @@ class MYPROJECT_API UWidget_QuestSlot : public UUserWidget
 protected:
 	virtual void NativeConstruct() override;
 public:
-	void SetId(int Id) { QuestId = Id; }
+	void SetId(int Id);
 
 private:
 	void Init();

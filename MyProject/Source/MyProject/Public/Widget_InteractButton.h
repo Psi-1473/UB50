@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "../Define.h"
 #include "Widget_InteractButton.generated.h"
 
 /**
@@ -15,6 +16,7 @@ class MYPROJECT_API UWidget_InteractButton : public UUserWidget
 	GENERATED_BODY()
 	
 public:
+
 	UFUNCTION()
 	void OpenShopUI();
 
@@ -24,4 +26,7 @@ protected:
 private:
 	UPROPERTY(meta = (BindWidget))
 	class UButton* Btn_Interact;
+
+	UPROPERTY(EditAnywhere)
+	UIType MyUiType;
 };

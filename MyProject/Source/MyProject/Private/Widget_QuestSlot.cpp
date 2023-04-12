@@ -9,6 +9,12 @@
 
 void UWidget_QuestSlot::NativeConstruct()
 {
+	//Init();
+}
+
+void UWidget_QuestSlot::SetId(int Id)
+{
+	QuestId = Id;
 	Init();
 }
 

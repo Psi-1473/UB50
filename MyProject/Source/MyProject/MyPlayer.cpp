@@ -390,15 +390,15 @@ void AMyPlayer::OnAttackMontageStarted(UAnimMontage* Montage, bool bInterrupted)
 	bCombo = false;
 }
 
-void AMyPlayer::OpenUI(int UIType)
+void AMyPlayer::OpenUI(UIType MyUIType)
 {
-	GameMode->UIManager->PopupUI(GetWorld(), UIType);
+	GameMode->UIManager->PopupUI(GetWorld(), MyUIType);
 	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
 }
 
-void AMyPlayer::CloseUI(int UIType)
+void AMyPlayer::CloseUI(UIType MyUIType)
 {
-	GameMode->UIManager->CloseUI(UIType);
+	GameMode->UIManager->CloseUI(MyUIType);
 	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);
 }
 

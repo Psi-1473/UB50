@@ -118,7 +118,7 @@ void UWidget_Inventory::RefreshToUse()
 
 void UWidget_Inventory::CloseUI()
 {
-	OwnerPlayer->CloseUI(INVENTORY);
+	OwnerPlayer->CloseUI(UIType::INVENTORY);
 	OwnerPlayer->SetOnInventory(false);
 }
 
