@@ -26,6 +26,11 @@ UManager_UI::UManager_UI()
 	{
 		ShopUi = SW.Class;
 	}
+	static ConstructorHelpers::FClassFinder<UUserWidget> QW(TEXT("WidgetBlueprint'/Game/UI/WBP_Quest.WBP_Quest_C'"));
+	if (QW.Succeeded())
+	{
+		QuestUi = QW.Class;
+	}
 }
 
 void UManager_UI::UpdateInventory(int NextSlot)
@@ -79,6 +84,11 @@ void UManager_UI::PopupUI(UWorld* World, int UIType)
 		Shop = CreateWidget(World, ShopUi);
 		Shop->AddToViewport();
 		break;
+	case QUEST:
+		UIQuest = CreateWidget(World, QuestUi);
+		UIQuest->AddToViewport();
+		break;
+
 	}
 	
 	//World->GetFirstPlayerController()->SetShowMouseCursor(true);

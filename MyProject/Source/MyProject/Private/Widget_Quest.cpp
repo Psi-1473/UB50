@@ -1,0 +1,51 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "Widget_Quest.h"
+#include "../MyPlayer.h"
+#include "../MyGameMode.h"
+#include "Components/ScrollBox.h"
+#include "Widget_QuestSlot.h"
+#include "Kismet/GameplayStatics.h"
+
+UWidget_Quest::UWidget_Quest(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
+{
+	static ConstructorHelpers::FClassFinder<UUserWidget> QUESTLIST(TEXT("WidgetBlueprint'/Game/UI/QuestList.QuestList_C'"));
+	if (QUESTLIST.Succeeded())
+	{
+		BP_Slot = QUESTLIST.Class;
+	}
+}
+
+void UWidget_Quest::NativeConstruct()
+{
+	SetNpcId();
+}
+
+void UWidget_Quest::SetNpcId()
+{
+	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	auto MyPlayer = Cast<AMyPlayer>(Char);
+
+	if (MyPlayer->GetInteracting())
+	{
+		NpcId = MyPlayer->GetInteractNpc()->GetNpcId();
+	}
+}
+
+void UWidget_Quest::CreateQuestList()
+{
+	AMyGameMode* GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (GameMode->QuestManager->GetQuestsByNpcId(NpcId).IsEmpty())
+		return;
+
+	TArray<Quest> Quests = GameMode->QuestManager->GetQuestsByNpcId(NpcId);
+
+	for (int i = 0; i < Quests.Num(); i++)
+	{
+		Slot = CreateWidget(GetWorld(), BP_Slot);
+		ScrollBox_ListBack->AddChild(Slot);
+		auto QuestSlot = Cast<UWidget_QuestSlot>(Slot);
+		QuestSlot->SetId(Quests[i].Id);
+	}
+}

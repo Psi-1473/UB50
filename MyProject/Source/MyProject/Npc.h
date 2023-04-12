@@ -35,6 +35,7 @@ public:
 
 	bool GetIsShop() { return IsShopNpc; }
 	FString GetName() { return NpcName; }
+	int GetNpcId() { return NpcId; }
 	
 	
 	UPROPERTY(EditAnywhere)

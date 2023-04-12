@@ -43,5 +43,8 @@ private:
 	TSubclassOf<UUserWidget> ShopUi;
 	UUserWidget* Shop;
 
+	TSubclassOf<UUserWidget> QuestUi;
+	UUserWidget* UIQuest;
+
 	TArray<UUserWidget*> Widgets;
 };

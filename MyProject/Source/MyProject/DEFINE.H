@@ -40,6 +40,7 @@ const enum UIType
 	INVENTORY = 1,
 	CONVERSATION = 2,
 	SHOP = 3,
+	QUEST = 4,
 };
 const enum BossCoolTime
 {
