@@ -26,10 +26,7 @@ void UWidget_Quest::NativeConstruct()
 
 void UWidget_Quest::SetNpcId()
 {
-	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-	auto MyPlayer = Cast<AMyPlayer>(Char);
-
-	NpcId = MyPlayer->GetInteractNpc()->GetNpcId();
+	;
 	UE_LOG(LogTemp, Warning, TEXT("Open Quest UI : Interacting"));
 }
 
@@ -38,14 +35,16 @@ void UWidget_Quest::CreateQuestList()
 	AMyGameMode* GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	if (GameMode->QuestManager->GetQuestsByNpcId(NpcId).IsEmpty())
 		return;
+	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	auto MyPlayer = Cast<AMyPlayer>(Char);
 
-	TArray<Quest> Quests = GameMode->QuestManager->GetQuestsByNpcId(NpcId);
+	TArray<int> QuestIds = MyPlayer->GetInteractNpc()->GetPossibleQuests();
 
-	for (int i = 0; i < Quests.Num(); i++)
+	for (int i = 0; i < QuestIds.Num(); i++)
 	{
 		Slot = CreateWidget(GetWorld(), BP_Slot);
 		ScrollBox_ListBack->AddChild(Slot);
 		auto QuestSlot = Cast<UWidget_QuestSlot>(Slot);
-		QuestSlot->SetId(Quests[i].Id);
+		QuestSlot->SetId(QuestIds[i]);
 	}
 }

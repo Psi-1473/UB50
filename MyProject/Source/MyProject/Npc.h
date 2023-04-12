@@ -36,6 +36,7 @@ public:
 	bool GetIsShop() { return IsShopNpc; }
 	FString GetName() { return NpcName; }
 	int GetNpcId() { return NpcId; }
+	TArray<int> GetPossibleQuests() { return PossibleQuests; }
 	
 	
 	UPROPERTY(EditAnywhere)
