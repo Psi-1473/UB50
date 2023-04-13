@@ -28,6 +28,7 @@ struct Quest
 	int TargetNum;
 	int NowNum;
 	int Next;
+	bool CanClear = false;
 };
 
 UCLASS()
