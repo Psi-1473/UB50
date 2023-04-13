@@ -29,7 +29,7 @@ public:
 	void ChangeInfo(int QuestId);
 private:
 	void CreateSlot();
-
+	void SetGoalAndNow(int QuestId);
 
 
 private:

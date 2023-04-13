@@ -5,6 +5,7 @@
 #include "../MyGameMode.h"
 #include "Manager_Quest.h"
 #include "Components/ScrollBox.h"
+#include "Components/TextBlock.h"
 #include "Widget_PlayerQuestList.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -24,7 +25,19 @@ void UWidget_PlayerQuest::NativeConstruct()
 
 void UWidget_PlayerQuest::ChangeInfo(int QuestId)
 {
-	UE_LOG(LogTemp, Warning, TEXT("ChangeInfo!!"));
+	AMyGameMode* GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	FString Type = GameMode->QuestManager->GetQuest(QuestId).Type;
+	FString Sub = GameMode->QuestManager->GetQuest(QuestId).Sub;
+
+	Txt_Sub->SetText(FText::FromString(Sub));
+
+	int Id;
+	if (Type == "Normal")
+		Id = -1;
+	else
+		Id = QuestId;
+
+	SetGoalAndNow(Id);
 }
 
 void UWidget_PlayerQuest::CreateSlot()
@@ -41,4 +54,19 @@ void UWidget_PlayerQuest::CreateSlot()
 		QuestSlot->SetParentUI(this);
 		QuestSlot->SetQuestId(GameMode->QuestManager->GetStartedQuest()[i]);
 	}
+}
+
+void UWidget_PlayerQuest::SetGoalAndNow(int QuestId)
+{
+	AMyGameMode* GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	int Goal;
+
+	if (QuestId == -1)
+		Goal = 0;
+	else
+		Goal = GameMode->QuestManager->GetQuest(QuestId).TargetNum;
+
+	Txt_Goal->SetText(FText::AsNumber(Goal));
+	Txt_Now->SetText(FText::AsNumber(0));
+
 }
