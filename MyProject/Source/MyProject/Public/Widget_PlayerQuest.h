@@ -27,9 +27,11 @@ protected:
 
 public:
 	void ChangeInfo(int QuestId);
+	void AddNowNum();
 private:
 	void CreateSlot();
 	void SetGoalAndNow(int QuestId);
+
 
 
 private:

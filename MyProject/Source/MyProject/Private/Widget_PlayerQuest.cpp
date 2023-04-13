@@ -62,11 +62,17 @@ void UWidget_PlayerQuest::SetGoalAndNow(int QuestId)
 	int Goal;
 
 	if (QuestId == -1)
-		Goal = 0;
+	{
+		Txt_Goal->SetText(FText::FromString(TEXT("")));
+		Txt_Now->SetText(FText::FromString(TEXT("")));
+	}
 	else
+	{
 		Goal = GameMode->QuestManager->GetQuest(QuestId).TargetNum;
+		Txt_Goal->SetText(FText::AsNumber(Goal));
+		Txt_Now->SetText(FText::AsNumber(0));
+	}
 
-	Txt_Goal->SetText(FText::AsNumber(Goal));
-	Txt_Now->SetText(FText::AsNumber(0));
+	
 
 }

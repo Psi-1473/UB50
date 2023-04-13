@@ -26,6 +26,7 @@ struct Quest
 	bool Cleared;
 	int TargetId;
 	int TargetNum;
+	int NowNum;
 	int Next;
 };
 

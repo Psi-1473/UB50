@@ -41,6 +41,7 @@ void UManager_Quest::LoadQuestData()
 				jsonItem->TryGetBoolField(TEXT("Cleared"), q.Cleared);
 				jsonItem->TryGetNumberField(TEXT("TargetId"), q.TargetId);
 				jsonItem->TryGetNumberField(TEXT("TargetNum"), q.TargetNum);
+				jsonItem->TryGetNumberField(TEXT("NowNum"), q.NowNum);
 				jsonItem->TryGetNumberField(TEXT("Next"), q.Next);
 
 				Quests.Add(q.Id, q);

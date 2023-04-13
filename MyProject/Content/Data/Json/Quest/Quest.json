@@ -14,6 +14,7 @@
       "Cleared": "False",
       "TargetId": -1,
       "TargetNum": 0,
+      "NowNum": 0,
       "Next": 1
     },
     {
@@ -30,6 +31,7 @@
       "Cleared": "False",
       "TargetId": 0,
       "TargetNum": 5,
+      "NowNum": 0,
       "Next": 2
     }
   ]
