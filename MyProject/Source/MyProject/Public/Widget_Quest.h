@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "../Npc.h"
 #include "Widget_Quest.generated.h"
 
 /**
@@ -22,7 +23,6 @@ public:
 public:
 	void SetNpcId();
 	void CreateQuestList();
-
 
 private:
 	int NpcId;

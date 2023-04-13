@@ -20,6 +20,9 @@ public:
 
 private:
 	void Init();
+
+	UFUNCTION()
+	void PopupYesOrNo();
 private:
 	int QuestId;
 
@@ -28,4 +31,7 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* Txt_Sub;
+
+	UPROPERTY(meta = (BindWidget))
+	class UButton* Btn_Quest;
 };

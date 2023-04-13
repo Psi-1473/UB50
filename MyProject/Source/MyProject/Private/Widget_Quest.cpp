@@ -26,7 +26,6 @@ void UWidget_Quest::NativeConstruct()
 
 void UWidget_Quest::SetNpcId()
 {
-	;
 	UE_LOG(LogTemp, Warning, TEXT("Open Quest UI : Interacting"));
 }
 

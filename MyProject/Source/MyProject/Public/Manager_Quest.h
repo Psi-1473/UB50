@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+#include "../Npc.h"
 #include "Manager_Quest.generated.h"
 
 /**
@@ -39,14 +40,26 @@ public:
 public:
 	void LoadQuestData();
 	void SpreadToNpc();
+	void PlayerTakesQuest(int QuestId);
+
 
 	Quest GetQuest(int id) { return Quests[id]; }
 	TArray<Quest> GetQuestsByNpcId(int NpcId);
+	TArray<int> GetStartedQuest() { return StartedQuests; }
 
+	void AddNpc(int Key, ANpc* Npc) { NpcsInField.Add(Key, Npc); }
+	class ANpc* GetNpcById(int Key) { return NpcsInField[Key]; }
+
+private:
+	TMap<int, ANpc*> NpcsInField;
 private:
 	FString FileStr;
 	FString FilePath;
 	TSharedPtr<FJsonObject> jsonObj;
+
+	TArray<int> StartedQuests;
+	TArray<int> ClearedQuests;
+
 
 	TMap<int, Quest> Quests;
 	TMap<int, TArray<Quest>> QuestsByNpcId;

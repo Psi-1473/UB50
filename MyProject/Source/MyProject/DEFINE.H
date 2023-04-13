@@ -38,11 +38,12 @@ const enum STATE
 UENUM(BlueprintType)
 enum class UIType : uint8
 {
-	NONE = 0 UMETA(DisplayName = "None"),
+	YESNO = 0 UMETA(DisplayName = "YesOrNo"),
 	INVENTORY = 1 UMETA(DisplayName = "Inventory"),
 	CONVERSATION = 2 UMETA(DisplayName = "Conversation"),
 	SHOP = 3 UMETA(DisplayName = "Shop"),
 	QUEST = 4 UMETA(DisplayName = "Quest"),
+	PLAYERQUEST = 5 UMETA(DisplayName = "PlayerQuest"),
 };
 const enum BossCoolTime
 {
@@ -59,4 +60,10 @@ const enum BossSkill
 	SKILL_2 = 2,
 	SKILL_3 = 3,
 	SKILL_4 = 4,
+};
+
+enum class YesOrNoType
+{
+	EXIT = 0,
+	QUEST = 1,
 };

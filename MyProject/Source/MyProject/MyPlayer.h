@@ -88,6 +88,8 @@ public:
 	class ANpc* GetInteractNpc() { return CanInteractNpc; }
 	class APortal* GetPortal() { return Portal; }
 
+	
+
 	bool GetOnInventory() { return bOnInventory; }
 	bool GetInteracting() { return bInteract; }
 	
@@ -158,7 +160,6 @@ private:
 
 private:
 	TArray<int32> SkillCoolTimes;
-
 
 public:
 	TArray<FWeaponData*> WeaponList;

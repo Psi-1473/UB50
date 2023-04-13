@@ -50,6 +50,9 @@ void ANpc::BeginPlay()
 	Super::BeginPlay();
 	InitNpcId();
 	InitQuestInfo();
+
+	AMyGameMode* GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	GameMode->QuestManager->AddNpc(NpcId, this);
 }
 
 // Called every frame

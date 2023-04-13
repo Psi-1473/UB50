@@ -18,7 +18,7 @@ class MYPROJECT_API UManager_UI : public UObject
 public:
 	UManager_UI();
 
-	void PopupUI(UWorld* World, UIType MyUIType);
+	UUserWidget* PopupUI(UWorld* World, UIType MyUIType);
 	void CloseUI(UIType MyUIType);
 
 
@@ -34,6 +34,9 @@ public:
 
 private:
 
+	TSubclassOf<UUserWidget> YesNo;
+	UUserWidget* UIYesNo;
+
 	TSubclassOf<UUserWidget> Inventory;
 	UUserWidget* Inven;
 	int InvenNum;
@@ -46,6 +49,9 @@ private:
 
 	TSubclassOf<UUserWidget> QuestUi;
 	UUserWidget* UIQuest;
+
+	TSubclassOf<UUserWidget> PlayerQuest;
+	UUserWidget* UIPlayerQuest;
 
 	TArray<UUserWidget*> Widgets;
 };

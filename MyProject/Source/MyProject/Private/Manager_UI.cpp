@@ -31,6 +31,16 @@ UManager_UI::UManager_UI()
 	{
 		QuestUi = QW.Class;
 	}
+	static ConstructorHelpers::FClassFinder<UUserWidget> YW(TEXT("WidgetBlueprint'/Game/UI/WBP_YesOrNo.WBP_YesOrNo_C'"));
+	if (YW.Succeeded())
+	{
+		YesNo = YW.Class;
+	}
+	static ConstructorHelpers::FClassFinder<UUserWidget> PQW(TEXT("WidgetBlueprint'/Game/UI/WBP_PlayerQuest.WBP_PlayerQuest_C'"));
+	if (PQW.Succeeded())
+	{
+		PlayerQuest = PQW.Class;
+	}
 }
 
 void UManager_UI::UpdateInventory(int NextSlot)
@@ -68,27 +78,55 @@ void UManager_UI::ChangeInvenGold(int Value)
 	MyInven->ChangeGold(Value);
 }
 
-void UManager_UI::PopupUI(UWorld* World, UIType MyUIType)
+UUserWidget* UManager_UI::PopupUI(UWorld* World, UIType MyUIType)
 {
 	switch (MyUIType)
 	{
+	case UIType::YESNO:
+		UIYesNo = CreateWidget(World, YesNo);
+		UIYesNo->AddToViewport();
+		return UIYesNo;
+		break;
 	case UIType::INVENTORY:
 		Inven = CreateWidget(World, Inventory);
 		Inven->AddToViewport();
+		return Inven;
 		break;
 	case UIType::CONVERSATION:
 		Conv = CreateWidget(World, Conversation);
 		Conv->AddToViewport();
+		return Conv;
 		break;
 	case UIType::SHOP:
 		Shop = CreateWidget(World, ShopUi);
 		Shop->AddToViewport();
+		return Shop;
 		break;
 	case UIType::QUEST:
 		UIQuest = CreateWidget(World, QuestUi);
 		UIQuest->AddToViewport();
+		return UIQuest;
 		break;
-
+	case UIType::PLAYERQUEST:
+		if (UIPlayerQuest != nullptr)
+		{
+			CloseUI(UIType::PLAYERQUEST);
+			UE_LOG(LogTemp, Log, TEXT("Player Quest UI Close!"));
+			UIPlayerQuest = nullptr;
+			World->GetFirstPlayerController()->SetShowMouseCursor(false);
+			return nullptr;
+		}
+		else
+		{
+			UIPlayerQuest = CreateWidget(World, PlayerQuest);
+			UIPlayerQuest->AddToViewport();
+			UE_LOG(LogTemp, Log, TEXT("Player Quest UI Open!"));
+			return UIQuest;
+		}
+		break;
+	default:
+		return nullptr;
+		break;
 	}
 	
 	//World->GetFirstPlayerController()->SetShowMouseCursor(true);
@@ -99,6 +137,9 @@ void UManager_UI::CloseUI(UIType MyUIType)
 {
 	switch (MyUIType)
 	{
+	case UIType::YESNO:
+		RemoveUI(UIYesNo);
+		break;
 	case UIType::INVENTORY:
 		RemoveUI(Inven);
 		break;
@@ -112,6 +153,8 @@ void UManager_UI::CloseUI(UIType MyUIType)
 	case UIType::QUEST:
 		if (UIQuest == nullptr) return;
 		RemoveUI(UIQuest);
+	case UIType::PLAYERQUEST:
+		RemoveUI(UIPlayerQuest);
 	default:
 		break;
 	}
@@ -121,7 +164,6 @@ void UManager_UI::RemoveUI(UUserWidget* Widget)
 {
 	if (Widget == nullptr)
 		return;
-
 
 	Widget->RemoveFromViewport();
 	Widget = nullptr;

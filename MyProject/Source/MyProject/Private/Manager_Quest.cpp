@@ -2,6 +2,8 @@
 
 
 #include "Manager_Quest.h"
+#include "../MyPlayer.h"
+#include "Kismet/GameplayStatics.h"
 #include "Dom/JsonValue.h"
 
 
@@ -61,6 +63,15 @@ void UManager_Quest::LoadQuestData()
 
 void UManager_Quest::SpreadToNpc()
 {
+}
+
+void UManager_Quest::PlayerTakesQuest(int QuestId)
+{
+	StartedQuests.Add(QuestId);
+	int NpcId = Quests[QuestId].NpcId;
+	UE_LOG(LogTemp, Log, TEXT("ACCESS NPC ID : %d"), NpcId);
+	UE_LOG(LogTemp, Log, TEXT("REMOVE QUEST ID : %d"), QuestId);
+	GetNpcById(NpcId)->RemovePossibleQuest(QuestId);
 }
 
 TArray<Quest> UManager_Quest::GetQuestsByNpcId(int NpcId)

@@ -30,6 +30,7 @@ void AMyPlayerController::SetupInputComponent()
 	InputComponent->BindAction(TEXT("Skill2"), EInputEvent::IE_Pressed, this, &AMyPlayerController::ClickQSkill);
 	InputComponent->BindAction(TEXT("Skill3"), EInputEvent::IE_Pressed, this, &AMyPlayerController::ClickESkill);
 	InputComponent->BindAction(TEXT("Inventory"), EInputEvent::IE_Pressed, this, &AMyPlayerController::PopupInventory);
+	InputComponent->BindAction(TEXT("Quest"), EInputEvent::IE_Pressed, this, &AMyPlayerController::PopupQuest);
 	InputComponent->BindAction(TEXT("Interact"), EInputEvent::IE_Pressed, this, &AMyPlayerController::Interact);
 }
 
@@ -172,5 +173,13 @@ void AMyPlayerController::PopupInventory()
 		MyPlayer->OpenUI(UIType::INVENTORY);
 		MyPlayer->SetOnInventory(true);
 	}
+}
+
+void AMyPlayerController::PopupQuest()
+{
+	if (MyPlayer == nullptr)
+		MyPlayer = Cast<AMyPlayer>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+
+	MyPlayer->OpenUI(UIType::PLAYERQUEST);
 }
 
