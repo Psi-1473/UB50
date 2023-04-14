@@ -4,6 +4,8 @@
 #include "Monster.h"
 #include "EnemyAnimInstance.h"
 #include "MyPlayer.h"
+#include "MyGameMode.h"
+#include "Manager_Quest.h"
 #include "EnemyStatComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Widget_Hp.h"
@@ -128,8 +130,11 @@ void AMonster::AttackCheck()
 
 void AMonster::Die(AMyPlayer* Player)
 {
+	UseGameMode
+	GameMode->QuestManager->AddQuestTargetNum("Hunting", Stat->GetId());
 	UE_LOG(LogTemp, Warning, TEXT("Die"));
 	IsDied = true;
+	
 	
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);

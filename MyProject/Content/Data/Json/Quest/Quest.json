@@ -32,6 +32,23 @@
       "TargetId": 1,
       "TargetNum": 1,
       "NowNum": 0,
+      "Next": 2
+    },
+    {
+      "Id": 2,
+      "NpcId": 1,
+      "CompleteNpcId": 1,
+      "Type": "Hunting",
+      "Name": "사냥해보기",
+      "Sub": "필드에 나가 몬스터를 잡자.",
+      "ConditionSub": "퀘스트3",
+      "Gold": 500,
+      "Exp": 0,
+      "Locked": "True",
+      "Cleared": "False",
+      "TargetId": 1,
+      "TargetNum": 5,
+      "NowNum": 0,
       "Next": -1
     }
   ]

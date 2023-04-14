@@ -101,6 +101,7 @@ void UManager_Quest::ClearQuest(int QuestId)
 	StartedQuests.RemoveAt(Idx);
 	GetNpcById(NpcId)->RemoveCanClearQuest(QuestId);
 	UnlockNextQuest(QuestId);
+	UE_LOG(LogTemp, Warning, TEXT(" StartedQuest Num : %d"), StartedQuests.Num());
 }
 
 void UManager_Quest::UnlockNextQuest(int QuestId)
@@ -124,6 +125,7 @@ void UManager_Quest::AddQuestTargetNum(FString QType, int TargetId)
 		if (StartedQuests[i].TargetId == TargetId)
 		{
 			StartedQuests[i].NowNum++;
+			UE_LOG(LogTemp, Warning, TEXT(" TargetNum Up "));
 			if (StartedQuests[i].NowNum >= StartedQuests[i].TargetNum)
 				StartedToClear(StartedQuests[i].Id);
 		}

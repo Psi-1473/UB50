@@ -32,6 +32,9 @@ struct FEnemyData : public FTableRowBase
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Id;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Name;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

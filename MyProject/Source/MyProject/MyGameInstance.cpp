@@ -24,7 +24,7 @@ UMyGameInstance::UMyGameInstance()
 	ArmorImage = ArmorImg.Object;
 	UseItemImage = UseItemImg.Object;
 }
-
+ 
 void UMyGameInstance::Init()
 {
 	UGameInstance::Init();

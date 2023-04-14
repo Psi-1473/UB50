@@ -51,7 +51,7 @@ void UWidget_PlayerQuest::RefreshStarted()
 
 	UseGameMode
 	SlotsMakeEmpty();
-	int Number = GameMode->QuestManager->GetStartedQuests().Num();
+	int Number = GameMode->QuestManager->GetStartedQuests().Num();//여기서 에러 터졌음
 	for (int i = 0; i < Number; i++)
 	{
 		Slots.Add(CreateWidget(GetWorld(), BP_Slot));

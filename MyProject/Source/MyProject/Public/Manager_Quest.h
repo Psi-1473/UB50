@@ -64,8 +64,6 @@ public:
 
 	int FindQuestIndexById(TArray<Quest> Arr, int QuestId);
 
-	
-	
 
 private:
 	TMap<int, ANpc*> NpcsInField;

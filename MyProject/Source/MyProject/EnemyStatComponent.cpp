@@ -39,6 +39,7 @@ void UEnemyStatComponent::SetMonster(FString MobName)
 		auto StatData = MyGameInstance->GetEnemyData(MobName);
 		if (StatData)
 		{
+			Id = StatData->Id;
 			Name = StatData->Name;
 			Level = StatData->Level;
 			MaxHp = StatData->MaxHp;

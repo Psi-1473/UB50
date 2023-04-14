@@ -25,8 +25,8 @@ public:
 
 	UFUNCTION()
 	void ChangeInfo();
-
 	void ChangeName();
+
 private:
 	int QuestId;
 

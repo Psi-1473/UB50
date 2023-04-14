@@ -30,6 +30,7 @@ public:
 	FHpDecreased OnHpDecreased;
 
 public:
+	int32 GetId() { return Id; }
 	FString GetName() { return Name; }
 	int32 GetLevel() { return Level; }
 	int32 GetHp() { return Hp; }
@@ -40,6 +41,9 @@ public:
 	float GetHpRatio() { return Hp / (float)MaxHp; }
 
 private:
+	UPROPERTY(EditAnywhere, Category = Stat)
+	int32 Id;
+
 	UPROPERTY(EditAnywhere, Category = Stat)
 	FString Name;
 
