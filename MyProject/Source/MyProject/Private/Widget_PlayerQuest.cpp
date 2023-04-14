@@ -7,6 +7,7 @@
 #include "Components/ScrollBox.h"
 #include "Components/TextBlock.h"
 #include "Widget_PlayerQuestList.h"
+#include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
 
 UWidget_PlayerQuest::UWidget_PlayerQuest(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
@@ -21,6 +22,9 @@ UWidget_PlayerQuest::UWidget_PlayerQuest(const FObjectInitializer& ObjectInitial
 void UWidget_PlayerQuest::NativeConstruct()
 {
 	CreateSlot();
+
+	Btn_Started->OnClicked.AddDynamic(this, &UWidget_PlayerQuest::RefreshStarted);
+	Btn_Completed->OnClicked.AddDynamic(this, &UWidget_PlayerQuest::RefreshCleared);
 }
 
 void UWidget_PlayerQuest::ChangeInfo(int QuestId)
@@ -40,20 +44,56 @@ void UWidget_PlayerQuest::ChangeInfo(int QuestId)
 	SetGoalAndNow(Id);
 }
 
-void UWidget_PlayerQuest::CreateSlot()
+void UWidget_PlayerQuest::RefreshStarted()
 {
-	AMyGameMode* GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (bStartedQuest)
+		return;
 
-	int Number = GameMode->QuestManager->GetStartedQuest().Num();
-
+	UseGameMode
+	SlotsMakeEmpty();
+	int Number = GameMode->QuestManager->GetStartedQuests().Num();
 	for (int i = 0; i < Number; i++)
 	{
-		Slot = CreateWidget(GetWorld(), BP_Slot);
-		ScrollBox_List->AddChild(Slot);
-		auto QuestSlot = Cast<UWidget_PlayerQuestList>(Slot);
+		Slots.Add(CreateWidget(GetWorld(), BP_Slot));
+		ScrollBox_List->AddChild(Slots.Top());
+		auto QuestSlot = Cast<UWidget_PlayerQuestList>(Slots.Top());
 		QuestSlot->SetParentUI(this);
-		QuestSlot->SetQuestId(GameMode->QuestManager->GetStartedQuest()[i]);
+		QuestSlot->SetQuestId(GameMode->QuestManager->GetStartedQuests()[i].Id);
 	}
+
+	bStartedQuest = true;
+}
+
+void UWidget_PlayerQuest::RefreshCleared()
+{
+	if (!bStartedQuest)
+		return;
+
+	UseGameMode
+	SlotsMakeEmpty();
+	int Number = GameMode->QuestManager->GetClearedQuests().Num();
+	for (int i = 0; i < Number; i++)
+	{
+		Slots.Add(CreateWidget(GetWorld(), BP_Slot));
+		ScrollBox_List->AddChild(Slots.Top());
+		auto QuestSlot = Cast<UWidget_PlayerQuestList>(Slots.Top());
+		QuestSlot->SetParentUI(this);
+		QuestSlot->SetQuestId(GameMode->QuestManager->GetClearedQuests()[i].Id);
+	}
+	bStartedQuest = false;
+}
+void UWidget_PlayerQuest::SlotsMakeEmpty()
+{
+	if (Slots.IsEmpty())
+		return;
+
+	for(int i = 0; i < Slots.Num(); i++)
+		Slots.Pop()->RemoveFromViewport();
+}
+void UWidget_PlayerQuest::CreateSlot()
+{
+	bStartedQuest = false;
+	RefreshStarted();
 }
 
 void UWidget_PlayerQuest::SetGoalAndNow(int QuestId)
@@ -72,7 +112,4 @@ void UWidget_PlayerQuest::SetGoalAndNow(int QuestId)
 		Txt_Goal->SetText(FText::AsNumber(Goal));
 		Txt_Now->SetText(FText::AsNumber(0));
 	}
-
-	
-
 }

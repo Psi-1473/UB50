@@ -23,6 +23,7 @@ public:
 public:
 	void SetNpcId();
 	void CreateQuestList();
+	void Refresh();
 
 private:
 	int NpcId;
@@ -36,6 +37,6 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> BP_Slot;
-	UUserWidget* Slot;
+	TArray<UUserWidget*> Slots;
 
 };

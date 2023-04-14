@@ -36,4 +36,6 @@ private:
 	class UTextBlock* Txt_Name;
 	UPROPERTY(meta = (BindWidget))
 	class UButton* Btn_Quest;
+	UPROPERTY(meta = (BindWidget))
+	class UImage* Img_Clear;
 };

@@ -28,7 +28,8 @@ public:
 	UFUNCTION()
 	void OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 	void RemovePossibleQuest(int QuestId) { PossibleQuests.Remove(QuestId); }
-
+	void RemoveCanClearQuest(int QuestId) { CanClearQuests.Remove(QuestId); }
+	void AddToCanClearQuest(int QuestId);
 
 	int GetTotalItemNum();
 	int GetItem(int Id);
@@ -37,6 +38,7 @@ public:
 	FString GetName() { return NpcName; }
 	int GetNpcId() { return NpcId; }
 	TArray<int> GetPossibleQuests() { return PossibleQuests; }
+	TArray<int> GetCanClearQuests() { return CanClearQuests; }
 	
 	
 	UPROPERTY(EditAnywhere)
@@ -66,7 +68,7 @@ private:
 	bool IsShopNpc;
 
 	TArray<int> PossibleQuests;
-	//TArray<int> StartedQuests;
+	TArray<int> CanClearQuests;
 	//TArray<int> EndedQuests;
 	TArray<int> ImpossibleQuests;
 

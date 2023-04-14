@@ -68,11 +68,61 @@ void UManager_Quest::SpreadToNpc()
 
 void UManager_Quest::PlayerTakesQuest(int QuestId)
 {
-	StartedQuests.Add(QuestId);
-	int NpcId = Quests[QuestId].NpcId;
-	UE_LOG(LogTemp, Log, TEXT("ACCESS NPC ID : %d"), NpcId);
-	UE_LOG(LogTemp, Log, TEXT("REMOVE QUEST ID : %d"), QuestId);
+	Quest NewQuest = Quests[QuestId];
+
+	StartedQuests.Add(NewQuest);
+	int NpcId = NewQuest.NpcId;
 	GetNpcById(NpcId)->RemovePossibleQuest(QuestId);
+
+	if (NewQuest.Type == "Normal")
+		StartedToClear(NewQuest.Id);
+
+
+}
+
+void UManager_Quest::StartedToClear(int QuestId)
+{
+	int Idx = FindQuestById(StartedQuests, QuestId);
+	StartedQuests[Idx].CanClear = true;
+
+	GetNpcById(StartedQuests[Idx].CompleteNpcId)->AddToCanClearQuest(QuestId);
+	// 완료 가능 NPC의 CanClearedQuest에 추가
+	UE_LOG(LogTemp, Warning, TEXT(" StartedQuest -> CanClear "));
+}
+
+void UManager_Quest::ClearQuest(int QuestId)
+{
+	int Idx = FindQuestById(StartedQuests, QuestId);
+	if (Idx == -1)
+		return;
+	int NpcId = Quests[QuestId].CompleteNpcId;
+
+	ClearedQuests.Add(Quests[QuestId]);
+	StartedQuests.RemoveAt(Idx);
+	GetNpcById(NpcId)->RemoveCanClearQuest(QuestId);
+}
+
+Quest UManager_Quest::GetStartedQuestById(int QuestId)
+{
+	int Idx = FindQuestById(StartedQuests, QuestId);
+	if (Idx == -1)
+	{
+		Quest q;
+		q.Id = -1;
+		return q;
+	}
+
+	return StartedQuests[Idx];
+}
+
+int UManager_Quest::FindQuestById(TArray<Quest> Arr, int QuestId)
+{
+	for (int i = 0; i < Arr.Num(); i++)
+	{
+		if (Arr[i].Id == QuestId)
+			return i;
+	}
+	return -1;
 }
 
 TArray<Quest> UManager_Quest::GetQuestsByNpcId(int NpcId)

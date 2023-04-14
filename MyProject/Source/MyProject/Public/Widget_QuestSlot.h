@@ -17,6 +17,7 @@ protected:
 	virtual void NativeConstruct() override;
 public:
 	void SetId(int Id);
+	void SetClear() { bCleared = true; }
 
 private:
 	void Init();
@@ -25,6 +26,7 @@ private:
 	void PopupYesOrNo();
 private:
 	int QuestId;
+	bool bCleared;
 
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* Txt_Name;
@@ -34,4 +36,7 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	class UButton* Btn_Quest;
+
+	UPROPERTY(meta = (BindWidget))
+	class UImage* Img_Clear;
 };

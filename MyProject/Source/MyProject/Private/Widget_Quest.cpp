@@ -31,19 +31,39 @@ void UWidget_Quest::SetNpcId()
 
 void UWidget_Quest::CreateQuestList()
 {
-	AMyGameMode* GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	Slots.Empty();
+	UseGameMode
 	if (GameMode->QuestManager->GetQuestsByNpcId(NpcId).IsEmpty())
 		return;
 	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	auto MyPlayer = Cast<AMyPlayer>(Char);
 
 	TArray<int> QuestIds = MyPlayer->GetInteractNpc()->GetPossibleQuests();
-
+	TArray<int> CanQuestIds = MyPlayer->GetInteractNpc()->GetCanClearQuests();
+	for (int i = 0; i < CanQuestIds.Num(); i++)
+	{
+		Slots.Add(CreateWidget(GetWorld(), BP_Slot));
+		ScrollBox_ListBack->AddChild(Slots.Top());
+		auto QuestSlot = Cast<UWidget_QuestSlot>(Slots.Top());
+		QuestSlot->SetClear();
+		QuestSlot->SetId(CanQuestIds[i]);
+		UE_LOG(LogTemp, Warning, TEXT(" Set Clear Quest! "));
+	}
 	for (int i = 0; i < QuestIds.Num(); i++)
 	{
-		Slot = CreateWidget(GetWorld(), BP_Slot);
-		ScrollBox_ListBack->AddChild(Slot);
-		auto QuestSlot = Cast<UWidget_QuestSlot>(Slot);
+		Slots.Add(CreateWidget(GetWorld(), BP_Slot));
+		ScrollBox_ListBack->AddChild(Slots.Top());
+		auto QuestSlot = Cast<UWidget_QuestSlot>(Slots.Top());
 		QuestSlot->SetId(QuestIds[i]);
 	}
+}
+
+void UWidget_Quest::Refresh()
+{
+	for (int i = 0; i < Slots.Num(); i++)
+	{
+		Slots.Pop()->RemoveFromViewport();
+	}
+
+	CreateQuestList();
 }

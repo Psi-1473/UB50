@@ -20,7 +20,7 @@ public:
 
 	UUserWidget* PopupUI(UWorld* World, UIType MyUIType);
 	void CloseUI(UIType MyUIType);
-
+	void RefreshUI(); // 나중에 타입 추가하기
 
 	// 인벤토리
 	void UpdateInventory(int NextSlot);

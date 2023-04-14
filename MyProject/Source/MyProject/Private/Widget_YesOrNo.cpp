@@ -26,6 +26,9 @@ void UWidget_YesOrNo::ClickYesButton()
 	case YesOrNoType::QUEST:
 		TakeQuest();
 		break;
+	case YesOrNoType::CLEAR:
+		ClearQuest();
+		break;
 	default:
 		break;
 	}
@@ -33,13 +36,24 @@ void UWidget_YesOrNo::ClickYesButton()
 
 void UWidget_YesOrNo::ClickNoButton()
 {
-	AMyGameMode* GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	UseGameMode
 	GameMode->UIManager->CloseUI(UIType::YESNO);
 }
 
 void UWidget_YesOrNo::TakeQuest()
 {
-	AMyGameMode* GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	UseGameMode
 	GameMode->QuestManager->PlayerTakesQuest(QuestId);
 	GameMode->UIManager->CloseUI(UIType::YESNO);
+	GameMode->UIManager->RefreshUI();
+	UE_LOG(LogTemp, Warning, TEXT(" Take Quest! "));
+}
+
+void UWidget_YesOrNo::ClearQuest()
+{
+	UseGameMode
+	GameMode->QuestManager->ClearQuest(QuestId);
+	GameMode->UIManager->CloseUI(UIType::YESNO);
+	GameMode->UIManager->RefreshUI();
+	UE_LOG(LogTemp, Warning, TEXT(" Clear Quest! "));
 }

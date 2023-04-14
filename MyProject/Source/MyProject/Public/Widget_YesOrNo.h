@@ -25,6 +25,8 @@ protected:
 	void ClickNoButton();
 
 	void TakeQuest();
+	void ClearQuest();
+
 public:
 	void SetValue(YesOrNoType TypeValue) { MyType = TypeValue; }
 	void SetQuestId(int Value) { QuestId = Value; }

@@ -95,6 +95,12 @@ void ANpc::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 	}
 }
 
+void ANpc::AddToCanClearQuest(int QuestId)
+{
+	CanClearQuests.Add(QuestId);
+	// 만약에 처음 추가된거면 Npc 머리 위에 마크 띄우기
+}
+
 int ANpc::GetTotalItemNum()
 {
 	if(ItemType == 0)

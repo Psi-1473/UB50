@@ -27,7 +27,17 @@ protected:
 
 public:
 	void ChangeInfo(int QuestId);
-	void AddNowNum();
+
+	UFUNCTION()
+	void RefreshStarted();
+
+	UFUNCTION()
+	void RefreshCleared();
+
+	void SlotsMakeEmpty();
+	//void AddNowNum();
+
+
 private:
 	void CreateSlot();
 	void SetGoalAndNow(int QuestId);
@@ -55,5 +65,7 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> BP_Slot;
-	UUserWidget* Slot;
+	TArray<UUserWidget*> Slots;
+
+	bool bStartedQuest = true;
 };

@@ -6,6 +6,7 @@
 #include "Components/WidgetComponent.h"
 #include "../Widget_Inventory.h"
 #include "../Widget_InvenSlot.h"
+#include "Widget_Quest.h"
 #include "../MyGameInstance.h"
 #include "../Define.h"
 
@@ -112,8 +113,8 @@ UUserWidget* UManager_UI::PopupUI(UWorld* World, UIType MyUIType)
 		{
 			CloseUI(UIType::PLAYERQUEST);
 			UE_LOG(LogTemp, Log, TEXT("Player Quest UI Close!"));
-			UIPlayerQuest = nullptr;
 			World->GetFirstPlayerController()->SetShowMouseCursor(false);
+			UIPlayerQuest = nullptr;
 			return nullptr;
 		}
 		else
@@ -158,6 +159,15 @@ void UManager_UI::CloseUI(UIType MyUIType)
 	default:
 		break;
 	}
+}
+
+void UManager_UI::RefreshUI()
+{
+	// 일단 임시로 Quest만
+	if (UIQuest == nullptr)
+		return;
+
+	Cast<UWidget_Quest>(UIQuest)->Refresh();
 }
 
 void UManager_UI::RemoveUI(UUserWidget* Widget)

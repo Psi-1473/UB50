@@ -4,6 +4,7 @@
 #include "Widget_PlayerQuestList.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
+#include "Components/Image.h"
 #include "Widget_PlayerQuest.h"
 #include "../MyGameMode.h"
 #include "Kismet/GameplayStatics.h"
@@ -25,4 +26,9 @@ void UWidget_PlayerQuestList::ChangeName()
 	FString Name = GameMode->QuestManager->GetQuest(QuestId).Name;
 
 	Txt_Name->SetText(FText::FromString(Name));
+
+	if (GameMode->QuestManager->GetStartedQuestById(QuestId).CanClear)
+		return;
+
+	Img_Clear->SetVisibility(ESlateVisibility::Hidden);
 }

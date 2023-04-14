@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 
+#define UseGameMode AMyGameMode* GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 /**
  * 
  */
@@ -66,4 +67,5 @@ enum class YesOrNoType
 {
 	EXIT = 0,
 	QUEST = 1,
+	CLEAR = 2,
 };
