@@ -100,6 +100,7 @@ void UWidget_PlayerQuest::SetGoalAndNow(int QuestId)
 {
 	AMyGameMode* GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	int Goal;
+	int Now;
 
 	if (QuestId == -1)
 	{
@@ -109,7 +110,8 @@ void UWidget_PlayerQuest::SetGoalAndNow(int QuestId)
 	else
 	{
 		Goal = GameMode->QuestManager->GetQuest(QuestId).TargetNum;
+		Now = GameMode->QuestManager->GetStartedQuestById(QuestId).NowNum;
 		Txt_Goal->SetText(FText::AsNumber(Goal));
-		Txt_Now->SetText(FText::AsNumber(0));
+		Txt_Now->SetText(FText::AsNumber(Now));
 	}
 }

@@ -27,8 +27,13 @@ public:
 
 	UFUNCTION()
 	void OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+
+
 	void RemovePossibleQuest(int QuestId) { PossibleQuests.Remove(QuestId); }
 	void RemoveCanClearQuest(int QuestId) { CanClearQuests.Remove(QuestId); }
+	
+	void AddToPossibleQuest(int QuestId) { PossibleQuests.Add(QuestId); }
 	void AddToCanClearQuest(int QuestId);
 
 	int GetTotalItemNum();
@@ -69,9 +74,6 @@ private:
 
 	TArray<int> PossibleQuests;
 	TArray<int> CanClearQuests;
-	//TArray<int> EndedQuests;
-	TArray<int> ImpossibleQuests;
-
 
 private:
 	UPROPERTY(VisibleAnywhere)

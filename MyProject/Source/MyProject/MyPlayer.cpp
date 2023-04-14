@@ -8,6 +8,7 @@
 #include "PlayerStatComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Widget_PlayerMain.h"
+#include "DEFINE.H"
 #include "MyGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "Widget_Inventory.h"
@@ -480,6 +481,8 @@ void AMyPlayer::AddItemUse(int Id)
 	UseItemList[Idx] = GInstance->GetUseData(Id);
 	if (bOnInventory)
 		GameMode->UIManager->UpdateInventory(FindNextInvenIndex(USEITEM));
+
+	GameMode->QuestManager->AddQuestTargetNum("Collect", Id);
 }
 
 int AMyPlayer::FindNextInvenIndex(int ItemType)

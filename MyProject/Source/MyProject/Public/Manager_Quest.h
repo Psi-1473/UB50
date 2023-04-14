@@ -46,30 +46,38 @@ public:
 	void PlayerTakesQuest(int QuestId);
 	void StartedToClear(int QuestId);
 	void ClearQuest(int QuestId);
+	void UnlockNextQuest(int QuestId);
 
-	Quest GetStartedQuestById(int QuestId);
-	int FindQuestById(TArray<Quest> Arr, int QuestId);
+	void AddQuestTargetNum(FString QType, int TargetId);
+
+
+public:
+	void AddNpc(int Key, ANpc* Npc) { NpcsInField.Add(Key, Npc); }
+	class ANpc* GetNpcById(int Key) { return NpcsInField[Key]; }
 
 	Quest GetQuest(int id) { return Quests[id]; }
 	TArray<Quest> GetQuestsByNpcId(int NpcId);
+
 	TArray<Quest> GetStartedQuests() { return StartedQuests; }
+	Quest GetStartedQuestById(int QuestId);
 	TArray<Quest> GetClearedQuests() { return ClearedQuests; }
 
-	void AddNpc(int Key, ANpc* Npc) { NpcsInField.Add(Key, Npc); }
-	class ANpc* GetNpcById(int Key) { return NpcsInField[Key]; }
+	int FindQuestIndexById(TArray<Quest> Arr, int QuestId);
+
+	
 	
 
 private:
 	TMap<int, ANpc*> NpcsInField;
+
 private:
 	FString FileStr;
 	FString FilePath;
 	TSharedPtr<FJsonObject> jsonObj;
 
-	TArray<Quest> StartedQuests;
-	TArray<Quest> ClearedQuests;
-
-
 	TMap<int, Quest> Quests;
 	TMap<int, TArray<Quest>> QuestsByNpcId;
+
+	TArray<Quest> StartedQuests;
+	TArray<Quest> ClearedQuests;
 };

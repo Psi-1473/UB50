@@ -69,3 +69,10 @@ enum class YesOrNoType
 	QUEST = 1,
 	CLEAR = 2,
 };
+
+enum class QuestType
+{
+	NORMAL = 0,
+	HUNTING = 1,
+	COLLECT = 2,
+};

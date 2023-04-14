@@ -145,12 +145,8 @@ void ANpc::InitQuestInfo()
 
 	for (int i = 0; i < Quests.Num(); i++)
 	{
-		if (Quests[i].Locked)
-			ImpossibleQuests.Add(Quests[i].Id);
-		else
+		if(!Quests[i].Locked)
 			PossibleQuests.Add(Quests[i].Id);
 	}
-
-	UE_LOG(LogTemp, Warning, TEXT("Quest Info Init Test : %d, %d"), ImpossibleQuests[0], PossibleQuests[0]);
 }
 

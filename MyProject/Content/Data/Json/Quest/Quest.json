@@ -3,10 +3,10 @@
     {
       "Id": 0,
       "NpcId": 0,
-      "CompleteNpcId": 0,
+      "CompleteNpcId": 1,
       "Type": "Normal",
-      "Name": "퀘스트 테스트1",
-      "Sub": "퀘스트 1",
+      "Name": "잡화상을 찾아서",
+      "Sub": "바로 옆에 있는 잡화상에게 말을 걸어보자.",
       "ConditionSub": "퀘스트 1",
       "Gold": 100,
       "Exp": 0,
@@ -19,20 +19,20 @@
     },
     {
       "Id": 1,
-      "NpcId": 0,
-      "CompleteNpcId": 0,
-      "Type": "Hunting",
-      "Name": "퀘스트 테스트2",
-      "Sub": "퀘스트2",
+      "NpcId": 1,
+      "CompleteNpcId": 1,
+      "Type": "Collect",
+      "Name": "아이템 구입해보기",
+      "Sub": "잡화점에서 체력회복 포션을 구입해보자. ",
       "ConditionSub": "퀘스트2",
-      "Gold": 4500,
+      "Gold": 500,
       "Exp": 0,
       "Locked": "True",
       "Cleared": "False",
-      "TargetId": 0,
-      "TargetNum": 5,
+      "TargetId": 1,
+      "TargetNum": 1,
       "NowNum": 0,
-      "Next": 2
+      "Next": -1
     }
   ]
 }

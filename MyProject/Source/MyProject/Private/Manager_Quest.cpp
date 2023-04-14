@@ -76,13 +76,13 @@ void UManager_Quest::PlayerTakesQuest(int QuestId)
 
 	if (NewQuest.Type == "Normal")
 		StartedToClear(NewQuest.Id);
-
-
 }
 
 void UManager_Quest::StartedToClear(int QuestId)
 {
-	int Idx = FindQuestById(StartedQuests, QuestId);
+	int Idx = FindQuestIndexById(StartedQuests, QuestId);
+	if (StartedQuests[Idx].CanClear)
+		return;
 	StartedQuests[Idx].CanClear = true;
 
 	GetNpcById(StartedQuests[Idx].CompleteNpcId)->AddToCanClearQuest(QuestId);
@@ -92,7 +92,7 @@ void UManager_Quest::StartedToClear(int QuestId)
 
 void UManager_Quest::ClearQuest(int QuestId)
 {
-	int Idx = FindQuestById(StartedQuests, QuestId);
+	int Idx = FindQuestIndexById(StartedQuests, QuestId);
 	if (Idx == -1)
 		return;
 	int NpcId = Quests[QuestId].CompleteNpcId;
@@ -100,11 +100,39 @@ void UManager_Quest::ClearQuest(int QuestId)
 	ClearedQuests.Add(Quests[QuestId]);
 	StartedQuests.RemoveAt(Idx);
 	GetNpcById(NpcId)->RemoveCanClearQuest(QuestId);
+	UnlockNextQuest(QuestId);
+}
+
+void UManager_Quest::UnlockNextQuest(int QuestId)
+{
+	int NextQuestId = Quests[QuestId].Next;
+	if (NextQuestId == -1)
+		return;
+
+	Quests[NextQuestId].Locked = false;
+	int NpcId = Quests[NextQuestId].NpcId;
+	GetNpcById(NpcId)->AddToPossibleQuest(NextQuestId);
+}
+
+void UManager_Quest::AddQuestTargetNum(FString QType, int TargetId)
+{
+	for (int i = 0; i < StartedQuests.Num(); i++)
+	{
+		if (StartedQuests[i].Type != QType)
+			return;
+		 
+		if (StartedQuests[i].TargetId == TargetId)
+		{
+			StartedQuests[i].NowNum++;
+			if (StartedQuests[i].NowNum >= StartedQuests[i].TargetNum)
+				StartedToClear(StartedQuests[i].Id);
+		}
+	}
 }
 
 Quest UManager_Quest::GetStartedQuestById(int QuestId)
 {
-	int Idx = FindQuestById(StartedQuests, QuestId);
+	int Idx = FindQuestIndexById(StartedQuests, QuestId);
 	if (Idx == -1)
 	{
 		Quest q;
@@ -115,7 +143,14 @@ Quest UManager_Quest::GetStartedQuestById(int QuestId)
 	return StartedQuests[Idx];
 }
 
-int UManager_Quest::FindQuestById(TArray<Quest> Arr, int QuestId)
+TArray<Quest> UManager_Quest::GetQuestsByNpcId(int NpcId)
+{
+	if (QuestsByNpcId.Contains(NpcId))
+		return QuestsByNpcId[NpcId];
+	return TArray<Quest>();
+}
+
+int UManager_Quest::FindQuestIndexById(TArray<Quest> Arr, int QuestId)
 {
 	for (int i = 0; i < Arr.Num(); i++)
 	{
@@ -123,11 +158,4 @@ int UManager_Quest::FindQuestById(TArray<Quest> Arr, int QuestId)
 			return i;
 	}
 	return -1;
-}
-
-TArray<Quest> UManager_Quest::GetQuestsByNpcId(int NpcId)
-{
-	if (QuestsByNpcId.Contains(NpcId))
-		return QuestsByNpcId[NpcId];
-	return TArray<Quest>();
 }
