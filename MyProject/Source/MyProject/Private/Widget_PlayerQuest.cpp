@@ -29,8 +29,11 @@ void UWidget_PlayerQuest::NativeConstruct()
 
 void UWidget_PlayerQuest::ChangeInfo(int QuestId)
 {
+	if (ViewQuestId == QuestId)
+		return;
+	ViewQuestId = QuestId;
 	AMyGameMode* GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	FString Type = GameMode->QuestManager->GetQuest(QuestId).Type;
+	FString Type = GameMode->QuestManager->GetQuest(QuestId).TypeName;
 	FString Sub = GameMode->QuestManager->GetQuest(QuestId).Sub;
 
 	Txt_Sub->SetText(FText::FromString(Sub));
@@ -48,46 +51,51 @@ void UWidget_PlayerQuest::RefreshStarted()
 {
 	if (bStartedQuest)
 		return;
+	bStartedQuest = true;
 
 	UseGameMode
 	SlotsMakeEmpty();
-	int Number = GameMode->QuestManager->GetStartedQuests().Num();//여기서 에러 터졌음
+	int Number = GameMode->QuestManager->NumOfStarted();//여기서 에러 터졌음
+	UE_LOG(LogTemp, Warning, TEXT("StartedNumber : %d"), Number);
 	for (int i = 0; i < Number; i++)
 	{
 		Slots.Add(CreateWidget(GetWorld(), BP_Slot));
 		ScrollBox_List->AddChild(Slots.Top());
 		auto QuestSlot = Cast<UWidget_PlayerQuestList>(Slots.Top());
 		QuestSlot->SetParentUI(this);
-		QuestSlot->SetQuestId(GameMode->QuestManager->GetStartedQuests()[i].Id);
+		Quest q = GameMode->QuestManager->GetStartedQuest(i);
+		QuestSlot->SetQuestId(q.Id);
 	}
 
-	bStartedQuest = true;
+
 }
 
 void UWidget_PlayerQuest::RefreshCleared()
 {
 	if (!bStartedQuest)
 		return;
+	bStartedQuest = false;
 
 	UseGameMode
 	SlotsMakeEmpty();
-	int Number = GameMode->QuestManager->GetClearedQuests().Num();
+	int Number = GameMode->QuestManager->NumOfCleared();
+	UE_LOG(LogTemp, Warning, TEXT("ClearedNumber : %d"), Number);
 	for (int i = 0; i < Number; i++)
 	{
 		Slots.Add(CreateWidget(GetWorld(), BP_Slot));
 		ScrollBox_List->AddChild(Slots.Top());
 		auto QuestSlot = Cast<UWidget_PlayerQuestList>(Slots.Top());
 		QuestSlot->SetParentUI(this);
-		QuestSlot->SetQuestId(GameMode->QuestManager->GetClearedQuests()[i].Id);
+		Quest q = GameMode->QuestManager->GetClearedQuest(i);
+		QuestSlot->SetQuestId(q.Id);
 	}
-	bStartedQuest = false;
 }
 void UWidget_PlayerQuest::SlotsMakeEmpty()
 {
 	if (Slots.IsEmpty())
 		return;
 
-	for(int i = 0; i < Slots.Num(); i++)
+	while(!Slots.IsEmpty())
 		Slots.Pop()->RemoveFromViewport();
 }
 void UWidget_PlayerQuest::CreateSlot()

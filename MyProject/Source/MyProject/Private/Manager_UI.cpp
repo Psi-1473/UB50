@@ -112,7 +112,6 @@ UUserWidget* UManager_UI::PopupUI(UWorld* World, UIType MyUIType)
 		if (UIPlayerQuest != nullptr)
 		{
 			CloseUI(UIType::PLAYERQUEST);
-			UE_LOG(LogTemp, Log, TEXT("Player Quest UI Close!"));
 			World->GetFirstPlayerController()->SetShowMouseCursor(false);
 			UIPlayerQuest = nullptr;
 			return nullptr;
@@ -121,7 +120,6 @@ UUserWidget* UManager_UI::PopupUI(UWorld* World, UIType MyUIType)
 		{
 			UIPlayerQuest = CreateWidget(World, PlayerQuest);
 			UIPlayerQuest->AddToViewport();
-			UE_LOG(LogTemp, Log, TEXT("Player Quest UI Open!"));
 			return UIQuest;
 		}
 		break;
@@ -139,23 +137,29 @@ void UManager_UI::CloseUI(UIType MyUIType)
 	switch (MyUIType)
 	{
 	case UIType::YESNO:
+		if (UIYesNo == nullptr) break;
 		RemoveUI(UIYesNo);
 		break;
 	case UIType::INVENTORY:
+		if (Inven == nullptr) break;
 		RemoveUI(Inven);
 		break;
 	case UIType::CONVERSATION:
+		if (Conv == nullptr) break;
 		RemoveUI(Conv);
 		break;
 	case UIType::SHOP:
-		if (Shop == nullptr) return;
+		if (Shop == nullptr) break;
 		RemoveUI(Shop);
 		break;
 	case UIType::QUEST:
-		if (UIQuest == nullptr) return;
+		if (UIQuest == nullptr) break;
 		RemoveUI(UIQuest);
+		break;
 	case UIType::PLAYERQUEST:
+		if (UIPlayerQuest == nullptr) break;
 		RemoveUI(UIPlayerQuest);
+		break;
 	default:
 		break;
 	}

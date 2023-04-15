@@ -16,7 +16,7 @@ struct Quest
 	int Id;
 	int NpcId;
 	int CompleteNpcId;
-	FString Type;
+	FString TypeName;
 	FString Name;
 	FString Sub;
 	FString ConditionSub;
@@ -58,9 +58,11 @@ public:
 	Quest GetQuest(int id) { return Quests[id]; }
 	TArray<Quest> GetQuestsByNpcId(int NpcId);
 
-	TArray<Quest> GetStartedQuests() { return StartedQuests; }
-	Quest GetStartedQuestById(int QuestId);
-	TArray<Quest> GetClearedQuests() { return ClearedQuests; }
+	inline Quest GetStartedQuest(int Idx) { return StartedQuests[Idx]; }
+	int NumOfStarted() { return StartedQuests.Num(); }
+	inline Quest GetStartedQuestById(int QuestId);
+	Quest GetClearedQuest(int Idx) { return ClearedQuests[Idx]; }
+	int NumOfCleared() { return ClearedQuests.Num(); }
 
 	int FindQuestIndexById(TArray<Quest> Arr, int QuestId);
 

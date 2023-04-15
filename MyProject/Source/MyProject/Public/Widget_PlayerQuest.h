@@ -45,6 +45,8 @@ private:
 
 
 private:
+	int ViewQuestId;
+
 	UPROPERTY(meta = (BindWidget))
 		class UTextBlock* Txt_Sub;
 
