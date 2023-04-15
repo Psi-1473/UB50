@@ -31,7 +31,7 @@ void UManager_Quest::LoadQuestData()
 				jsonItem->TryGetNumberField(TEXT("Id"), q.Id);
 				jsonItem->TryGetNumberField(TEXT("NpcId"), q.NpcId);
 				jsonItem->TryGetNumberField(TEXT("CompleteNpcId"), q.CompleteNpcId);
-				jsonItem->TryGetStringField(TEXT("Type"), q.Type);
+				jsonItem->TryGetStringField(TEXT("Type"), q.TypeName);
 				jsonItem->TryGetStringField(TEXT("Name"), q.Name);
 				jsonItem->TryGetStringField(TEXT("Sub"), q.Sub);
 				jsonItem->TryGetStringField(TEXT("ConditionSub"), q.ConditionSub);
@@ -74,7 +74,7 @@ void UManager_Quest::PlayerTakesQuest(int QuestId)
 	int NpcId = NewQuest.NpcId;
 	GetNpcById(NpcId)->RemovePossibleQuest(QuestId);
 
-	if (NewQuest.Type == "Normal")
+	if (NewQuest.TypeName == "Normal")
 		StartedToClear(NewQuest.Id);
 }
 
@@ -86,8 +86,6 @@ void UManager_Quest::StartedToClear(int QuestId)
 	StartedQuests[Idx].CanClear = true;
 
 	GetNpcById(StartedQuests[Idx].CompleteNpcId)->AddToCanClearQuest(QuestId);
-	// 완료 가능 NPC의 CanClearedQuest에 추가
-	UE_LOG(LogTemp, Warning, TEXT(" StartedQuest -> CanClear "));
 }
 
 void UManager_Quest::ClearQuest(int QuestId)
@@ -119,7 +117,7 @@ void UManager_Quest::AddQuestTargetNum(FString QType, int TargetId)
 {
 	for (int i = 0; i < StartedQuests.Num(); i++)
 	{
-		if (StartedQuests[i].Type != QType)
+		if (StartedQuests[i].TypeName != QType)
 			return;
 		 
 		if (StartedQuests[i].TargetId == TargetId)
