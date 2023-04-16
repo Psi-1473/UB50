@@ -399,6 +399,8 @@ void AMyPlayer::OpenUI(UIType MyUIType)
 
 void AMyPlayer::CloseUI(UIType MyUIType)
 {
+	if (GameMode == nullptr)
+		return;
 	GameMode->UIManager->CloseUI(MyUIType);
 	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);
 }

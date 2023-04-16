@@ -18,18 +18,15 @@ protected:
 	virtual void NativeConstruct() override;
 public:
 	void SetParentUI(class UWidget_PlayerQuest* UI) { ParentUI = UI; }
-	void SetQuestId(int Id) {
-		QuestId = Id;
-		ChangeName();
-	}
+	void SetQuestId(class AMyGameMode* GMode, int Id);
 
 	UFUNCTION()
 	void ChangeInfo();
-	void ChangeName();
+	void ChangeName(AMyGameMode* GMode);
 
 private:
 	int QuestId;
-
+	FString QuestName;
 	class UWidget_PlayerQuest* ParentUI;
 
 	UPROPERTY(meta = (BindWidget))

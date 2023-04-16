@@ -55,13 +55,14 @@ public:
 	void AddNpc(int Key, ANpc* Npc) { NpcsInField.Add(Key, Npc); }
 	class ANpc* GetNpcById(int Key) { return NpcsInField[Key]; }
 
-	Quest GetQuest(int id) { return Quests[id]; }
+	Quest* GetQuest(int id) { return &Quests[id]; }
+	FString GetQuestName(int id) { return Quests[id].Name; }
 	TArray<Quest> GetQuestsByNpcId(int NpcId);
 
-	inline Quest GetStartedQuest(int Idx) { return StartedQuests[Idx]; }
+	Quest* GetStartedQuest(int Idx) { return &StartedQuests[Idx]; }
 	int NumOfStarted() { return StartedQuests.Num(); }
 	inline Quest GetStartedQuestById(int QuestId);
-	Quest GetClearedQuest(int Idx) { return ClearedQuests[Idx]; }
+	Quest* GetClearedQuest(int Idx) { return &ClearedQuests[Idx]; }
 	int NumOfCleared() { return ClearedQuests.Num(); }
 
 	int FindQuestIndexById(TArray<Quest> Arr, int QuestId);

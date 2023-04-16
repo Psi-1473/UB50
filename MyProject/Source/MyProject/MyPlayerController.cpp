@@ -139,6 +139,7 @@ void AMyPlayerController::Interact()
 	if (MyPlayer->GetPortal() != nullptr)
 	{
 		MyPlayer->GetPortal()->MoveToOtherLevel();
+		return;
 	}
 
 	if (MyPlayer->GetInteractNpc() == nullptr)
@@ -146,15 +147,15 @@ void AMyPlayerController::Interact()
 
 	if (MyPlayer->GetInteracting())
 	{
+		MyPlayer->SetInteracting(false);
 		MyPlayer->CloseUI(UIType::CONVERSATION);
 		MyPlayer->CloseUI(UIType::SHOP);
 		MyPlayer->CloseUI(UIType::QUEST);
-		MyPlayer->SetInteracting(false);
 	}
 	else
 	{
-		MyPlayer->OpenUI(UIType::CONVERSATION);
 		MyPlayer->SetInteracting(true);
+		MyPlayer->OpenUI(UIType::CONVERSATION);
 	}
 }
 

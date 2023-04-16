@@ -43,7 +43,6 @@ private:
 	void SetGoalAndNow(int QuestId);
 
 
-
 private:
 	int ViewQuestId;
 

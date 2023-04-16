@@ -118,15 +118,16 @@ void UManager_Quest::AddQuestTargetNum(FString QType, int TargetId)
 	for (int i = 0; i < StartedQuests.Num(); i++)
 	{
 		if (StartedQuests[i].TypeName != QType)
-			return;
+			continue;
 		 
-		if (StartedQuests[i].TargetId == TargetId)
-		{
-			StartedQuests[i].NowNum++;
-			UE_LOG(LogTemp, Warning, TEXT(" TargetNum Up "));
-			if (StartedQuests[i].NowNum >= StartedQuests[i].TargetNum)
-				StartedToClear(StartedQuests[i].Id);
-		}
+		if (StartedQuests[i].TargetId != TargetId)
+			continue;
+
+		StartedQuests[i].NowNum++;
+		UE_LOG(LogTemp, Warning, TEXT(" TargetNum Up "));
+
+		if (StartedQuests[i].NowNum >= StartedQuests[i].TargetNum)
+			StartedToClear(StartedQuests[i].Id);
 	}
 }
 

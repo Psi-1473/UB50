@@ -21,10 +21,10 @@ UWidget_PlayerQuest::UWidget_PlayerQuest(const FObjectInitializer& ObjectInitial
 
 void UWidget_PlayerQuest::NativeConstruct()
 {
-	CreateSlot();
-
 	Btn_Started->OnClicked.AddDynamic(this, &UWidget_PlayerQuest::RefreshStarted);
 	Btn_Completed->OnClicked.AddDynamic(this, &UWidget_PlayerQuest::RefreshCleared);
+
+	CreateSlot();
 }
 
 void UWidget_PlayerQuest::ChangeInfo(int QuestId)
@@ -33,8 +33,8 @@ void UWidget_PlayerQuest::ChangeInfo(int QuestId)
 		return;
 	ViewQuestId = QuestId;
 	AMyGameMode* GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	FString Type = GameMode->QuestManager->GetQuest(QuestId).TypeName;
-	FString Sub = GameMode->QuestManager->GetQuest(QuestId).Sub;
+	FString Type = GameMode->QuestManager->GetQuest(QuestId)->TypeName;
+	FString Sub = GameMode->QuestManager->GetQuest(QuestId)->Sub;
 
 	Txt_Sub->SetText(FText::FromString(Sub));
 
@@ -56,15 +56,17 @@ void UWidget_PlayerQuest::RefreshStarted()
 	UseGameMode
 	SlotsMakeEmpty();
 	int Number = GameMode->QuestManager->NumOfStarted();//여기서 에러 터졌음
-	UE_LOG(LogTemp, Warning, TEXT("StartedNumber : %d"), Number);
 	for (int i = 0; i < Number; i++)
 	{
 		Slots.Add(CreateWidget(GetWorld(), BP_Slot));
 		ScrollBox_List->AddChild(Slots.Top());
 		auto QuestSlot = Cast<UWidget_PlayerQuestList>(Slots.Top());
 		QuestSlot->SetParentUI(this);
-		Quest q = GameMode->QuestManager->GetStartedQuest(i);
-		QuestSlot->SetQuestId(q.Id);
+		// 여기서 아이디 값을 이상하게 가져오나?
+		// ㅇㅇ 왜??
+
+		UE_LOG(LogTemp, Warning, TEXT("StartedNumber : %d"), GameMode->QuestManager->GetStartedQuest(i)->Id);
+		//QuestSlot->SetQuestId(GameMode, GameMode->QuestManager->GetStartedQuest(i)->Id);
 	}
 
 
@@ -79,15 +81,14 @@ void UWidget_PlayerQuest::RefreshCleared()
 	UseGameMode
 	SlotsMakeEmpty();
 	int Number = GameMode->QuestManager->NumOfCleared();
-	UE_LOG(LogTemp, Warning, TEXT("ClearedNumber : %d"), Number);
 	for (int i = 0; i < Number; i++)
 	{
 		Slots.Add(CreateWidget(GetWorld(), BP_Slot));
 		ScrollBox_List->AddChild(Slots.Top());
 		auto QuestSlot = Cast<UWidget_PlayerQuestList>(Slots.Top());
 		QuestSlot->SetParentUI(this);
-		Quest q = GameMode->QuestManager->GetClearedQuest(i);
-		QuestSlot->SetQuestId(q.Id);
+		Quest* q = GameMode->QuestManager->GetClearedQuest(i);
+		QuestSlot->SetQuestId(GameMode, q->Id);
 	}
 }
 void UWidget_PlayerQuest::SlotsMakeEmpty()
@@ -117,7 +118,7 @@ void UWidget_PlayerQuest::SetGoalAndNow(int QuestId)
 	}
 	else
 	{
-		Goal = GameMode->QuestManager->GetQuest(QuestId).TargetNum;
+		Goal = GameMode->QuestManager->GetQuest(QuestId)->TargetNum;
 		Now = GameMode->QuestManager->GetStartedQuestById(QuestId).NowNum;
 		Txt_Goal->SetText(FText::AsNumber(Goal));
 		Txt_Now->SetText(FText::AsNumber(Now));
