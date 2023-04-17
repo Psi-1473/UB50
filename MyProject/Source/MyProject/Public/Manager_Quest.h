@@ -59,6 +59,8 @@ public:
 	FString GetQuestName(int id) { return Quests[id].Name; }
 	TArray<Quest> GetQuestsByNpcId(int NpcId);
 
+	TArray<Quest>* GetStartedQuests() { return &StartedQuests; }
+
 	Quest* GetStartedQuest(int Idx) { return &StartedQuests[Idx]; }
 	int NumOfStarted() { return StartedQuests.Num(); }
 	inline Quest GetStartedQuestById(int QuestId);

@@ -79,6 +79,7 @@ public:
 	void SetNpc(ANpc* NewNpc = nullptr){ CanInteractNpc = NewNpc; }
 	void SetGold(int Value) { Gold = Value; }
 	void SetOnInventory(bool Value) { bOnInventory = Value; }
+	void SetOnQuest(bool Value) { bOnQuest = Value; }
 	void SetInteracting(bool Value) { bInteract = Value; }
 	void SetState(STATE Value) { PlayerState = Value; }
 	void SetPortal(APortal* PortalValue) { Portal = PortalValue; }
@@ -91,6 +92,7 @@ public:
 	
 
 	bool GetOnInventory() { return bOnInventory; }
+	bool GetOnQuest() { return bOnQuest; }
 	bool GetInteracting() { return bInteract; }
 	
 	//Temp
@@ -141,6 +143,8 @@ private:
 
 	UPROPERTY()
 	bool bOnInventory = false; //임시 나중에 UI 매니저에서 관리
+	UPROPERTY()
+	bool bOnQuest = false; //임시 나중에 UI 매니저에서 관리
 	UPROPERTY()
 	bool bInteract = false;
 

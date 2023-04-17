@@ -130,11 +130,8 @@ void AMonster::AttackCheck()
 
 void AMonster::Die(AMyPlayer* Player)
 {
-	UseGameMode
 	UE_LOG(LogTemp, Warning, TEXT("Die"));
 	IsDied = true;
-	//GameMode->QuestManager->AddQuestTargetNum("Hunting", Stat->GetId());
-	// 여기가 문제인 것 같음
 	
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);

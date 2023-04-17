@@ -40,3 +40,5 @@ private:
 	class AMyPlayer* MyPlayer;
 
 };
+// 현재 플레이어의 TakeDamage함수 일단 지워놓음
+// id 바뀌는지 확인하자

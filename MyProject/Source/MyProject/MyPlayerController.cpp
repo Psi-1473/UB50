@@ -181,6 +181,16 @@ void AMyPlayerController::PopupQuest()
 	if (MyPlayer == nullptr)
 		MyPlayer = Cast<AMyPlayer>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 
-	MyPlayer->OpenUI(UIType::PLAYERQUEST);
+	if (MyPlayer->GetOnQuest())
+	{
+		MyPlayer->CloseUI(UIType::PLAYERQUEST);
+		MyPlayer->SetOnQuest(false);
+	}
+	else
+	{
+		MyPlayer->OpenUI(UIType::PLAYERQUEST);
+		MyPlayer->SetOnQuest(true);
+	}
+	
 }
 

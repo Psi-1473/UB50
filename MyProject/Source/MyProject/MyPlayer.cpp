@@ -174,13 +174,13 @@ void AMyPlayer::AttackCheck()
 }
 float AMyPlayer::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	Stat->OnAttacked(Damage);
-	OnDamaged();
-	SetState(DAMAGED);
-	if (GameMode)
-	{
-		GameMode->UIUpdate_Hp(Stat->GetHpRatio());
-	}
+	//Stat->OnAttacked(Damage);
+	//OnDamaged();
+	//SetState(DAMAGED);
+	//if (GameMode)
+	//{
+	//	GameMode->UIUpdate_Hp(Stat->GetHpRatio());
+	//}
 	return Damage;
 }
 

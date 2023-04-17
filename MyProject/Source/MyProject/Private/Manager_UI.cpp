@@ -109,19 +109,9 @@ UUserWidget* UManager_UI::PopupUI(UWorld* World, UIType MyUIType)
 		return UIQuest;
 		break;
 	case UIType::PLAYERQUEST:
-		if (UIPlayerQuest != nullptr)
-		{
-			CloseUI(UIType::PLAYERQUEST);
-			World->GetFirstPlayerController()->SetShowMouseCursor(false);
-			UIPlayerQuest = nullptr;
-			return nullptr;
-		}
-		else
-		{
-			UIPlayerQuest = CreateWidget(World, PlayerQuest);
-			UIPlayerQuest->AddToViewport();
-			return UIQuest;
-		}
+		UIPlayerQuest = CreateWidget(World, PlayerQuest);
+		UIPlayerQuest->AddToViewport();
+		return UIQuest;
 		break;
 	default:
 		return nullptr;
