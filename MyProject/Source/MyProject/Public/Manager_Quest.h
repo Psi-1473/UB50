@@ -11,26 +11,53 @@
  * 
  */
 
-struct Quest
+USTRUCT()
+struct FQuest
 {
+	GENERATED_BODY()
+
+	UPROPERTY()
 	int Id;
+	UPROPERTY()
 	int NpcId;
+	UPROPERTY()
 	int CompleteNpcId;
+	UPROPERTY()
 	FString TypeName;
+	UPROPERTY()
 	FString Name;
+	UPROPERTY()
 	FString Sub;
+	UPROPERTY()
 	FString ConditionSub;
+	UPROPERTY()
 	int Gold;
+	UPROPERTY()
 	int Exp;
+	UPROPERTY()
 	bool Locked;
+	UPROPERTY()
 	bool Cleared;
+	UPROPERTY()
 	int TargetId;
+	UPROPERTY()
 	int TargetNum;
+	UPROPERTY()
 	int NowNum;
+	UPROPERTY()
 	int Next;
+	UPROPERTY()
 	bool CanClear = false;
 };
 
+USTRUCT()
+struct FNpcQuest
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY()
+	TArray<FQuest> NpcQuestList;
+};
 UCLASS()
 class MYPROJECT_API UManager_Quest : public UObject
 {
@@ -55,32 +82,37 @@ public:
 	void AddNpc(int Key, ANpc* Npc) { NpcsInField.Add(Key, Npc); }
 	class ANpc* GetNpcById(int Key) { return NpcsInField[Key]; }
 
-	Quest* GetQuest(int id) { return &Quests[id]; }
+	FQuest* GetQuest(int id) { return &Quests[id]; }
 	FString GetQuestName(int id) { return Quests[id].Name; }
-	TArray<Quest> GetQuestsByNpcId(int NpcId);
+	TArray<FQuest> GetQuestsByNpcId(int NpcId);
 
-	TArray<Quest>* GetStartedQuests() { return &StartedQuests; }
+	TArray<FQuest>* GetStartedQuests() { return &StartedQuests; }
 
-	Quest* GetStartedQuest(int Idx) { return &StartedQuests[Idx]; }
+	FQuest* GetStartedQuest(int Idx) { return &StartedQuests[Idx]; }
 	int NumOfStarted() { return StartedQuests.Num(); }
-	inline Quest GetStartedQuestById(int QuestId);
-	Quest* GetClearedQuest(int Idx) { return &ClearedQuests[Idx]; }
+	inline FQuest GetStartedQuestById(int QuestId);
+	FQuest* GetClearedQuest(int Idx) { return &ClearedQuests[Idx]; }
 	int NumOfCleared() { return ClearedQuests.Num(); }
 
-	int FindQuestIndexById(TArray<Quest> Arr, int QuestId);
+	int FindQuestIndexById(TArray<FQuest> Arr, int QuestId);
 
 
 private:
+	UPROPERTY()
 	TMap<int, ANpc*> NpcsInField;
 
 private:
-	FString FileStr;
-	FString FilePath;
-	TSharedPtr<FJsonObject> jsonObj;
 
-	TMap<int, Quest> Quests;
-	TMap<int, TArray<Quest>> QuestsByNpcId;
+	UPROPERTY()
+	TMap<int, FQuest> Quests;
 
-	TArray<Quest> StartedQuests;
-	TArray<Quest> ClearedQuests;
+	UPROPERTY()
+	TMap<int, FNpcQuest> QuestsByNpcId;
+
+public:
+	UPROPERTY()
+	TArray<FQuest> StartedQuests;
+
+	UPROPERTY()
+	TArray<FQuest> ClearedQuests;
 };

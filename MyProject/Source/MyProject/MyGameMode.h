@@ -34,6 +34,8 @@ public:
 	UUserWidget* CurrentWidget;
 
 	UManager_UI* UIManager;
+
+	UPROPERTY()
 	UManager_Quest* QuestManager;
 	
 };

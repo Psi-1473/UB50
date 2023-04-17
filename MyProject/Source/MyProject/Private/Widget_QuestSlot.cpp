@@ -26,7 +26,7 @@ void UWidget_QuestSlot::SetId(int Id)
 void UWidget_QuestSlot::Init()
 {
 	UseGameMode
-	Quest* MyQuest = GameMode->QuestManager->GetQuest(QuestId);
+	FQuest* MyQuest = GameMode->QuestManager->GetQuest(QuestId);
 	Txt_Name->SetText(FText::FromString(MyQuest->Name));
 	Txt_Sub->SetText(FText::FromString(MyQuest->Sub));
 	if (!bCleared)

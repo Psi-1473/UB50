@@ -66,7 +66,7 @@ void UWidget_PlayerQuest::RefreshStarted()
 		// 여기서 아이디 값을 이상하게 가져오나?
 		// ㅇㅇ 왜??
 
-		UE_LOG(LogTemp, Warning, TEXT("StartedNumber : %d"), GameMode->QuestManager->GetStartedQuest(i)->Id);
+		UE_LOG(LogTemp, Warning, TEXT("StartedNumber : %d"), GameMode->QuestManager->StartedQuests[i].Id);
 		//QuestSlot->SetQuestId(GameMode, GameMode->QuestManager->GetStartedQuest(i)->Id);
 	}
 
@@ -104,7 +104,7 @@ void UWidget_PlayerQuest::RefreshCleared()
 		ScrollBox_List->AddChild(Slots.Top());
 		auto QuestSlot = Cast<UWidget_PlayerQuestList>(Slots.Top());
 		QuestSlot->SetParentUI(this);
-		Quest* q = GameMode->QuestManager->GetClearedQuest(i);
+		FQuest* q = GameMode->QuestManager->GetClearedQuest(i);
 		QuestSlot->SetQuestId(GameMode, q->Id);
 	}
 }

@@ -9,14 +9,20 @@
 
 UManager_Quest::UManager_Quest()
 {
-	FilePath = TEXT("C:/Users/Percy/Desktop/UnrealProjects/UB50/MyProject/Content/Data/Json/Quest/Quest.json");
+	
+	//LoadQuestData();
 }
 
 void UManager_Quest::LoadQuestData()
 {
+	FString FileStr;
+	FString FilePath;
+	FilePath = TEXT("C:/Users/Percy/Desktop/UnrealProjects/UB50/MyProject/Content/Data/Json/Quest/Quest.json");
 	FFileHelper::LoadFileToString(FileStr, *FilePath);
 
 	TSharedRef<TJsonReader<TCHAR>> jsonReader = TJsonReaderFactory<TCHAR>::Create(FileStr);
+	TSharedPtr<FJsonObject> jsonObj;
+
 	jsonObj = MakeShareable(new FJsonObject());
 
 	if (FJsonSerializer::Deserialize(jsonReader, jsonObj) && jsonObj.IsValid())
@@ -27,7 +33,7 @@ void UManager_Quest::LoadQuestData()
 			for (int i = 0; i < jsonQuestItems.Num(); i++)
 			{
 				TSharedPtr<FJsonObject> jsonItem = jsonQuestItems[i]->AsObject();
-				Quest q;
+				FQuest q;
 				jsonItem->TryGetNumberField(TEXT("Id"), q.Id);
 				jsonItem->TryGetNumberField(TEXT("NpcId"), q.NpcId);
 				jsonItem->TryGetNumberField(TEXT("CompleteNpcId"), q.CompleteNpcId);
@@ -43,20 +49,23 @@ void UManager_Quest::LoadQuestData()
 				jsonItem->TryGetNumberField(TEXT("TargetNum"), q.TargetNum);
 				jsonItem->TryGetNumberField(TEXT("NowNum"), q.NowNum);
 				jsonItem->TryGetNumberField(TEXT("Next"), q.Next);
+				
 
 				Quests.Add(q.Id, q);
+
+				//여기 고쳐
 				if (QuestsByNpcId.Contains(q.NpcId))
-					QuestsByNpcId[q.NpcId].Add(q);
+					QuestsByNpcId[q.NpcId].NpcQuestList.Add(q);
 				else
 				{
-					TArray<Quest> qa;
-					qa.Add(q);
-					QuestsByNpcId.Add(q.NpcId, qa);
+					FNpcQuest Nq;
+					Nq.NpcQuestList.Add(q);
+					QuestsByNpcId.Add(q.NpcId, Nq);
 				}
 			}
 
 		UE_LOG(LogTemp, Log, TEXT("Quest Files Saved %d %d"), Quests[0].Gold, Quests[1].Gold);
-		UE_LOG(LogTemp, Log, TEXT("Quest Files Saved %d"), QuestsByNpcId[0].Num());
+		UE_LOG(LogTemp, Log, TEXT("Quest Files Saved %d"), QuestsByNpcId[0].NpcQuestList.Num());
 	}
 
 
@@ -68,7 +77,7 @@ void UManager_Quest::SpreadToNpc()
 
 void UManager_Quest::PlayerTakesQuest(int QuestId)
 {
-	Quest NewQuest = Quests[QuestId];
+	FQuest NewQuest = Quests[QuestId];
 
 	StartedQuests.Add(NewQuest);
 	int NpcId = NewQuest.NpcId;
@@ -131,12 +140,12 @@ void UManager_Quest::AddQuestTargetNum(FString QType, int TargetId)
 	}
 }
 
-Quest UManager_Quest::GetStartedQuestById(int QuestId)
+FQuest UManager_Quest::GetStartedQuestById(int QuestId)
 {
 	int Idx = FindQuestIndexById(StartedQuests, QuestId);
 	if (Idx == -1)
 	{
-		Quest q;
+		FQuest q;
 		q.Id = -1;
 		return q;
 	}
@@ -144,14 +153,14 @@ Quest UManager_Quest::GetStartedQuestById(int QuestId)
 	return StartedQuests[Idx];
 }
 
-TArray<Quest> UManager_Quest::GetQuestsByNpcId(int NpcId)
+TArray<FQuest> UManager_Quest::GetQuestsByNpcId(int NpcId)
 {
 	if (QuestsByNpcId.Contains(NpcId))
-		return QuestsByNpcId[NpcId];
-	return TArray<Quest>();
+		return QuestsByNpcId[NpcId].NpcQuestList;
+	return TArray<FQuest>();
 }
 
-int UManager_Quest::FindQuestIndexById(TArray<Quest> Arr, int QuestId)
+int UManager_Quest::FindQuestIndexById(TArray<FQuest> Arr, int QuestId)
 {
 	for (int i = 0; i < Arr.Num(); i++)
 	{

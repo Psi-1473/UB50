@@ -141,7 +141,7 @@ void ANpc::InitQuestInfo()
 	if (GameMode->QuestManager->GetQuestsByNpcId(NpcId).IsEmpty())
 		return;
 
-	TArray<Quest> Quests = GameMode->QuestManager->GetQuestsByNpcId(NpcId);
+	TArray<FQuest> Quests = GameMode->QuestManager->GetQuestsByNpcId(NpcId);
 
 	for (int i = 0; i < Quests.Num(); i++)
 	{
