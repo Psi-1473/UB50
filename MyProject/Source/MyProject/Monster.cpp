@@ -133,6 +133,8 @@ void AMonster::Die(AMyPlayer* Player)
 	UE_LOG(LogTemp, Warning, TEXT("Die"));
 	IsDied = true;
 	
+	UseGameMode
+	GameMode->QuestManager->AddQuestTargetNum("Hunting", Stat->GetId());
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	DropItemOrGold(Player);

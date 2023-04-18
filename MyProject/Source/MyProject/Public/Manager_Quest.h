@@ -74,12 +74,13 @@ public:
 	TArray<FQuest> GetQuestsByNpcId(int NpcId);
 
 	TArray<FQuest>* GetStartedQuests() { return &StartedQuests; }
+	TArray<FQuest>* GetClearedQuests() { return &ClearedQuests; }
 
 	FQuest* GetStartedQuest(int Idx) { return &StartedQuests[Idx]; }
-	int NumOfStarted() { return StartedQuests.Num(); }
-	inline FQuest GetStartedQuestById(int QuestId);
 	FQuest* GetClearedQuest(int Idx) { return &ClearedQuests[Idx]; }
-	int NumOfCleared() { return ClearedQuests.Num(); }
+
+	inline FQuest GetStartedQuestById(int QuestId);
+
 
 	int FindQuestIndexById(TArray<FQuest> Arr, int QuestId);
 

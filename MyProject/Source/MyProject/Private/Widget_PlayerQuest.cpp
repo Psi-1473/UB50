@@ -55,7 +55,7 @@ void UWidget_PlayerQuest::RefreshStarted()
 
 	UseGameMode
 	SlotsMakeEmpty();
-	int Number = GameMode->QuestManager->NumOfStarted();//여기서 에러 터졌음
+	int Number = GameMode->QuestManager->GetStartedQuests()->Num();
 
 	for (int i = 0; i < Number; i++)
 	{
@@ -70,23 +70,6 @@ void UWidget_PlayerQuest::RefreshStarted()
 		QuestSlot->SetQuestId(GameMode, GameMode->QuestManager->GetStartedQuest(i)->Id);
 	}
 
-	//TArray<Quest>* QuestList = GameMode->QuestManager->GetStartedQuests();
-	//
-	//if (QuestList->IsEmpty())
-	//	return;
-	//
-	//for(Quest MyQuest : *QuestList)
-	//{
-	//	Slots.Add(CreateWidget(GetWorld(), BP_Slot));
-	//	ScrollBox_List->AddChild(Slots.Top());
-	//	auto QuestSlot = Cast<UWidget_PlayerQuestList>(Slots.Top());
-	//	QuestSlot->SetParentUI(this);
-	//
-	//	UE_LOG(LogTemp, Warning, TEXT("StartedNumber : %d"), MyQuest.Id);
-	//	UE_LOG(LogTemp, Warning, TEXT("StartedNumber : %d"), MyQuest.Id);
-	//}
-
-
 }
 
 void UWidget_PlayerQuest::RefreshCleared()
@@ -97,7 +80,7 @@ void UWidget_PlayerQuest::RefreshCleared()
 
 	UseGameMode
 	SlotsMakeEmpty();
-	int Number = GameMode->QuestManager->NumOfCleared();
+	int Number = GameMode->QuestManager->GetClearedQuests()->Num();
 	for (int i = 0; i < Number; i++)
 	{
 		Slots.Add(CreateWidget(GetWorld(), BP_Slot));
