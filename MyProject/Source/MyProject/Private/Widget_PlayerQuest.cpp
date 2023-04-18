@@ -66,8 +66,8 @@ void UWidget_PlayerQuest::RefreshStarted()
 		// 여기서 아이디 값을 이상하게 가져오나?
 		// ㅇㅇ 왜??
 
-		UE_LOG(LogTemp, Warning, TEXT("StartedNumber : %d"), GameMode->QuestManager->StartedQuests[i].Id);
-		//QuestSlot->SetQuestId(GameMode, GameMode->QuestManager->GetStartedQuest(i)->Id);
+		UE_LOG(LogTemp, Warning, TEXT("StartedNumber : %d"), GameMode->QuestManager->GetStartedQuest(i)->Id);
+		QuestSlot->SetQuestId(GameMode, GameMode->QuestManager->GetStartedQuest(i)->Id);
 	}
 
 	//TArray<Quest>* QuestList = GameMode->QuestManager->GetStartedQuests();

@@ -9,7 +9,7 @@
 
 UManager_Quest::UManager_Quest()
 {
-	
+
 	//LoadQuestData();
 }
 
@@ -29,40 +29,39 @@ void UManager_Quest::LoadQuestData()
 	{
 		UE_LOG(LogTemp, Log, TEXT("Json Deserialized"));
 
-			TArray<TSharedPtr<FJsonValue>> jsonQuestItems = jsonObj->GetArrayField(TEXT("quests"));
-			for (int i = 0; i < jsonQuestItems.Num(); i++)
+		TArray<TSharedPtr<FJsonValue>> jsonQuestItems = jsonObj->GetArrayField(TEXT("quests"));
+		for (int i = 0; i < jsonQuestItems.Num(); i++)
+		{
+			TSharedPtr<FJsonObject> jsonItem = jsonQuestItems[i]->AsObject();
+			FQuest q;
+			jsonItem->TryGetNumberField(TEXT("Id"), q.Id);
+			jsonItem->TryGetNumberField(TEXT("NpcId"), q.NpcId);
+			jsonItem->TryGetNumberField(TEXT("CompleteNpcId"), q.CompleteNpcId);
+			jsonItem->TryGetStringField(TEXT("Type"), q.TypeName);
+			jsonItem->TryGetStringField(TEXT("Name"), q.Name);
+			jsonItem->TryGetStringField(TEXT("Sub"), q.Sub);
+			jsonItem->TryGetStringField(TEXT("ConditionSub"), q.ConditionSub);
+			jsonItem->TryGetNumberField(TEXT("Gold"), q.Gold);
+			jsonItem->TryGetNumberField(TEXT("Exp"), q.Exp);
+			jsonItem->TryGetBoolField(TEXT("Locked"), q.Locked);
+			jsonItem->TryGetBoolField(TEXT("Cleared"), q.Cleared);
+			jsonItem->TryGetNumberField(TEXT("TargetId"), q.TargetId);
+			jsonItem->TryGetNumberField(TEXT("TargetNum"), q.TargetNum);
+			jsonItem->TryGetNumberField(TEXT("NowNum"), q.NowNum);
+			jsonItem->TryGetNumberField(TEXT("Next"), q.Next);
+			q.CanClear = false;
+
+
+			Quests.Add(q.Id, q);
+
+
+			if (!QuestsByNpcId.Contains(q.NpcId))
 			{
-				TSharedPtr<FJsonObject> jsonItem = jsonQuestItems[i]->AsObject();
-				FQuest q;
-				jsonItem->TryGetNumberField(TEXT("Id"), q.Id);
-				jsonItem->TryGetNumberField(TEXT("NpcId"), q.NpcId);
-				jsonItem->TryGetNumberField(TEXT("CompleteNpcId"), q.CompleteNpcId);
-				jsonItem->TryGetStringField(TEXT("Type"), q.TypeName);
-				jsonItem->TryGetStringField(TEXT("Name"), q.Name);
-				jsonItem->TryGetStringField(TEXT("Sub"), q.Sub);
-				jsonItem->TryGetStringField(TEXT("ConditionSub"), q.ConditionSub);
-				jsonItem->TryGetNumberField(TEXT("Gold"), q.Gold);
-				jsonItem->TryGetNumberField(TEXT("Exp"), q.Exp);
-				jsonItem->TryGetBoolField(TEXT("Locked"), q.Locked);
-				jsonItem->TryGetBoolField(TEXT("Cleared"), q.Cleared);
-				jsonItem->TryGetNumberField(TEXT("TargetId"), q.TargetId);
-				jsonItem->TryGetNumberField(TEXT("TargetNum"), q.TargetNum);
-				jsonItem->TryGetNumberField(TEXT("NowNum"), q.NowNum);
-				jsonItem->TryGetNumberField(TEXT("Next"), q.Next);
-				
-
-				Quests.Add(q.Id, q);
-
-				//여기 고쳐
-				if (QuestsByNpcId.Contains(q.NpcId))
-					QuestsByNpcId[q.NpcId].NpcQuestList.Add(q);
-				else
-				{
-					FNpcQuest Nq;
-					Nq.NpcQuestList.Add(q);
-					QuestsByNpcId.Add(q.NpcId, Nq);
-				}
+				FNpcQuest Nq;
+				QuestsByNpcId.Add(q.NpcId, Nq);
 			}
+			QuestsByNpcId[q.NpcId].NpcQuestList.Add(q);
+		}
 
 		UE_LOG(LogTemp, Log, TEXT("Quest Files Saved %d %d"), Quests[0].Gold, Quests[1].Gold);
 		UE_LOG(LogTemp, Log, TEXT("Quest Files Saved %d"), QuestsByNpcId[0].NpcQuestList.Num());
@@ -128,7 +127,7 @@ void UManager_Quest::AddQuestTargetNum(FString QType, int TargetId)
 	{
 		if (StartedQuests[i].TypeName != QType)
 			continue;
-		 
+
 		if (StartedQuests[i].TargetId != TargetId)
 			continue;
 

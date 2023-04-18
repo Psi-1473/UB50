@@ -25,7 +25,7 @@ AMyGameMode::AMyGameMode()
 	}
 
 	UIManager = NewObject<UManager_UI>();
-	QuestManager = NewObject<UManager_Quest>();
+	QuestManager = MakeShared<UManager_Quest>();
 }
 
 void AMyGameMode::BeginPlay()

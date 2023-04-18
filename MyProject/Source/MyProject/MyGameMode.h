@@ -33,9 +33,8 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UUserWidget* CurrentWidget;
 
+
 	UManager_UI* UIManager;
 
-	UPROPERTY()
-	UManager_Quest* QuestManager;
-	
+	TSharedPtr<UManager_Quest> QuestManager;
 };

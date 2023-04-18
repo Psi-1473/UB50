@@ -5,69 +5,56 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "../Npc.h"
-#include "Manager_Quest.generated.h"
 
 /**
- * 
+ *
  */
 
-USTRUCT()
+
 struct FQuest
 {
-	GENERATED_BODY()
-
-	UPROPERTY()
 	int Id;
-	UPROPERTY()
+
 	int NpcId;
-	UPROPERTY()
+
 	int CompleteNpcId;
-	UPROPERTY()
+
 	FString TypeName;
-	UPROPERTY()
+
 	FString Name;
-	UPROPERTY()
+
 	FString Sub;
-	UPROPERTY()
 	FString ConditionSub;
-	UPROPERTY()
+
 	int Gold;
-	UPROPERTY()
+
 	int Exp;
-	UPROPERTY()
+
 	bool Locked;
-	UPROPERTY()
+
 	bool Cleared;
-	UPROPERTY()
 	int TargetId;
-	UPROPERTY()
 	int TargetNum;
-	UPROPERTY()
 	int NowNum;
-	UPROPERTY()
 	int Next;
-	UPROPERTY()
 	bool CanClear = false;
 };
 
-USTRUCT()
 struct FNpcQuest
 {
-	GENERATED_BODY()
+
 public:
-	UPROPERTY()
 	TArray<FQuest> NpcQuestList;
 };
-UCLASS()
-class MYPROJECT_API UManager_Quest : public UObject
+class MYPROJECT_API UManager_Quest
 {
-	GENERATED_BODY()
 
 public:
 	UManager_Quest();
 
 public:
-	void LoadQuestData();
+	UFUNCTION()
+		void LoadQuestData();
 	void SpreadToNpc();
 
 	void PlayerTakesQuest(int QuestId);
@@ -99,20 +86,13 @@ public:
 
 private:
 	UPROPERTY()
-	TMap<int, ANpc*> NpcsInField;
+		TMap<int, ANpc*> NpcsInField;
 
 private:
-
-	UPROPERTY()
 	TMap<int, FQuest> Quests;
-
-	UPROPERTY()
 	TMap<int, FNpcQuest> QuestsByNpcId;
 
 public:
-	UPROPERTY()
 	TArray<FQuest> StartedQuests;
-
-	UPROPERTY()
 	TArray<FQuest> ClearedQuests;
 };
