@@ -3,6 +3,7 @@
 
 #include "Widget_PlayerQuest.h"
 #include "../MyGameMode.h"
+#include "../MyGameInstance.h"
 #include "Manager_Quest.h"
 #include "Components/ScrollBox.h"
 #include "Components/TextBlock.h"
@@ -33,8 +34,9 @@ void UWidget_PlayerQuest::ChangeInfo(int QuestId)
 		return;
 	ViewQuestId = QuestId;
 	AMyGameMode* GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	FString Type = GameMode->QuestManager->GetQuest(QuestId)->TypeName;
-	FString Sub = GameMode->QuestManager->GetQuest(QuestId)->Sub;
+	UseGInstance
+	FString Type = GInstance->QuestManager->GetQuest(QuestId)->TypeName;
+	FString Sub = GInstance->QuestManager->GetQuest(QuestId)->Sub;
 
 	Txt_Sub->SetText(FText::FromString(Sub));
 
@@ -54,8 +56,9 @@ void UWidget_PlayerQuest::RefreshStarted()
 	bStartedQuest = true;
 
 	UseGameMode
+		UseGInstance
 	SlotsMakeEmpty();
-	int Number = GameMode->QuestManager->GetStartedQuests()->Num();
+	int Number = GInstance->QuestManager->GetStartedQuests()->Num();
 
 	for (int i = 0; i < Number; i++)
 	{
@@ -66,8 +69,8 @@ void UWidget_PlayerQuest::RefreshStarted()
 		// 여기서 아이디 값을 이상하게 가져오나?
 		// ㅇㅇ 왜??
 
-		UE_LOG(LogTemp, Warning, TEXT("StartedNumber : %d"), GameMode->QuestManager->GetStartedQuest(i)->Id);
-		QuestSlot->SetQuestId(GameMode, GameMode->QuestManager->GetStartedQuest(i)->Id);
+		UE_LOG(LogTemp, Warning, TEXT("StartedNumber : %d"), GInstance->QuestManager->GetStartedQuest(i)->Id);
+		QuestSlot->SetQuestId(GameMode, GInstance->QuestManager->GetStartedQuest(i)->Id);
 	}
 
 }
@@ -79,15 +82,16 @@ void UWidget_PlayerQuest::RefreshCleared()
 	bStartedQuest = false;
 
 	UseGameMode
+		UseGInstance
 	SlotsMakeEmpty();
-	int Number = GameMode->QuestManager->GetClearedQuests()->Num();
+	int Number = GInstance->QuestManager->GetClearedQuests()->Num();
 	for (int i = 0; i < Number; i++)
 	{
 		Slots.Add(CreateWidget(GetWorld(), BP_Slot));
 		ScrollBox_List->AddChild(Slots.Top());
 		auto QuestSlot = Cast<UWidget_PlayerQuestList>(Slots.Top());
 		QuestSlot->SetParentUI(this);
-		FQuest* q = GameMode->QuestManager->GetClearedQuest(i);
+		FQuest* q = GInstance->QuestManager->GetClearedQuest(i);
 		QuestSlot->SetQuestId(GameMode, q->Id);
 	}
 }
@@ -108,6 +112,7 @@ void UWidget_PlayerQuest::CreateSlot()
 void UWidget_PlayerQuest::SetGoalAndNow(int QuestId)
 {
 	AMyGameMode* GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	UseGInstance
 	int Goal;
 	int Now;
 
@@ -118,8 +123,8 @@ void UWidget_PlayerQuest::SetGoalAndNow(int QuestId)
 	}
 	else
 	{
-		Goal = GameMode->QuestManager->GetQuest(QuestId)->TargetNum;
-		Now = GameMode->QuestManager->GetStartedQuestById(QuestId).NowNum;
+		Goal = GInstance->QuestManager->GetQuest(QuestId)->TargetNum;
+		Now = GInstance->QuestManager->GetStartedQuestById(QuestId).NowNum;
 		Txt_Goal->SetText(FText::AsNumber(Goal));
 		Txt_Now->SetText(FText::AsNumber(Now));
 	}

@@ -147,9 +147,19 @@ struct FUseItemData : public FTableRowBase
 	int BuyPrice;
 };
 
-/**
- * 
- */
+struct PlayerData
+{
+	TArray<FWeaponData*>	WData;
+	TArray<FArmorData*>		AData;
+	TArray<FUseItemData*>	UData;
+
+	int32 WIndex;
+	int32 AIndex;
+	int32 UIndex;
+
+	int Gold;
+};
+
 UCLASS()
 class MYPROJECT_API UMyGameInstance : public UGameInstance
 {
@@ -195,5 +205,20 @@ private:
 	UPROPERTY()
 	class UDataTable* UseItemImage;
 
-	
+public:
+	void SetPlayerData(class AMyPlayer* MyPlayer);
+public:
+	void SetMapChanged(bool Value) { bMapChanged = Value; }
+
+	bool GetMapChanged() { return bMapChanged; }
+	PlayerData* GetPlayerData() { return &PData; }
+
+private:
+	bool bMapChanged = false;
+	PlayerData PData;
+public:
+	TSharedPtr<class UManager_Quest> QuestManager;
+
+	UPROPERTY()
+	class UManager_Scene* SceneManager;
 };

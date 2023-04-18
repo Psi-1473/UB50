@@ -3,8 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "MyGameInstance.h"
 
 #define UseGameMode AMyGameMode* GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+#define UseGInstance UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
 /**
  * 
  */

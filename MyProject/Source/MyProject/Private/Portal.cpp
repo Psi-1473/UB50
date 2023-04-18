@@ -4,6 +4,9 @@
 #include "Portal.h"
 #include "Components/BoxComponent.h"
 #include "../MyPlayer.h"
+#include "../DEFINE.H"
+#include "Manager_Scene.h"
+#include "../MyGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -37,6 +40,7 @@ void APortal::NotifyActorBeginOverlap(AActor* OtherActor)
 	if (Player)
 	{
 		Player->SetPortal(this);
+		PlayerInfo = Player;
 		UE_LOG(LogTemp, Warning, TEXT("Portal Set"));
 	}
 }
@@ -48,6 +52,7 @@ void APortal::NotifyActorEndOverlap(AActor* OtherActor)
 	if (Player)
 	{
 		Player->SetPortal(nullptr);
+		PlayerInfo = nullptr;
 		UE_LOG(LogTemp, Warning, TEXT("Portal Null"));
 	}
 }
@@ -55,6 +60,12 @@ void APortal::NotifyActorEndOverlap(AActor* OtherActor)
 void APortal::MoveToOtherLevel()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Move Level"));
+
+	if (PlayerInfo == nullptr)
+		return;
+
+	UseGInstance
+	GInstance->SceneManager->SavePlayerData(PlayerInfo);
 	UGameplayStatics::OpenLevel(this, TransferLevelName);
 }
 

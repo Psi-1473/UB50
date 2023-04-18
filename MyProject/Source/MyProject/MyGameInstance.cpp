@@ -2,6 +2,9 @@
 
 
 #include "MyGameInstance.h"
+#include "Manager_Quest.h"
+#include "Manager_Scene.h"
+#include "MyPlayer.h"
 
 UMyGameInstance::UMyGameInstance()
 {
@@ -23,11 +26,15 @@ UMyGameInstance::UMyGameInstance()
 	WeaponImage = WeaponImg.Object;
 	ArmorImage = ArmorImg.Object;
 	UseItemImage = UseItemImg.Object;
+
+	QuestManager = MakeShared<UManager_Quest>();
+	SceneManager = NewObject<UManager_Scene>();
 }
  
 void UMyGameInstance::Init()
 {
 	UGameInstance::Init();
+	QuestManager->LoadQuestData();
 	UE_LOG(LogTemp, Warning, TEXT("MyGameInstance %d"), GetStatData(1)->Attack);
 
 	UE_LOG(LogTemp, Warning, TEXT("MyGameInstance %s"), *GetEnemyData(TEXT("Kwang"))->Name);
@@ -72,4 +79,24 @@ FRichImageRow* UMyGameInstance::GetArmorImage(int32 Id)
 FRichImageRow* UMyGameInstance::GetUseImage(int32 Id)
 {
 	return UseItemImage->FindRow<FRichImageRow>(*FString::FromInt(Id), TEXT(""));
+}
+
+void UMyGameInstance::SetPlayerData(AMyPlayer* MyPlayer)
+{
+	PData.WIndex = MyPlayer->WeaponIndex;
+	PData.AIndex = MyPlayer->ArmorIndex;
+	PData.UIndex = MyPlayer->UseItemIndex;
+
+	PData.WData.Init(nullptr, 24);
+	PData.AData.Init(nullptr, 24);
+	PData.UData.Init(nullptr, 24);
+
+	for (int i = 0; i < 24; i++)
+	{
+		PData.WData[i] = MyPlayer->WeaponList[i];
+		PData.AData[i] = MyPlayer->ArmorList[i];
+		PData.UData[i] = MyPlayer->UseItemList[i];
+	}
+
+	PData.Gold = MyPlayer->Gold;
 }

@@ -5,6 +5,7 @@
 #include "EnemyAnimInstance.h"
 #include "MyPlayer.h"
 #include "MyGameMode.h"
+#include "MyGameInstance.h"
 #include "Manager_Quest.h"
 #include "EnemyStatComponent.h"
 #include "Components/WidgetComponent.h"
@@ -134,7 +135,8 @@ void AMonster::Die(AMyPlayer* Player)
 	IsDied = true;
 	
 	UseGameMode
-	GameMode->QuestManager->AddQuestTargetNum("Hunting", Stat->GetId());
+	UseGInstance
+	GInstance->QuestManager->AddQuestTargetNum("Hunting", Stat->GetId());
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	DropItemOrGold(Player);

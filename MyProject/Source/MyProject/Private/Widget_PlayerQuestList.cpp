@@ -7,6 +7,7 @@
 #include "Components/Image.h"
 #include "Widget_PlayerQuest.h"
 #include "../MyGameMode.h"
+#include "../MyGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "Manager_Quest.h"
 
@@ -18,11 +19,12 @@ void UWidget_PlayerQuestList::NativeConstruct()
 void UWidget_PlayerQuestList::SetQuestId(AMyGameMode* GMode, int Id)
 {
 		QuestId = Id;
+		UseGInstance
 		UE_LOG(LogTemp, Warning, TEXT("Set Quest Id : %d"), QuestId);
-		QuestName = GMode->QuestManager->GetQuestName(QuestId);
+		QuestName = GInstance->QuestManager->GetQuestName(QuestId);
 		Txt_Name->SetText(FText::FromString(QuestName));
 
-		if (GMode->QuestManager->GetStartedQuestById(QuestId).CanClear)
+		if (GInstance->QuestManager->GetStartedQuestById(QuestId).CanClear)
 			return;
 
 		Img_Clear->SetVisibility(ESlateVisibility::Hidden);

@@ -4,6 +4,7 @@
 #include "Widget_Quest.h"
 #include "../MyPlayer.h"
 #include "../MyGameMode.h"
+#include "../MyGameInstance.h"
 #include "Components/ScrollBox.h"
 #include "Widget_QuestSlot.h"
 #include "Kismet/GameplayStatics.h"
@@ -33,7 +34,8 @@ void UWidget_Quest::CreateQuestList()
 {
 	Slots.Empty();
 	UseGameMode
-	if (GameMode->QuestManager->GetQuestsByNpcId(NpcId).IsEmpty())
+	UseGInstance
+	if (GInstance->QuestManager->GetQuestsByNpcId(NpcId).IsEmpty())
 		return;
 	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	auto MyPlayer = Cast<AMyPlayer>(Char);

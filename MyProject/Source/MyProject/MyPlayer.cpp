@@ -10,6 +10,7 @@
 #include "Widget_PlayerMain.h"
 #include "DEFINE.H"
 #include "MyGameMode.h"
+#include "Manager_Scene.h"
 #include "Kismet/GameplayStatics.h"
 #include "Widget_Inventory.h"
 #include "Widget_InvenSlot.h"
@@ -49,18 +50,6 @@ AMyPlayer::AMyPlayer()
 	Stat = CreateDefaultSubobject<UPlayerStatComponent>(TEXT("STAT"));
 	GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	
-	static ConstructorHelpers::FClassFinder<UUserWidget> IW(TEXT("WidgetBlueprint'/Game/UI/WBP_Inventory.WBP_Inventory_C'"));
-	if (IW.Succeeded())
-	{
-		Inventory = IW.Class;
-	}
-	static ConstructorHelpers::FClassFinder<UUserWidget> CW(TEXT("WidgetBlueprint'/Game/UI/WBP_Shop.WBP_Shop_C'"));
-	if (IW.Succeeded())
-	{
-		Conversation = CW.Class;
-	}
-
-
 	WeaponList.Init(nullptr, 24);
 	ArmorList.Init(nullptr, 24);
 	UseItemList.Init(nullptr, 24);
@@ -76,6 +65,9 @@ void AMyPlayer::BeginPlay()
 		GameMode->UIUpdate_Hp(Stat->GetHpRatio());
 	}
 	Gold = 1000;
+
+	UseGInstance
+		GInstance->SceneManager->LoadPlayerData(this);
 }
 
 void AMyPlayer::PostInitializeComponents()
@@ -484,7 +476,7 @@ void AMyPlayer::AddItemUse(int Id)
 	if (bOnInventory)
 		GameMode->UIManager->UpdateInventory(FindNextInvenIndex(USEITEM));
 
-	GameMode->QuestManager->AddQuestTargetNum("Collect", Id);
+	GInstance->QuestManager->AddQuestTargetNum("Collect", Id);
 }
 
 int AMyPlayer::FindNextInvenIndex(int ItemType)

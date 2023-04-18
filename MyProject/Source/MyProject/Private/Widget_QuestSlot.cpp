@@ -4,6 +4,7 @@
 #include "Widget_QuestSlot.h"
 #include "Kismet/GameplayStatics.h"
 #include "../MyGameMode.h"
+#include "../MyGameInstance.h"
 #include "Components/TextBlock.h"
 #include "Components/Image.h"
 #include "Components/Button.h"
@@ -25,8 +26,8 @@ void UWidget_QuestSlot::SetId(int Id)
 
 void UWidget_QuestSlot::Init()
 {
-	UseGameMode
-	FQuest* MyQuest = GameMode->QuestManager->GetQuest(QuestId);
+	UseGInstance
+	FQuest* MyQuest = GInstance->QuestManager->GetQuest(QuestId);
 	Txt_Name->SetText(FText::FromString(MyQuest->Name));
 	Txt_Sub->SetText(FText::FromString(MyQuest->Sub));
 	if (!bCleared)

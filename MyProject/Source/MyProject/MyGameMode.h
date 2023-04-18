@@ -35,6 +35,4 @@ public:
 
 
 	UManager_UI* UIManager;
-
-	TSharedPtr<UManager_Quest> QuestManager;
 };

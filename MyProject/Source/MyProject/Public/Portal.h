@@ -36,4 +36,7 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	class UBoxComponent* TransferVolume;
+
+	UPROPERTY()
+	class AMyPlayer* PlayerInfo;
 };

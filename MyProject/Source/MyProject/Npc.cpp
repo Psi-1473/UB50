@@ -51,8 +51,8 @@ void ANpc::BeginPlay()
 	InitNpcId();
 	InitQuestInfo();
 
-	AMyGameMode* GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	GameMode->QuestManager->AddNpc(NpcId, this);
+	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
+	GInstance->QuestManager->AddNpc(NpcId, this);
 }
 
 // Called every frame
@@ -137,11 +137,11 @@ void ANpc::InitNpcId()
 void ANpc::InitQuestInfo()
 {
 	AMyGameMode* GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	
-	if (GameMode->QuestManager->GetQuestsByNpcId(NpcId).IsEmpty())
+	UseGInstance
+	if (GInstance->QuestManager->GetQuestsByNpcId(NpcId).IsEmpty())
 		return;
 
-	TArray<FQuest> Quests = GameMode->QuestManager->GetQuestsByNpcId(NpcId);
+	TArray<FQuest> Quests = GInstance->QuestManager->GetQuestsByNpcId(NpcId);
 
 	for (int i = 0; i < Quests.Num(); i++)
 	{

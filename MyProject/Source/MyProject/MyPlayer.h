@@ -155,14 +155,6 @@ private:
 	TSubclassOf<class AProjectile> ProjectileClass;
 
 private:
-	TSubclassOf<UUserWidget> Inventory;
-	UUserWidget* Inven;
-
-	TSubclassOf<UUserWidget> Conversation;
-	UUserWidget* Conv;
-	// юс╫ц
-
-private:
 	TArray<int32> SkillCoolTimes;
 
 public:
