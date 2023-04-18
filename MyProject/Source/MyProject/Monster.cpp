@@ -7,6 +7,7 @@
 #include "MyGameMode.h"
 #include "MyGameInstance.h"
 #include "Manager_Quest.h"
+#include "Manager_Inven.h"
 #include "EnemyStatComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Widget_Hp.h"
@@ -144,12 +145,13 @@ void AMonster::Die(AMyPlayer* Player)
 
 void AMonster::DropItemOrGold(AMyPlayer* Player)
 {
+	UseGInstance
 	int32 MaxGold = Stat->GetMaxGold();
 	int32 MinGold = Stat->GetMinGold();
 
 	int32 RandGold = FMath::RandRange(MinGold, MaxGold);
 
-	Player->ChangeGold(RandGold);
+	GInstance->InvenManager->ChangeGold(GInstance, RandGold);
 }
 
 void AMonster::OnStun(float Tick)

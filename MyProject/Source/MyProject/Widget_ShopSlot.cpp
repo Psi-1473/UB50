@@ -4,6 +4,8 @@
 #include "Widget_ShopSlot.h"
 #include "Kismet/GameplayStatics.h"
 #include "MyPlayer.h"
+#include "Manager_Inven.h"
+#include "DEFINE.H"
 #include "Components/Image.h"
 #include "MyGameInstance.h"
 #include "Components/TextBlock.h"
@@ -82,27 +84,29 @@ void UWidget_ShopSlot::InitUseItem(UMyGameInstance* GInstance, int ItemId)
 
 void UWidget_ShopSlot::BuyItem()
 {
+	UseGInstance
+
 	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	auto MyPlayer = Cast<AMyPlayer>(Char);
 
-	if (MyPlayer->GetGold() < MyPrice)
+	if (GInstance->InvenManager->GetGold() < MyPrice)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Need More Money"));
 		return;
 	}
 
-	MyPlayer->SetGold(MyPlayer->GetGold() - MyPrice);
+	GInstance->InvenManager->SetGold(GInstance->InvenManager->GetGold() - MyPrice);
 
 	switch (MyType)
 	{
 	case WEAPON:
-		MyPlayer->AddItemWeapon(MyId);
+		GInstance->InvenManager->AddItemWeapon(GInstance, MyId);
 		break;
 	case ARMOR:
-		MyPlayer->AddItemArmor(MyId);
+		GInstance->InvenManager->AddItemArmor(GInstance, MyId);
 		break;
 	case USEITEM:
-		MyPlayer->AddItemUse(MyId);
+		GInstance->InvenManager->AddItemUse(GInstance, MyId);
 		break;
 	default:
 		break;

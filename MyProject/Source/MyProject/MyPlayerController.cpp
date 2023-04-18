@@ -4,6 +4,7 @@
 #include "MyPlayerController.h"
 #include "MyPlayer.h"
 #include "Kismet/GameplayStatics.h"
+#include "Manager_Inven.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -164,15 +165,17 @@ void AMyPlayerController::PopupInventory()
 	if(MyPlayer == nullptr)
 		MyPlayer = Cast<AMyPlayer>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 
-	if (MyPlayer->GetOnInventory())
+	UseGInstance
+
+	if (GInstance->InvenManager->GetOnInventory())
 	{
 		MyPlayer->CloseUI(UIType::INVENTORY);
-		MyPlayer->SetOnInventory(false);
+		GInstance->InvenManager->SetOnInventory(false);
 	}
 	else
 	{
 		MyPlayer->OpenUI(UIType::INVENTORY);
-		MyPlayer->SetOnInventory(true);
+		GInstance->InvenManager->SetOnInventory(true);
 	}
 }
 

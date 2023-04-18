@@ -14,6 +14,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Widget_Inventory.h"
 #include "Widget_InvenSlot.h"
+#include "Manager_Inven.h"
 #include "Widget_Shop.h"
 #include "Projectile.h"
 #include "GameFrameWork/Actor.h"
@@ -49,10 +50,7 @@ AMyPlayer::AMyPlayer()
 
 	Stat = CreateDefaultSubobject<UPlayerStatComponent>(TEXT("STAT"));
 	GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	
-	WeaponList.Init(nullptr, 24);
-	ArmorList.Init(nullptr, 24);
-	UseItemList.Init(nullptr, 24);
+
 	SkillCoolTimes.Init(0, 3);
 
 }
@@ -64,10 +62,9 @@ void AMyPlayer::BeginPlay()
 	{
 		GameMode->UIUpdate_Hp(Stat->GetHpRatio());
 	}
-	Gold = 1000;
 
 	UseGInstance
-		GInstance->SceneManager->LoadPlayerData(this);
+	//GInstance->SceneManager->LoadPlayerData(this); 나중에 HP 연동
 }
 
 void AMyPlayer::PostInitializeComponents()
@@ -98,13 +95,14 @@ void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AMyPlayer::Attack()
 {
+	UseGInstance
 	if (AttackIndex >= 3)
 		return;
 
 	if (PlayerState == DAMAGED)
 		return;
 
-	if (bOnInventory)
+	if (GInstance->InvenManager->GetOnInventory())
 		return;
 
 	bCombo = false;
@@ -385,199 +383,20 @@ void AMyPlayer::OnAttackMontageStarted(UAnimMontage* Montage, bool bInterrupted)
 
 void AMyPlayer::OpenUI(UIType MyUIType)
 {
-	GameMode->UIManager->PopupUI(GetWorld(), MyUIType);
+	UseGInstance
+	GInstance->UIManager->PopupUI(GetWorld(), MyUIType);
 	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
 }
 
 void AMyPlayer::CloseUI(UIType MyUIType)
 {
+	UseGInstance
 	if (GameMode == nullptr)
 		return;
-	GameMode->UIManager->CloseUI(MyUIType);
+	GInstance->UIManager->CloseUI(MyUIType);
 	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);
 }
 
-void AMyPlayer::EquipWeapon(int Id, int Idx)
-{
-	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
-	auto MyInven = Cast<UWidget_Inventory>(GameMode->UIManager->GetInven());
-
-	if (GInstance->GetWeaponData(Id) == nullptr)
-		return;
-
-	if (EquipWeaponId != -1)
-		WeaponList[Idx] = GInstance->GetWeaponData(EquipWeaponId);
-	else
-		WeaponList[Idx] = nullptr;
-
-	MyInven->Slots[Idx]->SetWeaponItem();
-	MyInven->ChangeWeapon(Id, GInstance);
-	EquipWeaponId = Id;
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Weapon Equip!"));
-}
-
-void AMyPlayer::EquipArmor(int Id, int Idx)
-{
-	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
-	auto MyInven = Cast<UWidget_Inventory>(GameMode->UIManager->GetInven());
-
-	if (GInstance->GetArmorData(Id) == nullptr)
-		return;
-
-	if (EquipArmorId != -1)
-		ArmorList[Idx] = GInstance->GetArmorData(EquipArmorId);
-	else
-		ArmorList[Idx] = nullptr;
-
-	MyInven->Slots[Idx]->SetArmorItem();
-	MyInven->ChangeArmor(Id, GInstance);
-	EquipArmorId = Id;
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Armor Equip!"));
-}
-
-void AMyPlayer::UseItem(int Id, int Idx)
-{
-	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
-	if (GInstance->GetUseData(Id) == nullptr)
-		return;
-
-
-	// 아이템 정보를 받아와서 
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("item Use!"));
-}
-
-void AMyPlayer::AddItem(int id, int ItemType)
-{
-}
-
-void AMyPlayer::AddItemWeapon(int Id)
-{
-	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
-	int Idx = FindNextInvenIndex(WEAPON);
-	WeaponList[Idx] = GInstance->GetWeaponData(Id);
-	if (bOnInventory)
-		GameMode->UIManager->UpdateInventory(FindNextInvenIndex(WEAPON));
-}
-
-void AMyPlayer::AddItemArmor(int Id)
-{
-	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
-	int Idx = FindNextInvenIndex(ARMOR);
-	ArmorList[Idx] = GInstance->GetArmorData(Id);
-	if (bOnInventory)
-		GameMode->UIManager->UpdateInventory(FindNextInvenIndex(ARMOR));
-}
-
-void AMyPlayer::AddItemUse(int Id)
-{
-	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
-	int Idx = FindNextInvenIndex(USEITEM);
-	UseItemList[Idx] = GInstance->GetUseData(Id);
-	if (bOnInventory)
-		GameMode->UIManager->UpdateInventory(FindNextInvenIndex(USEITEM));
-
-	GInstance->QuestManager->AddQuestTargetNum("Collect", Id);
-}
-
-int AMyPlayer::FindNextInvenIndex(int ItemType)
-{
-	// 인벤토리가 가득 찼을 때 처리.
-	for (int i = 0; i < INVENTORYNUMBER; i++)
-	{
-		switch (ItemType)
-		{
-		case WEAPON:
-			if (WeaponList[i] == nullptr)
-				return i;
-			break;
-		case ARMOR:
-			if (ArmorList[i] == nullptr)
-				return i;
-			break;
-		case USEITEM:
-			if (UseItemList[i] == nullptr)
-				return i;
-			break;
-		}
-	}
-
-	return -1;
-}
-
-bool AMyPlayer::DraggingSwap(int from, int to)
-{
-	auto MyInven = Cast<UWidget_Inventory>(GameMode->UIManager->GetInven());
-	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
-	int FromId;
-	int ToId;
-
-	switch (MyInven->GetInvenType())
-	{
-	case WEAPON:
-		FromId = WeaponList[from]->Id;
-
-		if (WeaponList[to] == nullptr)
-		{
-			WeaponList[from] = nullptr;
-			WeaponIndex = from;
-		}
-		else
-		{
-			ToId = WeaponList[to]->Id;
-			WeaponList[from] = GInstance->GetWeaponData(ToId);
-		}
-		WeaponList[to] = GInstance->GetWeaponData(FromId);
-		MyInven->Slots[to]->SetWeaponItem();
-		MyInven->Slots[from]->SetWeaponItem();
-
-		break;
-	case ARMOR:
-		FromId = ArmorList[from]->Id;
-		if (ArmorList[to] == nullptr)
-		{
-			ArmorList[from] = nullptr;
-			ArmorIndex = from;
-		}
-		else
-		{
-			ToId = ArmorList[to]->Id;
-			ArmorList[from] = GInstance->GetArmorData(ToId);
-		}
-		ArmorList[to] = GInstance->GetArmorData(FromId);
-		MyInven->Slots[from]->SetArmorItem();
-		MyInven->Slots[to]->SetArmorItem();
-		break;
-	case USEITEM:
-		FromId = UseItemList[from]->Id;
-
-		if (UseItemList[to] == nullptr)
-		{
-			UseItemList[from] = nullptr;
-			UseItemIndex = from;
-		}
-		else
-		{
-			ToId = UseItemList[to]->Id;
-			UseItemList[from] = GInstance->GetUseData(ToId);
-		}
-		UseItemList[to] = GInstance->GetUseData(FromId);
-		MyInven->Slots[from]->SetUseItem();
-		MyInven->Slots[to]->SetUseItem();
-		break;
-	}
-
-	return true;
-}
-
-void AMyPlayer::ChangeGold(int Value)
-{
-	Gold += Value;
-
-	if (bOnInventory)
-	{
-		GameMode->UIManager->ChangeInvenGold(Value);
-	}
-}
 
 void AMyPlayer::StopMoving()
 {

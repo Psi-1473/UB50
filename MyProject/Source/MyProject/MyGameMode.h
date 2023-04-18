@@ -34,5 +34,4 @@ public:
 	UUserWidget* CurrentWidget;
 
 
-	UManager_UI* UIManager;
 };

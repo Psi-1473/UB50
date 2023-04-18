@@ -58,47 +58,29 @@ private:
 public:
 	void OpenUI(UIType MyUIType);
 	void CloseUI(UIType MyUIType);
-	void EquipWeapon(int Id, int Idx);
-	void EquipArmor(int Id, int Idx);
-	void UseItem(int Id, int Idx);
 
-	void AddItem(int id, int ItemType);
-	void AddItemWeapon(int Id);
-	void AddItemArmor(int Id);
-	void AddItemUse(int Id);
-
-	int FindNextInvenIndex(int ItemType);
-	bool DraggingSwap(int from, int to);
-
-	void ChangeGold(int Value);
 	void StopMoving();
 
 	
 
 public:
 	void SetNpc(ANpc* NewNpc = nullptr){ CanInteractNpc = NewNpc; }
-	void SetGold(int Value) { Gold = Value; }
-	void SetOnInventory(bool Value) { bOnInventory = Value; }
+
 	void SetOnQuest(bool Value) { bOnQuest = Value; }
 	void SetInteracting(bool Value) { bInteract = Value; }
 	void SetState(STATE Value) { PlayerState = Value; }
 	void SetPortal(APortal* PortalValue) { Portal = PortalValue; }
 
-	int GetGold() { return Gold; }
 	STATE GetState() { return PlayerState; }
 	class ANpc* GetInteractNpc() { return CanInteractNpc; }
 	class APortal* GetPortal() { return Portal; }
 
 	
 
-	bool GetOnInventory() { return bOnInventory; }
 	bool GetOnQuest() { return bOnQuest; }
 	bool GetInteracting() { return bInteract; }
 	
 	//Temp
-
-	int GetEquipWeaponId() { return EquipWeaponId; }
-	int GetEquipArmorId() { return EquipArmorId; }
 
 private:
 	UFUNCTION()
@@ -142,8 +124,6 @@ private:
 	class AMyGameMode* GameMode;
 
 	UPROPERTY()
-	bool bOnInventory = false; //임시 나중에 UI 매니저에서 관리
-	UPROPERTY()
 	bool bOnQuest = false; //임시 나중에 UI 매니저에서 관리
 	UPROPERTY()
 	bool bInteract = false;
@@ -158,14 +138,6 @@ private:
 	TArray<int32> SkillCoolTimes;
 
 public:
-	TArray<FWeaponData*> WeaponList;
-	int32 WeaponIndex = 0;
-	TArray<FArmorData*> ArmorList;
-	int32 ArmorIndex = 0;
-	TArray<FUseItemData*> UseItemList;
-	int32 UseItemIndex = 0;
-
-	int Gold = 0;
 
 	UPROPERTY()
 	FTimerHandle QTimerHandle;
@@ -180,9 +152,5 @@ private:
 	APortal* Portal;
 
 	STATE PlayerState;
-
-	int EquipWeaponId = -1;
-	int EquipArmorId = -1;
-
 };
 

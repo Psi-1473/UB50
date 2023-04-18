@@ -8,6 +8,7 @@
 #include "Components/TextBlock.h"
 #include "DragWidget.h"
 #include "MyGameInstance.h"
+#include "Manager_Inven.h"
 #include "Components/Image.h"
 #include "MyPlayer.h"
 #include "Kismet/GameplayStatics.h"
@@ -25,13 +26,12 @@ void UWidget_Inventory::NativeConstruct()
 
 	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	auto MyPlayer = Cast<AMyPlayer>(Char);
-
+	UseGInstance
 	OwnerPlayer = MyPlayer;
 	CreateSlot();
-	ChangeGold(MyPlayer->Gold);
-	UMyGameInstance* GInstance = Cast<UMyGameInstance>(MyPlayer->GetGameInstance());
-	ChangeWeapon(MyPlayer->GetEquipWeaponId(), GInstance);
-	ChangeArmor(MyPlayer->GetEquipArmorId(), GInstance);
+	ChangeGold(GInstance->InvenManager->GetGold());
+	ChangeWeapon(GInstance->InvenManager->GetEquipWeaponId(), GInstance);
+	ChangeArmor(GInstance->InvenManager->GetEquipArmorId(), GInstance);
 	
 }
 
@@ -118,8 +118,9 @@ void UWidget_Inventory::RefreshToUse()
 
 void UWidget_Inventory::CloseUI()
 {
+	UseGInstance
 	OwnerPlayer->CloseUI(UIType::INVENTORY);
-	OwnerPlayer->SetOnInventory(false);
+	GInstance->InvenManager->SetOnInventory(false);
 }
 
 void UWidget_Inventory::ChangeGold(int Value)

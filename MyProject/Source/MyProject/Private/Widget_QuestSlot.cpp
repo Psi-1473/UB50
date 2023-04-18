@@ -38,9 +38,10 @@ void UWidget_QuestSlot::PopupYesOrNo()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Try YES OR NO"));
 	UseGameMode
+	UseGInstance
 	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	auto MyPlayer = Cast<AMyPlayer>(Char);
-	UUserWidget* YesNoWidget = GameMode->UIManager->PopupUI(MyPlayer->GetWorld(), UIType::YESNO);
+	UUserWidget* YesNoWidget = GInstance->UIManager->PopupUI(MyPlayer->GetWorld(), UIType::YESNO);
 
 	if (YesNoWidget != nullptr)
 	{

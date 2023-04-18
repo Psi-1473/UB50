@@ -65,7 +65,7 @@ void APortal::MoveToOtherLevel()
 		return;
 
 	UseGInstance
-	GInstance->SceneManager->SavePlayerData(PlayerInfo);
+	//GInstance->SceneManager->SavePlayerData(PlayerInfo);
 	UGameplayStatics::OpenLevel(this, TransferLevelName);
 }
 

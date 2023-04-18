@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "MyPlayer.h"
 #include "Components/Image.h"
+#include "Manager_Inven.h"
 #include "Components/Button.h"
 #include "MyGameInstance.h"
 #include "DragWidget.h"
@@ -20,12 +21,11 @@ void UWidget_InvenSlot::NativeConstruct()
 
 FReply UWidget_InvenSlot::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
+	UseGInstance
 	FEventReply Reply;
 	Reply.NativeReply = Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
 	if (InMouseEvent.IsMouseButtonDown(EKeys::RightMouseButton) == true)
 	{
-		auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-		auto MyPlayer = Cast<AMyPlayer>(Char);
 		// 아이템 사용
 		int Id = ItemId;
 		int Idx = SlotIndex;
@@ -35,13 +35,13 @@ FReply UWidget_InvenSlot::NativeOnMouseButtonDown(const FGeometry& InGeometry, c
 		switch (ItemType)
 		{
 		case 0:
-			MyPlayer->EquipWeapon(Id, Idx);
+			GInstance->InvenManager->EquipWeapon(GInstance, Id, Idx);
 			break;
 		case 1:
-			MyPlayer->EquipArmor(Id, Idx);
+			GInstance->InvenManager->EquipArmor(GInstance, Id, Idx);
 			break;
 		case 2:
-			MyPlayer->UseItem(Id, Idx);
+			GInstance->InvenManager->UseItem(GInstance, Id, Idx);
 			break;
 		}
 	}
@@ -91,7 +91,7 @@ bool UWidget_InvenSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDro
 {
 	Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
 	UDragWidget* DragOper = Cast<UDragWidget>(InOperation);
-
+	UseGInstance
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Draging End"));
 
 	if (DragOper != nullptr)
@@ -104,9 +104,8 @@ bool UWidget_InvenSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDro
 			
 		// 스왑
 		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Draging Success"));
-		auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-		auto MyPlayer = Cast<AMyPlayer>(Char);
-		MyPlayer->DraggingSwap(DragOper->DragIndex, this->SlotIndex);
+
+		GInstance->InvenManager->DraggingSwap(GInstance, DragOper->DragIndex, this->SlotIndex);
 		return true;
 	}
 	else
@@ -132,10 +131,10 @@ void UWidget_InvenSlot::SetWeaponItem()
 	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
 	ItemType = 0;
 
-	if (MyPlayer->WeaponList[SlotIndex] != nullptr)
+	if (GInstance->InvenManager->GetWeaponList()[SlotIndex] != nullptr)
 	{
-		ChangeImage(0, MyPlayer->WeaponList[SlotIndex]->Id, GInstance, MyPlayer);
-		ItemId = MyPlayer->WeaponList[SlotIndex]->Id;
+		ChangeImage(0, GInstance->InvenManager->GetWeaponList()[SlotIndex]->Id, GInstance, MyPlayer);
+		ItemId = GInstance->InvenManager->GetWeaponList()[SlotIndex]->Id;
 	}
 	else
 		SetEmpty();
@@ -148,10 +147,10 @@ void UWidget_InvenSlot::SetArmorItem()
 	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
 	ItemType = 1;
 
-	if (MyPlayer->ArmorList[SlotIndex] != nullptr)
+	if (GInstance->InvenManager->GetArmorList()[SlotIndex] != nullptr)
 	{
-		ChangeImage(1, MyPlayer->ArmorList[SlotIndex]->Id, GInstance, MyPlayer);
-		ItemId = MyPlayer->ArmorList[SlotIndex]->Id;
+		ChangeImage(1, GInstance->InvenManager->GetArmorList()[SlotIndex]->Id, GInstance, MyPlayer);
+		ItemId = GInstance->InvenManager->GetArmorList()[SlotIndex]->Id;
 	}
 	else
 		SetEmpty();
@@ -164,10 +163,10 @@ void UWidget_InvenSlot::SetUseItem()
 	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
 	ItemType = 2;
 
-	if (MyPlayer->UseItemList[SlotIndex] != nullptr)
+	if (GInstance->InvenManager->GetUseItemList()[SlotIndex] != nullptr)
 	{
-		ChangeImage(2, MyPlayer->UseItemList[SlotIndex]->Id, GInstance, MyPlayer);
-		ItemId = MyPlayer->UseItemList[SlotIndex]->Id;
+		ChangeImage(2, GInstance->InvenManager->GetUseItemList()[SlotIndex]->Id, GInstance, MyPlayer);
+		ItemId = GInstance->InvenManager->GetUseItemList()[SlotIndex]->Id;
 	}
 	else
 		SetEmpty();
@@ -207,16 +206,16 @@ void UWidget_InvenSlot::ChangeImage(int TypeIndex, int Index, UMyGameInstance* I
 	switch (TypeIndex)
 	{
 	case 0:
-		strText = FString::Printf(TEXT("%d"), PlayerInst->WeaponList[SlotIndex]->Id);
-		Img_Item->SetBrush(Instance->GetWeaponImage(PlayerInst->WeaponList[SlotIndex]->Id)->Brush);
+		strText = FString::Printf(TEXT("%d"), Instance->InvenManager->GetWeaponList()[SlotIndex]->Id);
+		Img_Item->SetBrush(Instance->GetWeaponImage(Instance->InvenManager->GetWeaponList()[SlotIndex]->Id)->Brush);
 		break;
 	case 1:
-		strText = FString::Printf(TEXT("%d"), PlayerInst->ArmorList[SlotIndex]->Id);
-		Img_Item->SetBrush(Instance->GetArmorImage(PlayerInst->ArmorList[SlotIndex]->Id)->Brush);
+		strText = FString::Printf(TEXT("%d"), Instance->InvenManager->GetArmorList()[SlotIndex]->Id);
+		Img_Item->SetBrush(Instance->GetArmorImage(Instance->InvenManager->GetArmorList()[SlotIndex]->Id)->Brush);
 		break;
 	case 2:
-		strText = FString::Printf(TEXT("%d"), PlayerInst->UseItemList[SlotIndex]->Id);
-		Img_Item->SetBrush(Instance->GetUseImage(PlayerInst->UseItemList[SlotIndex]->Id)->Brush);
+		strText = FString::Printf(TEXT("%d"), Instance->InvenManager->GetUseItemList()[SlotIndex]->Id);
+		Img_Item->SetBrush(Instance->GetUseImage(Instance->InvenManager->GetUseItemList()[SlotIndex]->Id)->Brush);
 		break;
 	default:
 		break;
