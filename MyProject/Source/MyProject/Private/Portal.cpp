@@ -39,7 +39,7 @@ void APortal::NotifyActorBeginOverlap(AActor* OtherActor)
 
 	if (Player)
 	{
-		Player->SetPortal(this);
+		Player->SetInteractObj(this);
 		PlayerInfo = Player;
 		UE_LOG(LogTemp, Warning, TEXT("Portal Set"));
 	}
@@ -51,7 +51,7 @@ void APortal::NotifyActorEndOverlap(AActor* OtherActor)
 
 	if (Player)
 	{
-		Player->SetPortal(nullptr);
+		Player->SetInteractObj(nullptr);
 		PlayerInfo = nullptr;
 		UE_LOG(LogTemp, Warning, TEXT("Portal Null"));
 	}
