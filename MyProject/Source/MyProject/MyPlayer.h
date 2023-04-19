@@ -7,6 +7,7 @@
 #include "MyGameInstance.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Interactable.h"
 #include "Components/CapsuleComponent.h"
 #include "Npc.h"
 #include "Define.h"
@@ -70,10 +71,12 @@ public:
 	void SetInteracting(bool Value) { bInteract = Value; }
 	void SetState(STATE Value) { PlayerState = Value; }
 	void SetPortal(APortal* PortalValue) { Portal = PortalValue; }
+	void SetInteractObj(IInteractable* InterValue) { InteractObj = InterValue; }
 
 	STATE GetState() { return PlayerState; }
 	class ANpc* GetInteractNpc() { return CanInteractNpc; }
 	class APortal* GetPortal() { return Portal; }
+	class IInteractable* GetInteractObj() { return InteractObj; }
 
 	
 
@@ -150,6 +153,8 @@ private:
 	ANpc* CanInteractNpc;
 
 	APortal* Portal;
+
+	IInteractable* InteractObj;
 
 	STATE PlayerState;
 };

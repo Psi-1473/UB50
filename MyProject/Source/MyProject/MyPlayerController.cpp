@@ -137,27 +137,10 @@ void AMyPlayerController::ClickESkill()
 
 void AMyPlayerController::Interact()
 {
-	if (MyPlayer->GetPortal() != nullptr)
-	{
-		MyPlayer->GetPortal()->MoveToOtherLevel();
-		return;
-	}
-
-	if (MyPlayer->GetInteractNpc() == nullptr)
+	if (MyPlayer->GetInteractObj() == nullptr)
 		return;
 
-	if (MyPlayer->GetInteracting())
-	{
-		MyPlayer->SetInteracting(false);
-		MyPlayer->CloseUI(UIType::CONVERSATION);
-		MyPlayer->CloseUI(UIType::SHOP);
-		MyPlayer->CloseUI(UIType::QUEST);
-	}
-	else
-	{
-		MyPlayer->SetInteracting(true);
-		MyPlayer->OpenUI(UIType::CONVERSATION);
-	}
+	MyPlayer->GetInteractObj()->Interact(MyPlayer);
 }
 
 void AMyPlayerController::PopupInventory()

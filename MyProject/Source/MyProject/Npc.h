@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Interactable.h"
 #include "Npc.generated.h"
 
 UCLASS()
-class MYPROJECT_API ANpc : public ACharacter
+class MYPROJECT_API ANpc : public ACharacter, public IInteractable
 {
 	GENERATED_BODY()
 
@@ -28,6 +29,8 @@ public:
 	UFUNCTION()
 	void OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	virtual void Interact(class AMyPlayer* Player) override;
+	
 
 
 	void RemovePossibleQuest(int QuestId) { PossibleQuests.Remove(QuestId); }

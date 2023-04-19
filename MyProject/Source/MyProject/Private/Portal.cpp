@@ -57,6 +57,11 @@ void APortal::NotifyActorEndOverlap(AActor* OtherActor)
 	}
 }
 
+void APortal::Interact(AMyPlayer* Player)
+{
+	MoveToOtherLevel();
+}
+
 void APortal::MoveToOtherLevel()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Move Level"));

@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Interactable.h"
 #include "Portal.generated.h"
 
 UCLASS()
-class MYPROJECT_API APortal : public AActor
+class MYPROJECT_API APortal : public AActor, public IInteractable
 {
 	GENERATED_BODY()
 	
@@ -28,6 +29,7 @@ protected:
 	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
 
 public:
+	virtual void Interact(class AMyPlayer* Player) override;
 	void MoveToOtherLevel();
 
 private:

@@ -77,7 +77,7 @@ void ANpc::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActo
 		if (Player)
 		{
 			InteractionKey->SetVisibility(true);
-			Player->SetNpc(this);
+			Player->SetInteractObj(this);
 		}
 	}
 }
@@ -90,8 +90,28 @@ void ANpc::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 		if (Player)
 		{
 			InteractionKey->SetVisibility(false);
-			Player->SetNpc();
+			if (Player->GetInteractObj() == this)
+				Player->SetInteractObj(nullptr);
+
+			Player->SetNpc(nullptr);
 		}
+	}
+}
+
+void ANpc::Interact(AMyPlayer* Player)
+{
+	Player->SetNpc(this);
+	if (Player->GetInteracting())
+	{
+		Player->SetInteracting(false);
+		Player->CloseUI(UIType::CONVERSATION);
+		Player->CloseUI(UIType::SHOP);
+		Player->CloseUI(UIType::QUEST);
+	}
+	else
+	{
+		Player->SetInteracting(true);
+		Player->OpenUI(UIType::CONVERSATION);
 	}
 }
 
