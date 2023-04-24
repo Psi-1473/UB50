@@ -26,4 +26,8 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	class UBoxComponent* TransferVolume;
+
+private:
+	UPROPERTY(EditAnywhere)
+	int InvestigationTime;
 };

@@ -42,6 +42,12 @@ UManager_UI::UManager_UI()
 	{
 		PlayerQuest = PQW.Class;
 	}
+
+	static ConstructorHelpers::FClassFinder<UUserWidget> InvestW(TEXT("WidgetBlueprint'/Game/UI/WBP_Investigation.WBP_Investigation_C'"));
+	if (PQW.Succeeded())
+	{
+		Investigation = InvestW.Class;
+	}
 }
 
 void UManager_UI::UpdateInventory(int NextSlot)
@@ -113,6 +119,11 @@ UUserWidget* UManager_UI::PopupUI(UWorld* World, UIType MyUIType)
 		UIPlayerQuest->AddToViewport();
 		return UIQuest;
 		break;
+	case UIType::INVESTIGATION:
+		UIInvest = CreateWidget(World, Investigation);
+		UIInvest->AddToViewport();
+		return UIQuest;
+		break;
 	default:
 		return nullptr;
 		break;
@@ -149,6 +160,10 @@ void UManager_UI::CloseUI(UIType MyUIType)
 	case UIType::PLAYERQUEST:
 		if (UIPlayerQuest == nullptr) break;
 		RemoveUI(UIPlayerQuest);
+		break;
+	case UIType::INVESTIGATION:
+		if (UIInvest == nullptr) break;
+		RemoveUI(UIInvest);
 		break;
 	default:
 		break;

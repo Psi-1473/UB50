@@ -5,6 +5,7 @@
 #include "../MyPlayer.h"
 #include "../MyAnimInstance.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AInvestigationObj::AInvestigationObj()
@@ -53,5 +54,9 @@ void AInvestigationObj::Interact(AMyPlayer* Player)
 {
 	Player->SetState(LOOT);
 	Player->GetAnimInst()->PlayLootMontage();
+	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	auto MyPlayer = Cast<AMyPlayer>(Char);
+
+	MyPlayer->OpenUI(UIType::INVESTIGATION);
 }
 

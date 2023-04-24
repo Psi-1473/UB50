@@ -53,5 +53,8 @@ private:
 	TSubclassOf<UUserWidget> PlayerQuest;
 	UUserWidget* UIPlayerQuest;
 
+	TSubclassOf<UUserWidget> Investigation;
+	UUserWidget* UIInvest;
+
 	TArray<UUserWidget*> Widgets;
 };
