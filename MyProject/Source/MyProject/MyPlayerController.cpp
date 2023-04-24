@@ -37,13 +37,7 @@ void AMyPlayerController::SetupInputComponent()
 
 void AMyPlayerController::MoveForward(float Value)
 {
-	if (MyPlayer->GetState() == DAMAGED)
-		return;
-
-	if (MyPlayer->GetState() == ATTACK)
-		return;
-
-	if (MyPlayer->GetState() == SKILL)
+	if (MyPlayer->GetState() != IDLE && MyPlayer->GetState() != MOVING)
 		return;
 
 	MyPlayer->Vertical = Value;
@@ -52,13 +46,7 @@ void AMyPlayerController::MoveForward(float Value)
 }
 void AMyPlayerController::MoveRight(float Value)
 {
-	if (MyPlayer->GetState() == DAMAGED)
-		return;
-
-	if (MyPlayer->GetState() == ATTACK)
-		return;
-
-	if (MyPlayer->GetState() == SKILL)
+	if (MyPlayer->GetState() != IDLE && MyPlayer->GetState() != MOVING)
 		return;
 
 	MyPlayer->Horizontal = Value;

@@ -9,6 +9,7 @@ UMyAnimInstance::UMyAnimInstance()
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> AM(TEXT("AnimMontage'/Game/Blueprints/Animations/AM_Attack.AM_Attack'"));
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> DM(TEXT("AnimMontage'/Game/Blueprints/Animations/AM_Damaged.AM_Damaged'"));
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> SM(TEXT("AnimMontage'/Game/Blueprints/Animations/AM_Skill.AM_Skill'"));
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> LM(TEXT("AnimMontage'/Game/Blueprints/Animations/AM_Loot.AM_Loot'"));
 	if (AM.Succeeded())
 		AttackMontage = AM.Object;
 
@@ -18,6 +19,8 @@ UMyAnimInstance::UMyAnimInstance()
 	if (SM.Succeeded())
 		SkillMontage = SM.Object;
 
+	if (LM.Succeeded())
+		LootMontage = LM.Object;
 }
 
 void UMyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -53,6 +56,14 @@ void UMyAnimInstance::PlayAttackMontage()
 	if (!Montage_IsPlaying(AttackMontage))
 	{
 		Montage_Play(AttackMontage, 1.f);
+	}
+}
+
+void UMyAnimInstance::PlayLootMontage()
+{
+	if (!Montage_IsPlaying(LootMontage))
+	{
+		Montage_Play(LootMontage, 1.f);
 	}
 }
 
@@ -118,7 +129,6 @@ void UMyAnimInstance::AnimNotify_HitEnded()
 {
 	auto MyCharacter = Cast<AMyPlayer>(TryGetPawnOwner());
 	MyCharacter->SetState(IDLE);
-
 }
 
 void UMyAnimInstance::AnimNotify_RHitCheck()

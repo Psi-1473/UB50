@@ -73,6 +73,7 @@ public:
 	void SetPortal(APortal* PortalValue) { Portal = PortalValue; }
 	void SetInteractObj(IInteractable* InterValue) { InteractObj = InterValue; }
 
+	class UMyAnimInstance* GetAnimInst() { return AnimInst; }
 	STATE GetState() { return PlayerState; }
 	class ANpc* GetInteractNpc() { return CanInteractNpc; }
 	class APortal* GetPortal() { return Portal; }

@@ -20,6 +20,7 @@ public:
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 	
 	void PlayAttackMontage();
+	void PlayLootMontage();
 	void PlayDamagedMontage();
 	void PlaySkillMontage(int32 SectionIndex);
 	void JumpToSection(int32 SectionIndex);
@@ -74,6 +75,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
 	UAnimMontage* SkillMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
+	UAnimMontage* LootMontage;
 
 public:
 	FonAttackHit OnAttackHit;

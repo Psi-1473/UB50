@@ -3,11 +3,16 @@
 
 #include "InvestigationObj.h"
 #include "../MyPlayer.h"
+#include "../MyAnimInstance.h"
+#include "Components/BoxComponent.h"
 
 // Sets default values
 AInvestigationObj::AInvestigationObj()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	TransferVolume = CreateDefaultSubobject<UBoxComponent>(TEXT("TransferVolume"));
+	RootComponent = TransferVolume;
+	TransferVolume->SetCollisionProfileName(TEXT("OverlapOnlyPawn"));
 }
 
 void AInvestigationObj::BeginPlay()
@@ -20,7 +25,10 @@ void AInvestigationObj::NotifyActorBeginOverlap(AActor* OtherActor)
 	auto Player = Cast<AMyPlayer>(OtherActor);
 
 	if (Player)
+	{
 		Player->SetInteractObj(this);
+		UE_LOG(LogTemp, Warning, TEXT("Inve Set"));
+	}
 }
 
 void AInvestigationObj::NotifyActorEndOverlap(AActor* OtherActor)
@@ -28,7 +36,10 @@ void AInvestigationObj::NotifyActorEndOverlap(AActor* OtherActor)
 	auto Player = Cast<AMyPlayer>(OtherActor);
 
 	if (Player)
+	{
 		Player->SetInteractObj(nullptr);
+		UE_LOG(LogTemp, Warning, TEXT("Inve Set"));
+	}
 }
 
 void AInvestigationObj::Tick(float DeltaTime)
@@ -40,6 +51,7 @@ void AInvestigationObj::Tick(float DeltaTime)
 
 void AInvestigationObj::Interact(AMyPlayer* Player)
 {
-	// 
+	Player->SetState(LOOT);
+	Player->GetAnimInst()->PlayLootMontage();
 }
 
