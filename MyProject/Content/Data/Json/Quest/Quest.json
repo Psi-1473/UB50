@@ -49,7 +49,25 @@
       "TargetId": 1,
       "TargetNum": 5,
       "NowNum": 0,
+      "Next": 3
+    },
+    {
+      "Id": 3,
+      "NpcId": 1,
+      "CompleteNpcId": 1,
+      "Type": "Investigation",
+      "Name": "채집해보기",
+      "Sub": "채집.",
+      "ConditionSub": "퀘스트4",
+      "Gold": 500,
+      "Exp": 0,
+      "Locked": "True",
+      "Cleared": "False",
+      "TargetId": 0,
+      "TargetNum": 5,
+      "NowNum": 0,
       "Next": -1
     }
+
   ]
 }

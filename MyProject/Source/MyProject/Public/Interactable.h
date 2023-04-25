@@ -23,4 +23,5 @@ class MYPROJECT_API IInteractable
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	virtual void Interact(class AMyPlayer* Player) = 0;
+	virtual void EndInteract() = 0;
 };

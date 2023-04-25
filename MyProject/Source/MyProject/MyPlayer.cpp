@@ -391,10 +391,9 @@ void AMyPlayer::OpenUI(UIType MyUIType)
 void AMyPlayer::CloseUI(UIType MyUIType)
 {
 	UseGInstance
-	if (GameMode == nullptr)
-		return;
 	GInstance->UIManager->CloseUI(MyUIType);
-	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);
+	
+	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);	
 }
 
 

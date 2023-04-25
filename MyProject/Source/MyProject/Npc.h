@@ -30,7 +30,7 @@ public:
 	void OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 	virtual void Interact(class AMyPlayer* Player) override;
-	
+	virtual void EndInteract() override {};
 
 
 	void RemovePossibleQuest(int QuestId) { PossibleQuests.Remove(QuestId); }

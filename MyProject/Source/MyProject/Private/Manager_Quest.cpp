@@ -5,6 +5,7 @@
 #include "../MyPlayer.h"
 #include "Kismet/GameplayStatics.h"
 #include "Dom/JsonValue.h"
+#include "InvestigationObj.h"
 
 
 UManager_Quest::UManager_Quest()
@@ -77,13 +78,15 @@ void UManager_Quest::SpreadToNpc()
 void UManager_Quest::PlayerTakesQuest(int QuestId)
 {
 	FQuest NewQuest = Quests[QuestId];
-
+	
 	StartedQuests.Add(NewQuest);
 	int NpcId = NewQuest.NpcId;
 	GetNpcById(NpcId)->RemovePossibleQuest(QuestId);
 
 	if (NewQuest.TypeName == "Normal")
 		StartedToClear(NewQuest.Id);
+	if (NewQuest.TypeName == "Investigation")
+		SetObjsInteractable(NewQuest.TargetId, true);
 }
 
 void UManager_Quest::StartedToClear(int QuestId)
@@ -167,4 +170,22 @@ int UManager_Quest::FindQuestIndexById(TArray<FQuest> Arr, int QuestId)
 			return i;
 	}
 	return -1;
+}
+
+void UManager_Quest::AddInvestObj(AInvestigationObj* Obj)
+{
+	if (!InvestObjList.Contains(Obj->GetId()))
+	{
+		FInvestObj InvestObj;
+		InvestObjList.Add(Obj->GetId(), InvestObj);
+	}
+	InvestObjList[Obj->GetId()].ObjList.Add(Obj);
+}
+
+void UManager_Quest::SetObjsInteractable(int Id, bool Value)
+{
+	for (int i = 0; i < InvestObjList[Id].ObjList.Num(); i++)
+	{
+		InvestObjList[Id].ObjList[i]->SetInteractable(Value);
+	}
 }

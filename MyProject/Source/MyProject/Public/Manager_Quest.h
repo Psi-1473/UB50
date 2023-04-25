@@ -46,6 +46,12 @@ struct FNpcQuest
 public:
 	TArray<FQuest> NpcQuestList;
 };
+
+struct FInvestObj
+{
+public:
+	TArray<class AInvestigationObj*> ObjList;
+};
 class MYPROJECT_API UManager_Quest
 {
 
@@ -84,10 +90,15 @@ public:
 
 	int FindQuestIndexById(TArray<FQuest> Arr, int QuestId);
 
+public:
+	void AddInvestObj(class AInvestigationObj* Obj);
+	void SetObjsInteractable(int Id, bool Value);
+	void ClearInvestObj() {};
 
 private:
 	UPROPERTY()
-		TMap<int, ANpc*> NpcsInField;
+	TMap<int, ANpc*> NpcsInField;
+	TMap<int, FInvestObj> InvestObjList;
 
 private:
 	TMap<int, FQuest> Quests;

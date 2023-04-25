@@ -158,6 +158,14 @@ void UMyAnimInstance::AnimNotify_SkillEnd()
 	MyCharacter->SetState(IDLE);
 }
 
+void UMyAnimInstance::AnimNotify_LootEnded()
+{
+	auto MyCharacter = Cast<AMyPlayer>(TryGetPawnOwner());
+	MyCharacter->SetState(IDLE);
+
+	MyCharacter->GetInteractObj()->EndInteract();
+}
+
 FName UMyAnimInstance::GetAttackMontageName(int32 SectionIndex)
 {
 	return FName(*FString::Printf(TEXT("Attack%d"), SectionIndex));

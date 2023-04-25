@@ -22,12 +22,24 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void Interact(class AMyPlayer* Player);
+	virtual void Interact(class AMyPlayer* Player) override;
+	virtual void EndInteract() override;
+	void SetInteractable(bool Value) { bInteractable = Value; }
 
+private:
+	void ExtractId();
+	
+public:
+	int GetId() { return Id; }
+
+public:
 	UPROPERTY(EditAnywhere)
 	class UBoxComponent* TransferVolume;
-
 private:
 	UPROPERTY(EditAnywhere)
 	int InvestigationTime;
+
+	int Id;
+
+	bool bInteractable;
 };

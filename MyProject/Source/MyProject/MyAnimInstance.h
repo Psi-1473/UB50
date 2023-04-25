@@ -50,6 +50,9 @@ public:
 	UFUNCTION()
 	void AnimNotify_SkillEnd();
 
+	UFUNCTION()
+	void AnimNotify_LootEnded();
+
 	FName GetAttackMontageName(int32 SectionIndex);
 	FName GetSkillMontageName(int32 SectionIndex);
 
