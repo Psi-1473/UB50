@@ -219,11 +219,10 @@ private:
 public:
 	TSharedPtr<class UManager_Quest> QuestManager;
 	TSharedPtr<class Manager_Inven> InvenManager;
-
+	TSharedPtr<class UManager_UI> UIManager;
 
 	UPROPERTY()
 	class UManager_Scene* SceneManager;
 
-	UPROPERTY()
-	class UManager_UI* UIManager;
+	
 };

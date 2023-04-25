@@ -135,7 +135,7 @@ void AMyPlayerController::PopupInventory()
 {
 	if(MyPlayer == nullptr)
 		MyPlayer = Cast<AMyPlayer>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
-
+	
 	UseGInstance
 
 	if (GInstance->InvenManager->GetOnInventory())

@@ -393,7 +393,7 @@ void AMyPlayer::CloseUI(UIType MyUIType)
 	UseGInstance
 	GInstance->UIManager->CloseUI(MyUIType);
 	
-	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);	
+	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);
 }
 
 

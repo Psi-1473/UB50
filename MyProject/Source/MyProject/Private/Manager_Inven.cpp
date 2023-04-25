@@ -23,7 +23,8 @@ Manager_Inven::~Manager_Inven()
 void Manager_Inven::EquipWeapon(UMyGameInstance* GInstance, int Id, int Idx)
 {
 	auto MyInven = Cast<UWidget_Inventory>(GInstance->UIManager->GetInven());
-
+	if (MyInven == nullptr)
+		return;
 	if (GInstance->GetWeaponData(Id) == nullptr)
 		return;
 

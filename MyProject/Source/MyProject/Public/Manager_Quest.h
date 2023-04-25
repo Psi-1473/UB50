@@ -60,7 +60,7 @@ public:
 
 public:
 	UFUNCTION()
-		void LoadQuestData();
+	void LoadQuestData();
 	void SpreadToNpc();
 
 	void PlayerTakesQuest(int QuestId);

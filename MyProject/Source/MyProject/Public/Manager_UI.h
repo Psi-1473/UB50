@@ -5,16 +5,13 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "../DEFINE.H"
-#include "Manager_UI.generated.h"
+
 
 /**
  * 
  */
-UCLASS()
-class MYPROJECT_API UManager_UI : public UObject
+class MYPROJECT_API UManager_UI
 {
-	GENERATED_BODY()
-	
 public:
 	UManager_UI();
 
@@ -27,34 +24,24 @@ public:
 	void ChangeInvenGold(int Value);
 
 private:
-	void RemoveUI(UUserWidget* Widget);
-	
+	void RemoveUI(int MyUIType);
+	void RemoveAllUi();
+
 public:
-	UUserWidget* GetInven() { return Inven; }
+	UUserWidget* GetInven() { return Widgets[(int)UIType::INVENTORY]; }
 
 private:
+	int InvenNum = -1;
 
+	TArray<TSubclassOf<UUserWidget>> WidgetAssets;
+	
 	TSubclassOf<UUserWidget> YesNo;
-	UUserWidget* UIYesNo;
-
 	TSubclassOf<UUserWidget> Inventory;
-	UUserWidget* Inven;
-	int InvenNum;
-
 	TSubclassOf<UUserWidget> Conversation;
-	UUserWidget* Conv;
-
 	TSubclassOf<UUserWidget> ShopUi;
-	UUserWidget* Shop;
-
 	TSubclassOf<UUserWidget> QuestUi;
-	UUserWidget* UIQuest;
-
 	TSubclassOf<UUserWidget> PlayerQuest;
-	UUserWidget* UIPlayerQuest;
-
 	TSubclassOf<UUserWidget> Investigation;
-	UUserWidget* UIInvest;
 
 	TArray<UUserWidget*> Widgets;
 };

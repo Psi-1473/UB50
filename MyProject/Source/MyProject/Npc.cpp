@@ -104,11 +104,7 @@ void ANpc::Interact(AMyPlayer* Player)
 	if (Player->GetInteracting())
 	{
 		Player->SetInteracting(false);
-		Player->CloseUI(UIType::CONVERSATION);
-
-		Player->CloseUI(UIType::SHOP);
-
-		Player->CloseUI(UIType::QUEST);
+		Player->CloseUI(UIType::ALL);
 	}
 	else
 	{

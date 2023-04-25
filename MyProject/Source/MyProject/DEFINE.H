@@ -10,6 +10,8 @@
 /**
  * 
  */
+const int WIDGETCOUNT = 10;
+
 const int ID_NONE = -1;
 
 const int PLAYERSKILL_R = 0;
@@ -49,6 +51,8 @@ enum class UIType : uint8
 	QUEST = 4 UMETA(DisplayName = "Quest"),
 	PLAYERQUEST = 5 UMETA(DisplayName = "PlayerQuest"),
 	INVESTIGATION = 6 UMETA(DisplayName = "Investigation"),
+
+	ALL
 };
 const enum BossCoolTime
 {

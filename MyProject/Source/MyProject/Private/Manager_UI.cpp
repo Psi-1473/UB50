@@ -6,48 +6,43 @@
 #include "Components/WidgetComponent.h"
 #include "../Widget_Inventory.h"
 #include "../Widget_InvenSlot.h"
+#include "Widget_Popup.h"
 #include "Widget_Quest.h"
 #include "../MyGameInstance.h"
 #include "../Define.h"
 
 UManager_UI::UManager_UI()
 {
-	static ConstructorHelpers::FClassFinder<UUserWidget> IW(TEXT("WidgetBlueprint'/Game/UI/WBP_Inventory.WBP_Inventory_C'"));
-	if (IW.Succeeded())
-	{
-		Inventory = IW.Class;
-	}
-	static ConstructorHelpers::FClassFinder<UUserWidget> CW(TEXT("WidgetBlueprint'/Game/UI/WBP_Conversation.WBP_Conversation_C'"));
-	if (CW.Succeeded())
-	{
-		Conversation = CW.Class;
-	}
-	static ConstructorHelpers::FClassFinder<UUserWidget> SW(TEXT("WidgetBlueprint'/Game/UI/WBP_Shop.WBP_Shop_C'"));
-	if (SW.Succeeded())
-	{
-		ShopUi = SW.Class;
-	}
-	static ConstructorHelpers::FClassFinder<UUserWidget> QW(TEXT("WidgetBlueprint'/Game/UI/WBP_Quest.WBP_Quest_C'"));
-	if (QW.Succeeded())
-	{
-		QuestUi = QW.Class;
-	}
-	static ConstructorHelpers::FClassFinder<UUserWidget> YW(TEXT("WidgetBlueprint'/Game/UI/WBP_YesOrNo.WBP_YesOrNo_C'"));
-	if (YW.Succeeded())
-	{
-		YesNo = YW.Class;
-	}
-	static ConstructorHelpers::FClassFinder<UUserWidget> PQW(TEXT("WidgetBlueprint'/Game/UI/WBP_PlayerQuest.WBP_PlayerQuest_C'"));
-	if (PQW.Succeeded())
-	{
-		PlayerQuest = PQW.Class;
-	}
+	WidgetAssets.Init(nullptr, WIDGETCOUNT);
+	Widgets.Init(nullptr, WIDGETCOUNT);
+	static ConstructorHelpers::FClassFinder<UUserWidget> INVEN(TEXT("WidgetBlueprint'/Game/UI/WBP_Inventory.WBP_Inventory_C'"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> CONV(TEXT("WidgetBlueprint'/Game/UI/WBP_Conversation.WBP_Conversation_C'"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> SHOP(TEXT("WidgetBlueprint'/Game/UI/WBP_Shop.WBP_Shop_C'"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> QUEST(TEXT("WidgetBlueprint'/Game/UI/WBP_Quest.WBP_Quest_C'"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> YESNO(TEXT("WidgetBlueprint'/Game/UI/WBP_YesOrNo.WBP_YesOrNo_C'"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> PLAYERQUEST(TEXT("WidgetBlueprint'/Game/UI/WBP_PlayerQuest.WBP_PlayerQuest_C'"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> INVEST(TEXT("WidgetBlueprint'/Game/UI/WBP_Investigation.WBP_Investigation_C'"));
 
-	static ConstructorHelpers::FClassFinder<UUserWidget> InvestW(TEXT("WidgetBlueprint'/Game/UI/WBP_Investigation.WBP_Investigation_C'"));
-	if (PQW.Succeeded())
-	{
-		Investigation = InvestW.Class;
-	}
+	if (INVEN.Succeeded())
+		WidgetAssets[(int)UIType::INVENTORY] = INVEN.Class;
+
+	if (CONV.Succeeded())
+		WidgetAssets[(int)UIType::CONVERSATION] = CONV.Class;
+	
+	if (SHOP.Succeeded())
+		WidgetAssets[(int)UIType::SHOP] = SHOP.Class;
+
+	if (QUEST.Succeeded())
+		WidgetAssets[(int)UIType::QUEST] = QUEST.Class;
+
+	if (YESNO.Succeeded())
+		WidgetAssets[(int)UIType::YESNO] = YESNO.Class;
+
+	if (PLAYERQUEST.Succeeded())
+		WidgetAssets[(int)UIType::PLAYERQUEST] = PLAYERQUEST.Class;
+
+	if (INVEST.Succeeded())
+		WidgetAssets[(int)UIType::INVESTIGATION] = INVEST.Class;
 }
 
 void UManager_UI::UpdateInventory(int NextSlot)
@@ -77,6 +72,7 @@ void UManager_UI::UpdateInventory(int NextSlot)
 
 void UManager_UI::ChangeInvenGold(int Value)
 {
+	auto Inven = Widgets[(int)UIType::INVENTORY];
 	auto MyInven = Cast<UWidget_Inventory>(Inven);
 
 	if (MyInven == nullptr)
@@ -87,103 +83,56 @@ void UManager_UI::ChangeInvenGold(int Value)
 
 UUserWidget* UManager_UI::PopupUI(UWorld* World, UIType MyUIType)
 {
-	switch (MyUIType)
-	{
-	case UIType::YESNO:
-		UIYesNo = CreateWidget(World, YesNo);
-		UIYesNo->AddToViewport();
-		return UIYesNo;
-		break;
-	case UIType::INVENTORY:
-		Inven = CreateWidget(World, Inventory);
-		Inven->AddToViewport();
-		return Inven;
-		break;
-	case UIType::CONVERSATION:
-		Conv = CreateWidget(World, Conversation);
-		Conv->AddToViewport();
-		return Conv;
-		break;
-	case UIType::SHOP:
-		Shop = CreateWidget(World, ShopUi);
-		Shop->AddToViewport();
-		return Shop;
-		break;
-	case UIType::QUEST:
-		UIQuest = CreateWidget(World, QuestUi);
-		UIQuest->AddToViewport();
-		return UIQuest;
-		break;
-	case UIType::PLAYERQUEST:
-		UIPlayerQuest = CreateWidget(World, PlayerQuest);
-		UIPlayerQuest->AddToViewport();
-		return UIQuest;
-		break;
-	case UIType::INVESTIGATION:
-		UIInvest = CreateWidget(World, Investigation);
-		UIInvest->AddToViewport();
-		return UIQuest;
-		break;
-	default:
+	if (Widgets[(int)MyUIType] != nullptr)
 		return nullptr;
-		break;
-	}
-	
-	//World->GetFirstPlayerController()->SetShowMouseCursor(true);
+
+	UUserWidget* PopupUi;
+	PopupUi = CreateWidget(World, WidgetAssets[(int)MyUIType]);
+	PopupUi->AddToViewport();
+	Widgets[(int)MyUIType] = PopupUi;
+	return PopupUi;
 }
 
 
 void UManager_UI::CloseUI(UIType MyUIType)
 {
-	switch (MyUIType)
+	if (MyUIType == UIType::ALL)
 	{
-	case UIType::YESNO:
-		if (UIYesNo == nullptr) break;
-		RemoveUI(UIYesNo);
-		break;
-	case UIType::INVENTORY:
-		if (Inven == nullptr) break;
-		RemoveUI(Inven);
-		break;
-	case UIType::CONVERSATION:
-		if (Conv == nullptr) break;
-		RemoveUI(Conv);
-		break;
-	case UIType::SHOP:
-		if (Shop == nullptr) break;
-		RemoveUI(Shop);
-		break;
-	case UIType::QUEST:
-		if (UIQuest == nullptr) break;
-		RemoveUI(UIQuest);
-		break;
-	case UIType::PLAYERQUEST:
-		if (UIPlayerQuest == nullptr) break;
-		RemoveUI(UIPlayerQuest);
-		break;
-	case UIType::INVESTIGATION:
-		if (UIInvest == nullptr) break;
-		RemoveUI(UIInvest);
-		break;
-	default:
-		break;
+		RemoveAllUi();
+		return;
 	}
+
+	if (Widgets[(int)MyUIType] == nullptr)
+		return;
+
+	RemoveUI((int)MyUIType);
 }
 
 void UManager_UI::RefreshUI()
 {
-	// 일단 임시로 Quest만
-	if (UIQuest == nullptr)
+	if (Widgets[(int)UIType::QUEST] == nullptr)
 		return;
 
-	Cast<UWidget_Quest>(UIQuest)->Refresh();
+	Cast<UWidget_Quest>(Widgets[(int)UIType::QUEST])->Refresh();
 }
 
-void UManager_UI::RemoveUI(UUserWidget* Widget)
+void UManager_UI::RemoveUI(int MyUIType)
 {
-	if (Widget == nullptr)
+	if (Widgets[MyUIType] == nullptr)
 		return;
 
-	Widget->RemoveFromViewport();
-	Widget = nullptr;
+	Widgets[MyUIType]->RemoveFromViewport();
+	Widgets[MyUIType] = nullptr;
 }
+
+void UManager_UI::RemoveAllUi()
+{
+	for (int i = 0; i < WIDGETCOUNT; i++)
+	{
+		if(Widgets[i] == nullptr)
+			continue;
+
+		RemoveUI(i);
+	}
+}
+
