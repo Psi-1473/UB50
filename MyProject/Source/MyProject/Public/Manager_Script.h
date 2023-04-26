@@ -1,0 +1,30 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+
+/**
+ * 
+ */
+struct FNpcScriptData
+{
+public:
+		int NpcId;
+		int QuestId;
+		int ThisPage;
+		int GoalPage;
+		FString Line;
+};
+
+
+
+class MYPROJECT_API Manager_Script
+{
+public:
+	Manager_Script();
+	~Manager_Script();
+
+public:
+	void LoadScriptData(class UMyGameInstance* GInstance, int NpcId);
+};

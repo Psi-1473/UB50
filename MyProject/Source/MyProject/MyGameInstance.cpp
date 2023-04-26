@@ -31,6 +31,7 @@ UMyGameInstance::UMyGameInstance()
 
 	QuestManager = MakeShared<UManager_Quest>();
 	InvenManager = MakeShared<Manager_Inven>();
+	ScriptManager = MakeShared<Manager_Script>();
 	UIManager = MakeShared<UManager_UI>();
 
 	SceneManager = NewObject<UManager_Scene>();

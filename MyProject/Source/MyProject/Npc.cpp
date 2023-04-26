@@ -9,7 +9,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Manager_Quest.h"
 
-// Sets default values
+
+
 ANpc::ANpc()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -53,6 +54,9 @@ void ANpc::BeginPlay()
 
 	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
 	GInstance->QuestManager->AddNpc(NpcId, this);
+	GInstance->ScriptManager->LoadScriptData(GInstance, NpcId);
+	UE_LOG(LogTemp, Warning, TEXT("Npc : %s"), *BaseScript);
+
 }
 
 // Called every frame
@@ -117,6 +121,23 @@ void ANpc::AddToCanClearQuest(int QuestId)
 {
 	CanClearQuests.Add(QuestId);
 	// 만약에 처음 추가된거면 Npc 머리 위에 마크 띄우기
+}
+
+void ANpc::AddScriptData(FNpcScriptData Data)
+{
+	if (Data.QuestId == -1)
+	{
+		BaseScript = Data.Line;
+		return;
+	}
+	
+	if (!ScriptData.Contains(Data.QuestId))
+	{
+		FScript NewScript;
+		ScriptData.Add(Data.QuestId, NewScript);
+	}
+
+	ScriptData[Data.QuestId].Scripts.Add(Data);
 }
 
 int ANpc::GetTotalItemNum()

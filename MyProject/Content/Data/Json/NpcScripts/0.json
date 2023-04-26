@@ -1,0 +1,11 @@
+{
+  "scripts": [
+    {
+      "NpcId": 0,
+      "QuestId": -1,
+      "ThisPage": 0,
+      "GoalPage": 0,
+      "Line": "Hello"
+    }
+  ]
+}

@@ -147,6 +147,7 @@ struct FUseItemData : public FTableRowBase
 	int BuyPrice;
 };
 
+
 struct PlayerData
 {
 	TArray<FWeaponData*>	WData;
@@ -205,6 +206,7 @@ private:
 	UPROPERTY()
 	class UDataTable* UseItemImage;
 
+
 public:
 	void SetPlayerData(class AMyPlayer* MyPlayer);
 public:
@@ -219,6 +221,7 @@ private:
 public:
 	TSharedPtr<class UManager_Quest> QuestManager;
 	TSharedPtr<class Manager_Inven> InvenManager;
+	TSharedPtr<class Manager_Script> ScriptManager;
 	TSharedPtr<class UManager_UI> UIManager;
 
 	UPROPERTY()

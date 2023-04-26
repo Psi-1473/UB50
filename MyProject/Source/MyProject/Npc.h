@@ -5,7 +5,15 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Interactable.h"
+#include "Manager_Script.h"
 #include "Npc.generated.h"
+
+
+struct FScript
+{
+public:
+	TArray<FNpcScriptData> Scripts;
+};
 
 UCLASS()
 class MYPROJECT_API ANpc : public ACharacter, public IInteractable
@@ -38,6 +46,8 @@ public:
 	
 	void AddToPossibleQuest(int QuestId) { PossibleQuests.Add(QuestId); }
 	void AddToCanClearQuest(int QuestId);
+
+	void AddScriptData(FNpcScriptData Data);
 
 	int GetTotalItemNum();
 	int GetItem(int Id);
@@ -75,8 +85,12 @@ private:
 	UPROPERTY(EditAnywhere)
 	bool IsShopNpc;
 
+	FString BaseScript;
+
 	TArray<int> PossibleQuests;
 	TArray<int> CanClearQuests;
+
+	TMap<int, FScript> ScriptData;
 
 private:
 	UPROPERTY(VisibleAnywhere)
