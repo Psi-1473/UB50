@@ -23,6 +23,10 @@ public:
 	void UpdateInventory(int NextSlot);
 	void ChangeInvenGold(int Value);
 
+	void OnConvButton();
+	void OffConvButton();
+	void ChangeConvLine(FString Line);
+
 private:
 	void RemoveUI(int MyUIType);
 	void RemoveAllUi();

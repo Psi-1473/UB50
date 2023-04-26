@@ -5,6 +5,7 @@
 #include "Components/Widget.h"
 #include "Components/WidgetComponent.h"
 #include "../Widget_Inventory.h"
+#include "Widget_Conversation.h"
 #include "../Widget_InvenSlot.h"
 #include "Widget_Popup.h"
 #include "Widget_Quest.h"
@@ -79,6 +80,33 @@ void UManager_UI::ChangeInvenGold(int Value)
 		return;
 
 	MyInven->ChangeGold(Value);
+}
+
+void UManager_UI::OnConvButton()
+{
+	if (Widgets[(int)UIType::CONVERSATION] == nullptr)
+		return;
+
+	auto Conv = Cast<UWidget_Conversation>(Widgets[(int)UIType::CONVERSATION]);
+	Conv->SetButtonOnOff(ESlateVisibility::Visible);
+}
+
+void UManager_UI::OffConvButton()
+{
+	if (Widgets[(int)UIType::CONVERSATION] == nullptr)
+		return;
+
+	auto Conv = Cast<UWidget_Conversation>(Widgets[(int)UIType::CONVERSATION]);
+	Conv->SetButtonOnOff(ESlateVisibility::Hidden);
+}
+
+void UManager_UI::ChangeConvLine(FString Line)
+{
+	if (Widgets[(int)UIType::CONVERSATION] == nullptr)
+		return;
+
+	auto Conv = Cast<UWidget_Conversation>(Widgets[(int)UIType::CONVERSATION]);
+	Conv->ChangeLine(Line);
 }
 
 UUserWidget* UManager_UI::PopupUI(UWorld* World, UIType MyUIType)

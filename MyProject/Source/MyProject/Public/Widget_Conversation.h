@@ -21,6 +21,9 @@ protected:
 	virtual void NativePreConstruct() override;
 	virtual void NativeConstruct() override;
 	
+public:
+	void SetButtonOnOff(ESlateVisibility Value);
+	void ChangeLine(FString NewLine);
 
 private:
 	UPROPERTY(meta = (BindWidget))
@@ -28,6 +31,9 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* Txt_Name;
+
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* Txt_Line;
 
 	class ANpc* OwnerNpc;
 

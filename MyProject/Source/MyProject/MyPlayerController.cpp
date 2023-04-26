@@ -80,6 +80,12 @@ void AMyPlayerController::ClickAttack()
 	if (MyPlayer->GetState() == SKILL)
 		return;
 
+	if (MyPlayer->GetState() == SCRIPT)
+		return;
+
+	if (MyPlayer->GetState() == LOOT)
+		return;
+
 	if (MyPlayer->GetState() != ATTACK)//ÄÞº¸ºÎºÐ
 	{
 		MyPlayer->Attack();
@@ -128,7 +134,13 @@ void AMyPlayerController::Interact()
 	if (MyPlayer->GetInteractObj() == nullptr)
 		return;
 
-	MyPlayer->GetInteractObj()->Interact(MyPlayer);
+	if (MyPlayer->GetState() == SCRIPT)
+	{
+		UseGInstance
+		GInstance->ScriptManager->NextScript(GInstance, MyPlayer);
+	}
+	else
+		MyPlayer->GetInteractObj()->Interact(MyPlayer);
 }
 
 void AMyPlayerController::PopupInventory()

@@ -46,7 +46,23 @@ void UWidget_Conversation::NativeConstruct()
 	VBox_Button->AddChild(QuestButton);
 
 	FText NameText = FText::FromString(OwnerNpc->GetName());
+	FText LineText = FText::FromString(OwnerNpc->GetLine());
 	Txt_Name->SetText(NameText);
+	Txt_Line->SetText(LineText);
+}
+
+void UWidget_Conversation::SetButtonOnOff(ESlateVisibility Value)
+{
+	QuestButton->SetVisibility(Value);
+
+	if (OwnerNpc->GetIsShop())
+		InteractButton->SetVisibility(Value);
+}
+
+void UWidget_Conversation::ChangeLine(FString NewLine)
+{
+	FText NewText = FText::FromString(NewLine);
+	Txt_Line->SetText(NewText);
 }
 
 

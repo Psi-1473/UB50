@@ -27,4 +27,14 @@ public:
 
 public:
 	void LoadScriptData(class UMyGameInstance* GInstance, int NpcId);
+	void StartScript(class UMyGameInstance* GInstance, class AMyPlayer* Player, int NpcId, int QuestId);
+	void NextScript(class UMyGameInstance* GInstance, class AMyPlayer* Player);
+
+	void SetScriptEmpty();
+
+
+private:
+	TArray<FNpcScriptData> NowScripts;
+	int GoalPage;
+	int Page = 0;
 };

@@ -3,8 +3,12 @@
 
 #include "Manager_Script.h"
 #include "Manager_Quest.h"
+#include "Manager_UI.h"
+#include "Kismet/GameplayStatics.h"
+#include "../MyPlayer.h"
 #include "../MyGameInstance.h"
 #include "../DEFINE.H"
+#include "Widget_YesOrNo.h"
 
 Manager_Script::Manager_Script()
 {
@@ -51,4 +55,39 @@ void Manager_Script::LoadScriptData(UMyGameInstance* GInstance, int NpcId)
 
 		UE_LOG(LogTemp, Warning, TEXT("Npc Script Load Successed!"));
 	}
+}
+
+void Manager_Script::StartScript(UMyGameInstance* GInstance, AMyPlayer* Player, int NpcId, int QuestId)
+{
+	GInstance->UIManager->OffConvButton();
+	ANpc* Npc = GInstance->QuestManager->GetNpcById(NpcId);
+
+	NowScripts = Npc->GetScriptData(QuestId);
+	GoalPage = NowScripts[0].GoalPage;
+	GInstance->UIManager->ChangeConvLine(NowScripts[Page].Line);
+	Page++;
+}
+
+void Manager_Script::NextScript(UMyGameInstance* GInstance, AMyPlayer* Player)
+{
+	if (Page >= GoalPage)
+	{
+		UUserWidget* YesNoWidget = GInstance->UIManager->PopupUI(Player->GetWorld(), UIType::YESNO);
+		if (YesNoWidget == nullptr) return;
+
+		auto YNWidget = Cast<UWidget_YesOrNo>(YesNoWidget);
+		YNWidget->SetValue(YesOrNoType::QUEST);
+	}
+	else
+	{
+		GInstance->UIManager->ChangeConvLine(NowScripts[Page].Line);
+		Page++;
+	}
+}
+
+void Manager_Script::SetScriptEmpty()
+{
+	GoalPage = 0;
+	Page = 0;
+	NowScripts.Empty();
 }

@@ -23,6 +23,9 @@ private:
 	void Init();
 
 	UFUNCTION()
+	void StartScript();
+
+	UFUNCTION()
 	void PopupYesOrNo();
 private:
 	int QuestId;

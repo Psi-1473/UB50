@@ -54,10 +54,11 @@ public:
 
 	bool GetIsShop() { return IsShopNpc; }
 	FString GetName() { return NpcName; }
+	FString GetLine() { return BaseScript; }
 	int GetNpcId() { return NpcId; }
 	TArray<int> GetPossibleQuests() { return PossibleQuests; }
 	TArray<int> GetCanClearQuests() { return CanClearQuests; }
-	
+	TArray<FNpcScriptData> GetScriptData(int QuestId) { return ScriptData[NpcId].Scripts; }
 	
 	UPROPERTY(EditAnywhere)
 	int ItemType;

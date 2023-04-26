@@ -15,7 +15,7 @@
 void UWidget_QuestSlot::NativeConstruct()
 {
 	//Init();
-	Btn_Quest->OnClicked.AddDynamic(this, &UWidget_QuestSlot::PopupYesOrNo);
+	Btn_Quest->OnClicked.AddDynamic(this, &UWidget_QuestSlot::StartScript);
 }
 
 void UWidget_QuestSlot::SetId(int Id)
@@ -34,10 +34,27 @@ void UWidget_QuestSlot::Init()
 		Img_Clear->SetVisibility(ESlateVisibility::Hidden);
 }
 
+void UWidget_QuestSlot::StartScript()
+{
+	if (bCleared)
+	{
+		PopupYesOrNo();
+		return;
+	}
+
+	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	auto MyPlayer = Cast<AMyPlayer>(Char);
+	MyPlayer->CloseUI(UIType::QUEST);
+	MyPlayer->SetState(SCRIPT);
+	int NpcId = MyPlayer->GetInteractNpc()->GetNpcId();
+	//Conv¿¡¼­ Buttonµé ²ô±â
+	UseGInstance
+	GInstance->ScriptManager->StartScript(GInstance, MyPlayer, NpcId, QuestId);
+}
+
 void UWidget_QuestSlot::PopupYesOrNo()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Try YES OR NO"));
-	UseGameMode
 	UseGInstance
 	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	auto MyPlayer = Cast<AMyPlayer>(Char);
@@ -50,10 +67,7 @@ void UWidget_QuestSlot::PopupYesOrNo()
 
 	auto YNWidget = Cast<UWidget_YesOrNo>(YesNoWidget);
 
-	if(bCleared)
-		YNWidget->SetValue(YesOrNoType::CLEAR);
-	else
-		YNWidget->SetValue(YesOrNoType::QUEST);
+	YNWidget->SetValue(YesOrNoType::CLEAR);
 	YNWidget->SetQuestId(QuestId);
 
 }
