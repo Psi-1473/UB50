@@ -12,8 +12,6 @@ struct FNpcScriptData
 public:
 		int NpcId;
 		int QuestId;
-		int ThisPage;
-		int GoalPage;
 		FString Line;
 };
 
@@ -34,6 +32,8 @@ public:
 
 
 private:
+	int ScriptingQuestId;
+
 	TArray<FNpcScriptData> NowScripts;
 	int GoalPage;
 	int Page = 0;

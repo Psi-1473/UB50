@@ -46,8 +46,6 @@ void Manager_Script::LoadScriptData(UMyGameInstance* GInstance, int NpcId)
 			FNpcScriptData s;
 			jsonItem->TryGetNumberField(TEXT("NpcId"), s.NpcId);
 			jsonItem->TryGetNumberField(TEXT("QuestId"), s.QuestId);
-			jsonItem->TryGetNumberField(TEXT("ThisPage"), s.ThisPage);
-			jsonItem->TryGetNumberField(TEXT("GoalPage"), s.GoalPage);
 			jsonItem->TryGetStringField(TEXT("Line"), s.Line);
 
 			GInstance->QuestManager->GetNpcById(NpcId)->AddScriptData(s);
@@ -59,11 +57,16 @@ void Manager_Script::LoadScriptData(UMyGameInstance* GInstance, int NpcId)
 
 void Manager_Script::StartScript(UMyGameInstance* GInstance, AMyPlayer* Player, int NpcId, int QuestId)
 {
+	SetScriptEmpty();
+
+	UE_LOG(LogTemp, Warning, TEXT("Start Script! %d"), QuestId);
 	GInstance->UIManager->OffConvButton();
 	ANpc* Npc = GInstance->QuestManager->GetNpcById(NpcId);
+	ScriptingQuestId = QuestId;
 
 	NowScripts = Npc->GetScriptData(QuestId);
-	GoalPage = NowScripts[0].GoalPage;
+	UE_LOG(LogTemp, Warning, TEXT("Test Script! %d"), NowScripts[0].QuestId);
+	GoalPage = NowScripts.Num();
 	GInstance->UIManager->ChangeConvLine(NowScripts[Page].Line);
 	Page++;
 }
@@ -77,6 +80,7 @@ void Manager_Script::NextScript(UMyGameInstance* GInstance, AMyPlayer* Player)
 
 		auto YNWidget = Cast<UWidget_YesOrNo>(YesNoWidget);
 		YNWidget->SetValue(YesOrNoType::QUEST);
+		YNWidget->SetQuestId(ScriptingQuestId);
 	}
 	else
 	{
@@ -87,6 +91,7 @@ void Manager_Script::NextScript(UMyGameInstance* GInstance, AMyPlayer* Player)
 
 void Manager_Script::SetScriptEmpty()
 {
+	ScriptingQuestId = -1;
 	GoalPage = 0;
 	Page = 0;
 	NowScripts.Empty();

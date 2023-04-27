@@ -48,6 +48,7 @@ void UWidget_QuestSlot::StartScript()
 	MyPlayer->SetState(SCRIPT);
 	int NpcId = MyPlayer->GetInteractNpc()->GetNpcId();
 	//Conv¿¡¼­ Buttonµé ²ô±â
+	UE_LOG(LogTemp, Warning, TEXT("Äù½ºÆ® ID : %d Å¬¸¯"), QuestId);
 	UseGInstance
 	GInstance->ScriptManager->StartScript(GInstance, MyPlayer, NpcId, QuestId);
 }

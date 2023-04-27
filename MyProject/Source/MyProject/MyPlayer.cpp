@@ -243,6 +243,8 @@ void AMyPlayer::SkillEAttackCheck()
 			UE_LOG(LogTemp, Log, TEXT("E Hit Actor : %s"), *HitResult.GetActor()->GetName());
 			AMonster* Enemy = Cast<AMonster>(HitResult.GetActor());
 			FDamageEvent DamageEvent;
+			if (Enemy == nullptr)
+				return;
 			Enemy->OnStun(2.f);
 		}
 	}

@@ -42,14 +42,14 @@ ANpc::ANpc()
 	InteractBox->SetCollisionObjectType(ECollisionChannel::ECC_EngineTraceChannel2);
 	UE_LOG(LogTemp, Warning, TEXT("Npc On"));
 
-	
+	InitNpcId();
 }
 
 // Called when the game starts or when spawned
 void ANpc::BeginPlay()
 {
 	Super::BeginPlay();
-	InitNpcId();
+
 	InitQuestInfo();
 
 	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
@@ -135,6 +135,7 @@ void ANpc::AddScriptData(FNpcScriptData Data)
 	{
 		FScript NewScript;
 		ScriptData.Add(Data.QuestId, NewScript);
+		UE_LOG(LogTemp, Warning, TEXT("New Npc Scripts %d, %d"), NpcId, Data.QuestId);
 	}
 
 	ScriptData[Data.QuestId].Scripts.Add(Data);

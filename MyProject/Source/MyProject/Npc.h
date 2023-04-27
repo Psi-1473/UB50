@@ -58,7 +58,7 @@ public:
 	int GetNpcId() { return NpcId; }
 	TArray<int> GetPossibleQuests() { return PossibleQuests; }
 	TArray<int> GetCanClearQuests() { return CanClearQuests; }
-	TArray<FNpcScriptData> GetScriptData(int QuestId) { return ScriptData[NpcId].Scripts; }
+	TArray<FNpcScriptData> GetScriptData(int QuestId) { return ScriptData[QuestId].Scripts; }
 	
 	UPROPERTY(EditAnywhere)
 	int ItemType;

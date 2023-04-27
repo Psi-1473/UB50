@@ -51,7 +51,7 @@ void UWidget_YesOrNo::TakeQuest()
 
 	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	auto MyPlayer = Cast<AMyPlayer>(Char);
-
+	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);
 	MyPlayer->SetState(IDLE);
 	
 }
@@ -64,6 +64,7 @@ void UWidget_YesOrNo::ClearQuest()
 	GInstance->UIManager->RefreshUI();
 	UE_LOG(LogTemp, Warning, TEXT(" Clear Quest! "));
 	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);
 	auto MyPlayer = Cast<AMyPlayer>(Char);
 	MyPlayer->SetState(IDLE);
 }
