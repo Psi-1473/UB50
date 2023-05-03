@@ -16,20 +16,43 @@ ANpc::ANpc()
 	PrimaryActorTick.bCanEverTick = true;
 
 	InteractionKey = CreateDefaultSubobject<UWidgetComponent>(TEXT("INTERACTIONKEY"));
+	QuestMark = CreateDefaultSubobject<UWidgetComponent>(TEXT("QUESTMARK"));
+	QuestCompMark = CreateDefaultSubobject<UWidgetComponent>(TEXT("QUESTCOMPMARK"));
 
 	InteractionKey->SetupAttachment(GetMesh());
-	InteractionKey->SetWidgetSpace(EWidgetSpace::Screen);
+	QuestMark->SetupAttachment(GetMesh());
+	QuestCompMark->SetupAttachment(GetMesh());
+
+	InteractionKey->SetWidgetSpace(EWidgetSpace::World);
+	QuestMark->SetWidgetSpace(EWidgetSpace::World);
+	QuestCompMark->SetWidgetSpace(EWidgetSpace::World);
 
 	static ConstructorHelpers::FClassFinder<UUserWidget> UW(TEXT("WidgetBlueprint'/Game/UI/WBP_Interaction.WBP_Interaction_C'"));
-
+	static ConstructorHelpers::FClassFinder<UUserWidget> QS(TEXT("WidgetBlueprint'/Game/UI/WBP_QuestMark.WBP_QuestMark_C'"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> QC(TEXT("WidgetBlueprint'/Game/UI/WBP_QuestCompMark.WBP_QuestCompMark_C'"));
 	if (UW.Succeeded())
 	{
 		InteractionKey->SetWidgetClass(UW.Class);
 		InteractionKey->SetDrawSize(FVector2d(50.f, 50.f));
-		InteractionKey->SetRelativeLocation(FVector(0.f, 0.f, 250.f));
+		InteractionKey->SetRelativeLocation(FVector(50.f, 0.f, 100.f));
+	}
+
+	if (QS.Succeeded())
+	{
+		QuestMark->SetWidgetClass(QS.Class);
+		QuestMark->SetDrawSize(FVector2d(70.f, 70.f));
+		QuestMark->SetRelativeLocation(FVector(0.f, 0.f, 250.f));
+	}
+	if (QC.Succeeded())
+	{
+		QuestCompMark->SetWidgetClass(QC.Class);
+		QuestCompMark->SetDrawSize(FVector2d(70.f, 70.f));
+		QuestCompMark->SetRelativeLocation(FVector(0.f, 0.f, 250.f));
 	}
 
 	InteractionKey->SetVisibility(false);
+	QuestMark->SetVisibility(false);
+	QuestCompMark->SetVisibility(false);
 
 	InteractBox = CreateDefaultSubobject<UBoxComponent>(TEXT("InteractBox"));
 	InteractBox->SetupAttachment(GetMesh());
@@ -40,6 +63,10 @@ ANpc::ANpc()
 	InteractBox->OnComponentEndOverlap.AddDynamic(this, &ANpc::OnOverlapEnd);
 
 	InteractBox->SetCollisionObjectType(ECollisionChannel::ECC_EngineTraceChannel2);
+
+
+
+
 	UE_LOG(LogTemp, Warning, TEXT("Npc On"));
 
 	InitNpcId();
@@ -51,6 +78,7 @@ void ANpc::BeginPlay()
 	Super::BeginPlay();
 
 	InitQuestInfo();
+	SetQuestMark();
 
 	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
 	GInstance->QuestManager->AddNpc(NpcId, this);
@@ -187,6 +215,25 @@ void ANpc::InitQuestInfo()
 	{
 		if(!Quests[i].Locked)
 			PossibleQuests.Add(Quests[i].Id);
+	}
+}
+
+void ANpc::SetQuestMark()
+{
+
+	QuestMark->SetVisibility(false);
+	QuestCompMark->SetVisibility(false);
+
+	if (CanClearQuests.Num() > 0)
+	{
+		QuestCompMark->SetVisibility(true);
+		return;
+	}
+
+	if (PossibleQuests.Num() > 0)
+	{
+		QuestMark->SetVisibility(true);
+		return;
 	}
 }
 

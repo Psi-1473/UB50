@@ -62,6 +62,7 @@ public:
 	
 	UPROPERTY(EditAnywhere)
 	int ItemType;
+	void SetQuestMark();
 private:
 	void InitNpcId();
 	void InitQuestInfo();
@@ -96,6 +97,12 @@ private:
 private:
 	UPROPERTY(VisibleAnywhere)
 	class UWidgetComponent* InteractionKey;
+
+	UPROPERTY(VisibleAnywhere)
+	class UWidgetComponent* QuestMark;
+
+	UPROPERTY(VisibleAnywhere)
+	class UWidgetComponent* QuestCompMark;
 
 	UPROPERTY(VisibleAnywhere)
 	class UBoxComponent* InteractBox;

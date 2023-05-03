@@ -87,6 +87,8 @@ void UManager_Quest::PlayerTakesQuest(int QuestId)
 		StartedToClear(NewQuest.Id);
 	if (NewQuest.TypeName == "Investigation")
 		SetObjsInteractable(NewQuest.TargetId, true);
+
+	NpcsInField[NewQuest.NpcId]->SetQuestMark();
 }
 
 void UManager_Quest::StartedToClear(int QuestId)
@@ -97,6 +99,8 @@ void UManager_Quest::StartedToClear(int QuestId)
 	StartedQuests[Idx].CanClear = true;
 
 	GetNpcById(StartedQuests[Idx].CompleteNpcId)->AddToCanClearQuest(QuestId);
+	GetNpcById(StartedQuests[Idx].CompleteNpcId)->SetQuestMark();
+
 }
 
 void UManager_Quest::ClearQuest(int QuestId)
@@ -109,6 +113,7 @@ void UManager_Quest::ClearQuest(int QuestId)
 	ClearedQuests.Add(Quests[QuestId]);
 	StartedQuests.RemoveAt(Idx);
 	GetNpcById(NpcId)->RemoveCanClearQuest(QuestId);
+	GetNpcById(NpcId)->SetQuestMark();
 	UnlockNextQuest(QuestId);
 	UE_LOG(LogTemp, Warning, TEXT(" StartedQuest Num : %d"), StartedQuests.Num());
 }
@@ -122,6 +127,7 @@ void UManager_Quest::UnlockNextQuest(int QuestId)
 	Quests[NextQuestId].Locked = false;
 	int NpcId = Quests[NextQuestId].NpcId;
 	GetNpcById(NpcId)->AddToPossibleQuest(NextQuestId);
+	GetNpcById(NpcId)->SetQuestMark();
 }
 
 void UManager_Quest::AddQuestTargetNum(FString QType, int TargetId)
