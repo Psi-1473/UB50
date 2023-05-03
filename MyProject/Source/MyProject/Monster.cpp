@@ -158,7 +158,7 @@ void AMonster::OnStun(float Tick)
 {
 	SetState(STUNED);
 	GetWorldTimerManager().SetTimer(StunTimerHandle, this, &AMonster::OffStun, Tick, true);
-	
+	GetWorldTimerManager().ClearTimer(AttackTimerHandle);
 	GetCharacterMovement()->StopMovementImmediately();
 	
 }
@@ -173,7 +173,7 @@ float AMonster::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContr
 {
 	Stat->OnAttacked(Damage);
 	OnDamaged();
-
+	GetWorldTimerManager().ClearTimer(AttackTimerHandle);
 	if (Stat->GetHp() == 0)
 	{
 		AMyPlayer* Player = Cast<AMyPlayer>(DamageCauser);

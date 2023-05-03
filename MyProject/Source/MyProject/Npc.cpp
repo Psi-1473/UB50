@@ -23,9 +23,9 @@ ANpc::ANpc()
 	QuestMark->SetupAttachment(GetMesh());
 	QuestCompMark->SetupAttachment(GetMesh());
 
-	InteractionKey->SetWidgetSpace(EWidgetSpace::World);
-	QuestMark->SetWidgetSpace(EWidgetSpace::World);
-	QuestCompMark->SetWidgetSpace(EWidgetSpace::World);
+	InteractionKey->SetWidgetSpace(EWidgetSpace::Screen);
+	QuestMark->SetWidgetSpace(EWidgetSpace::Screen);
+	QuestCompMark->SetWidgetSpace(EWidgetSpace::Screen);
 
 	static ConstructorHelpers::FClassFinder<UUserWidget> UW(TEXT("WidgetBlueprint'/Game/UI/WBP_Interaction.WBP_Interaction_C'"));
 	static ConstructorHelpers::FClassFinder<UUserWidget> QS(TEXT("WidgetBlueprint'/Game/UI/WBP_QuestMark.WBP_QuestMark_C'"));

@@ -119,7 +119,14 @@ void ASpawnMonster::UpdateMoving()
 void ASpawnMonster::UpdateAttack()
 {
 	SetState(ATTACK);
+	GetWorldTimerManager().SetTimer(AttackTimerHandle, this, &ASpawnMonster::AttackStart, 0.3f, true);
+	
+}
+
+void ASpawnMonster::AttackStart()
+{
 	Attack(AttackTarget);
+	GetWorldTimerManager().ClearTimer(AttackTimerHandle);
 }
 
 void ASpawnMonster::SetPatrolPos()

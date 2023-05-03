@@ -33,7 +33,7 @@ protected:
 	virtual void UpdateMoving() override;
 	virtual void UpdateAttack() override;
 
-
+	void AttackStart();
 	void SetPatrolPos();
 	bool ArriveToPatrolPos();
 

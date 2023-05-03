@@ -74,6 +74,9 @@ protected:
 	float Speed;
 
 	UPROPERTY()
+	FTimerHandle AttackTimerHandle;
+
+	UPROPERTY()
 	FTimerHandle StunTimerHandle;
 public:
 	STATE MonsterState;
