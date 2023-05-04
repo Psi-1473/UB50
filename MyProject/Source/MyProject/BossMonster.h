@@ -96,10 +96,15 @@ private:
 	class UParticleSystem* Skill2Emitter;
 
 	UPROPERTY(EditAnywhere)
+	class UNiagaraSystem* Skill2ActEmitter;
+
+	UPROPERTY(EditAnywhere)
 	class UParticleSystem* Skill3Emitter;
 
 	UPROPERTY(EditAnywhere)
 	class UParticleSystem* Skill3TargetEmitter;
+
+	
 
 	UPROPERTY()
 	FTimerHandle SkillTimerHandle;

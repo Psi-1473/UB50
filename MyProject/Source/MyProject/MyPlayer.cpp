@@ -359,7 +359,7 @@ void AMyPlayer::CoolDownE()
 		GetWorldTimerManager().SetTimer(ETimerHandle, this, &AMyPlayer::CoolDownE, 1.f, true);
 	}
 
-	GameMode->RSkillUpdate(SkillCoolTimes[PLAYERSKILL_R]);
+	GameMode->ESkillUpdate(SkillCoolTimes[PLAYERSKILL_E]);
 }
 
 void AMyPlayer::OnDamaged()

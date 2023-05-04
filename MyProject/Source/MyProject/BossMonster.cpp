@@ -11,6 +11,9 @@
 #include "EnemyStatComponent.h"
 #include "NavigationSystem.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"
+
 
 
 
@@ -34,13 +37,16 @@ ABossMonster::ABossMonster()
 	{
 		Skill2Emitter = PARTICLE2.Object;
 	}
+	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> PARTICLE2ACT(TEXT("NiagaraSystem'/Game/BlinkAndDashVFX/VFX_Niagara/NS_Dash_Vampire.NS_Dash_Vampire'"));
+	if (PARTICLE2ACT.Succeeded())
+	{
+		Skill2ActEmitter = PARTICLE2ACT.Object;
+	}
 	static ConstructorHelpers::FObjectFinder<UParticleSystem> PARTICLE3(TEXT("ParticleSystem'/Game/ParagonGreystone/FX/Particles/Greystone/Abilities/Ultimate/FX/P_Greystone_HToKill_Trail.P_Greystone_HToKill_Trail'"));
 	if (PARTICLE3.Succeeded())
 	{
 		Skill3Emitter = PARTICLE3.Object;
 	}
-	
-
 	static ConstructorHelpers::FObjectFinder<UParticleSystem> PARTICLE3TARGET(TEXT("ParticleSystem'/Game/ParagonGreystone/FX/Particles/Greystone/Abilities/LeapAOE/FX/P_Greystone_LeapAOE_Start.P_Greystone_LeapAOE_Start'"));
 	if (PARTICLE3.Succeeded())
 	{
@@ -77,8 +83,8 @@ void ABossMonster::OnDamaged()
 {
 	Super::OnDamaged();
 
-	//if (!CanBeStiffed)
-	//	return;
+	if (!CanBeStiffed)
+		return;
 
 	SetState(DAMAGED);
 	AnimInst->StopAllMontages(0.f);
@@ -88,6 +94,7 @@ void ABossMonster::OnDamaged()
 void ABossMonster::Attack(AMyPlayer* Target)
 {
 	Super::Attack(Target);
+	CanBeStiffed = false;
 	AnimInst->PlayAttackMontage(0);
 }
 
@@ -157,6 +164,7 @@ void ABossMonster::Skill1()
 	AnimInst->PlayAttackMontage(1);
 	UsableSkills[1] = false;
 	CanSkills = false;
+	CanBeStiffed = false;
 	GetWorldTimerManager().SetTimer(Skill1TimerHandle, this, &ABossMonster::CoolTimeZero1, BossCoolTime::SKILL1, true);
 	GetWorldTimerManager().SetTimer(SkillTimerHandle, this, &ABossMonster::ActionCoolTimeZero, BossCoolTime::ALLSKILL, true);
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Skill 1"));
@@ -169,6 +177,7 @@ void ABossMonster::Skill2()
 	AnimInst->PlayAttackMontage(2);
 	UsableSkills[2] = false;
 	CanSkills = false;
+	CanBeStiffed = false;
 	GetWorldTimerManager().SetTimer(Skill2TimerHandle, this, &ABossMonster::CoolTimeZero2, BossCoolTime::SKILL2, true);
 	GetWorldTimerManager().SetTimer(SkillTimerHandle, this, &ABossMonster::ActionCoolTimeZero, BossCoolTime::ALLSKILL, true);
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Skill 2"));
@@ -181,6 +190,7 @@ void ABossMonster::Skill3()
 	AnimInst->PlayAttackMontage(3);
 	UsableSkills[3] = false;
 	CanSkills = false;
+	CanBeStiffed = false;
 	GetWorldTimerManager().SetTimer(Skill3TimerHandle, this, &ABossMonster::CoolTimeZero3, BossCoolTime::SKILL3, true);
 	GetWorldTimerManager().SetTimer(SkillTimerHandle, this, &ABossMonster::ActionCoolTimeZero, BossCoolTime::ALLSKILL, true);
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Skill 3"));
@@ -193,6 +203,7 @@ void ABossMonster::Skill4()
 	AnimInst->PlayAttackMontage(4);
 	UsableSkills[4] = false;
 	CanSkills = false;
+	CanBeStiffed = false;
 	GetWorldTimerManager().SetTimer(Skill4TimerHandle, this, &ABossMonster::CoolTimeZero4, BossCoolTime::SKILL4, true);
 	GetWorldTimerManager().SetTimer(SkillTimerHandle, this, &ABossMonster::ActionCoolTimeZero, BossCoolTime::ALLSKILL, true);
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Skill 4"));
@@ -234,7 +245,7 @@ void ABossMonster::Skill2Fire()
 	FHitResult HitResult;
 	FCollisionQueryParams Params(NAME_None, false, this);
 	FVector BoxVector(AttackX, AttackY, AttackZ);
-
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), Skill2ActEmitter, GetActorLocation(), GetActorRotation());
 	FVector StartVector = GetActorLocation() + GetActorForwardVector() * 200;
 
 	bool bResult = GetWorld()->SweepSingleByChannel(
@@ -407,6 +418,7 @@ void ABossMonster::ActionCoolTimeZero()
 
 void ABossMonster::UpdateIdle()
 {
+	CanBeStiffed = true;
 	if (AttackTarget == nullptr)
 		return;
 	

@@ -58,6 +58,9 @@ void AMyGameMode::RSkillUpdate(int Value)
 
 void AMyGameMode::ESkillUpdate(int Value)
 {
-	//
+	UWidget_PlayerMain* Hud = Cast<UWidget_PlayerMain>(CurrentWidget);
+
+	Hud->SetImageAlpha(2, true);
+	Hud->ChangeRText(Value);
 }
 
