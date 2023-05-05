@@ -17,7 +17,7 @@ class MYPROJECT_API UWidget_YesOrNo : public UUserWidget
 	
 protected:
 	virtual void NativeConstruct() override;
-	void Init();
+
 
 	UFUNCTION()
 	void ClickYesButton();
@@ -27,7 +27,10 @@ protected:
 	void TakeQuest();
 	void ClearQuest();
 
+	void ChangeText(FString NewText);
+
 public:
+	void Init();
 	void SetValue(YesOrNoType TypeValue) { MyType = TypeValue; }
 	void SetQuestId(int Value) { QuestId = Value; }
 

@@ -98,6 +98,9 @@ void UManager_Quest::StartedToClear(int QuestId)
 		return;
 	StartedQuests[Idx].CanClear = true;
 
+	if (!NpcsInField.Contains(StartedQuests[Idx].CompleteNpcId))
+		return;
+
 	GetNpcById(StartedQuests[Idx].CompleteNpcId)->AddToCanClearQuest(QuestId);
 	GetNpcById(StartedQuests[Idx].CompleteNpcId)->SetQuestMark();
 
@@ -114,6 +117,7 @@ void UManager_Quest::ClearQuest(int QuestId)
 	StartedQuests.RemoveAt(Idx);
 	GetNpcById(NpcId)->RemoveCanClearQuest(QuestId);
 	GetNpcById(NpcId)->SetQuestMark();
+	Quests[QuestId].Cleared = true;
 	UnlockNextQuest(QuestId);
 	UE_LOG(LogTemp, Warning, TEXT(" StartedQuest Num : %d"), StartedQuests.Num());
 }
@@ -193,5 +197,22 @@ void UManager_Quest::SetObjsInteractable(int Id, bool Value)
 	for (int i = 0; i < InvestObjList[Id].ObjList.Num(); i++)
 	{
 		InvestObjList[Id].ObjList[i]->SetInteractable(Value);
+	}
+}
+
+void UManager_Quest::ClearNpc()
+{
+	NpcsInField.Empty();
+}
+
+void UManager_Quest::CheckCanClear(int NpcId)
+{
+	for (int i = 0; i < StartedQuests.Num(); i++)
+	{
+		if (StartedQuests[i].CompleteNpcId == NpcId && StartedQuests[i].CanClear)
+		{
+			GetNpcById(NpcId)->AddToCanClearQuest(StartedQuests[i].Id);
+			GetNpcById(NpcId)->SetQuestMark();
+		}
 	}
 }

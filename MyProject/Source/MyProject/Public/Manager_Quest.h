@@ -14,24 +14,15 @@
 struct FQuest
 {
 	int Id;
-
 	int NpcId;
-
 	int CompleteNpcId;
-
 	FString TypeName;
-
 	FString Name;
-
 	FString Sub;
 	FString ConditionSub;
-
 	int Gold;
-
 	int Exp;
-
 	bool Locked;
-
 	bool Cleared;
 	int TargetId;
 	int TargetNum;
@@ -94,6 +85,8 @@ public:
 	void AddInvestObj(class AInvestigationObj* Obj);
 	void SetObjsInteractable(int Id, bool Value);
 	void ClearInvestObj() {};
+	void ClearNpc();
+	void CheckCanClear(int NpcId);
 
 private:
 	UPROPERTY()

@@ -21,6 +21,7 @@ class MYPROJECT_API AMyGameMode : public AGameModeBase
 
 public:
 	AMyGameMode();
+	~AMyGameMode();
 	virtual void BeginPlay() override;
 	void UIUpdate_Hp(float Value);
 	void QSkillUpdate(int Value);

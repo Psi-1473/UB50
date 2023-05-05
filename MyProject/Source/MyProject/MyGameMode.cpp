@@ -9,25 +9,31 @@
 AMyGameMode::AMyGameMode()
 {
 	//DefaultPawnClass = BP_MyPlayer::StaticClass();
+
+	
 	static ConstructorHelpers::FClassFinder<UUserWidget> UW(TEXT("WidgetBlueprint'/Game/UI/WBP_PlayerMain.WBP_PlayerMain_C'"));
-	UE_LOG(LogTemp, Warning, TEXT("GameMode Start!"));
+	UE_LOG(LogTemp, Warning, TEXT("GameMode Init!"));
 	if (UW.Succeeded())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("GameMode Succeeded!"));
 		HUD_Class = UW.Class;
 
 		CurrentWidget = CreateWidget(GetWorld(), HUD_Class);
 		if (CurrentWidget)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("GameMode CurrentWidget Succeeded!"));
 			CurrentWidget->AddToViewport();
-		}
 	}
+}
+
+AMyGameMode::~AMyGameMode()
+{
+	UE_LOG(LogTemp, Warning, TEXT("GameMode Destroyed!"));
 }
 
 void AMyGameMode::BeginPlay()
 {
-	Super::BeginPlay();	
+	Super::BeginPlay();
+	UseGInstance
+	GInstance->QuestManager->ClearNpc();
+	UE_LOG(LogTemp, Warning, TEXT("GameMode Begin!"));
 
 }
 

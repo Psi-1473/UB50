@@ -82,6 +82,7 @@ void ANpc::BeginPlay()
 
 	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
 	GInstance->QuestManager->AddNpc(NpcId, this);
+	GInstance->QuestManager->CheckCanClear(NpcId);
 	GInstance->ScriptManager->LoadScriptData(GInstance, NpcId);
 	UE_LOG(LogTemp, Warning, TEXT("Npc : %s"), *BaseScript);
 
@@ -213,7 +214,7 @@ void ANpc::InitQuestInfo()
 
 	for (int i = 0; i < Quests.Num(); i++)
 	{
-		if(!Quests[i].Locked)
+		if(!Quests[i].Locked && !Quests[i].Cleared)
 			PossibleQuests.Add(Quests[i].Id);
 	}
 }

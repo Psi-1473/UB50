@@ -80,6 +80,7 @@ void Manager_Script::NextScript(UMyGameInstance* GInstance, AMyPlayer* Player)
 
 		auto YNWidget = Cast<UWidget_YesOrNo>(YesNoWidget);
 		YNWidget->SetValue(YesOrNoType::QUEST);
+		YNWidget->Init();
 		YNWidget->SetQuestId(ScriptingQuestId);
 	}
 	else

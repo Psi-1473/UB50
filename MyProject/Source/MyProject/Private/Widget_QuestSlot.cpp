@@ -69,6 +69,7 @@ void UWidget_QuestSlot::PopupYesOrNo()
 	auto YNWidget = Cast<UWidget_YesOrNo>(YesNoWidget);
 
 	YNWidget->SetValue(YesOrNoType::CLEAR);
+	YNWidget->Init();
 	YNWidget->SetQuestId(QuestId);
 
 }
