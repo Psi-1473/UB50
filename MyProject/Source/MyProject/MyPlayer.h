@@ -55,6 +55,8 @@ private:
 	void CoolDownE();
 
 	void OnDamaged();
+public:
+	void Recovery(int NumberToIncrease);
 
 public:
 	void OpenUI(UIType MyUIType);

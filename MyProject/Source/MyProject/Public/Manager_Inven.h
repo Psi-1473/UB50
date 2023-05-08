@@ -17,7 +17,7 @@ public:
 public:
 	void EquipWeapon(UMyGameInstance* GInstance, int Id, int Idx);
 	void EquipArmor(UMyGameInstance* GInstance, int Id, int Idx);
-	void UseItem(UMyGameInstance* GInstance, int Id, int Idx);
+	void UseItem(class AMyPlayer* MyPlayer, UMyGameInstance* GInstance, int Id, int Idx);
 
 	void AddItemWeapon(UMyGameInstance* GInstance, int Id);
 	void AddItemArmor(UMyGameInstance* GInstance, int Id);
@@ -30,7 +30,7 @@ public:
 	bool DraggingSwap(UMyGameInstance* GInstance, int from, int to);
 
 
-	void ApplyPotion(int PotionId);
+	void ApplyPotion(class AMyPlayer* MyPlater, int PotionId);
 
 public:
 	void SetGold(int Value) { Gold = Value; }

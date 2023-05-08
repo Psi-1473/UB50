@@ -11,6 +11,8 @@
 #include "MyGameInstance.h"
 #include "DragWidget.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "Kismet/GameplayStatics.h"
+#include "../MyPlayer.h"
 
 
 void UWidget_InvenSlot::NativeConstruct()
@@ -41,7 +43,9 @@ FReply UWidget_InvenSlot::NativeOnMouseButtonDown(const FGeometry& InGeometry, c
 			GInstance->InvenManager->EquipArmor(GInstance, Id, Idx);
 			break;
 		case 2:
-			GInstance->InvenManager->UseItem(GInstance, Id, Idx);
+			auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+			auto MyPlayer = Cast<AMyPlayer>(Char);
+			GInstance->InvenManager->UseItem(MyPlayer, GInstance, Id, Idx);
 			break;
 		}
 	}

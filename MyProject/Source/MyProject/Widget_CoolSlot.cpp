@@ -8,7 +8,8 @@
 #include "DragWidget.h"
 #include "DEFINE.H"
 #include "Manager_Inven.h"
-
+#include "Kismet/GameplayStatics.h"
+#include "../MyPlayer.h"
 
 
 void UWidget_CoolSlot::NativeConstruct()
@@ -49,12 +50,16 @@ void UWidget_CoolSlot::SetImage()
 	Img_Item->SetBrush(GInstance->GetUseImage(ItemId)->Brush);
 }
 
-void UWidget_CoolSlot::UseItem( )
+void UWidget_CoolSlot::UseItem()
 {
 	if (ItemId == -1)
 		return;
+
+	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	auto MyPlayer = Cast<AMyPlayer>(Char);
+
 	UseGInstance
-	GInstance->InvenManager->UseItem(GInstance, ItemId, InvenIndex);
+	GInstance->InvenManager->UseItem(MyPlayer, GInstance, ItemId, InvenIndex);
 }
 
 

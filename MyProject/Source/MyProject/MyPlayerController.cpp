@@ -35,10 +35,10 @@ void AMyPlayerController::SetupInputComponent()
 	InputComponent->BindAction(TEXT("Quest"), EInputEvent::IE_Pressed, this, &AMyPlayerController::PopupQuest);
 	InputComponent->BindAction(TEXT("Interact"), EInputEvent::IE_Pressed, this, &AMyPlayerController::Interact);
 	InputComponent->BindAction(TEXT("ItemUse"), EInputEvent::IE_Pressed, this, &AMyPlayerController::Click1);
-	InputComponent->BindAction(TEXT("ItemUse1"), EInputEvent::IE_Pressed, this, &AMyPlayerController::Click2);
-	InputComponent->BindAction(TEXT("ItemUse2"), EInputEvent::IE_Pressed, this, &AMyPlayerController::Click3);
-	InputComponent->BindAction(TEXT("ItemUse3"), EInputEvent::IE_Pressed, this, &AMyPlayerController::Click4);
-	InputComponent->BindAction(TEXT("ItemUse4"), EInputEvent::IE_Pressed, this, &AMyPlayerController::Click5);
+	InputComponent->BindAction(TEXT("ItemUse2"), EInputEvent::IE_Pressed, this, &AMyPlayerController::Click2);
+	InputComponent->BindAction(TEXT("ItemUse3"), EInputEvent::IE_Pressed, this, &AMyPlayerController::Click3);
+	InputComponent->BindAction(TEXT("ItemUse4"), EInputEvent::IE_Pressed, this, &AMyPlayerController::Click4);
+	InputComponent->BindAction(TEXT("ItemUse5"), EInputEvent::IE_Pressed, this, &AMyPlayerController::Click5);
 }
 
 void AMyPlayerController::MoveForward(float Value)

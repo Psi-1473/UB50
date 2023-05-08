@@ -8,6 +8,7 @@
 #include "../MyGameInstance.h"
 #include "Manager_UI.h"
 #include "Manager_Quest.h"
+#include "../MyPlayer.h"
 
 Manager_Inven::Manager_Inven()
 {
@@ -57,7 +58,7 @@ void Manager_Inven::EquipArmor(UMyGameInstance* GInstance, int Id, int Idx)
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Armor Equip!"));
 }
 
-void Manager_Inven::UseItem(UMyGameInstance* GInstance, int Id, int Idx)
+void Manager_Inven::UseItem(AMyPlayer* MyPlayer, UMyGameInstance* GInstance, int Id, int Idx)
 {
 	if (GInstance->GetUseData(Id) == nullptr)
 		return;
@@ -68,7 +69,7 @@ void Manager_Inven::UseItem(UMyGameInstance* GInstance, int Id, int Idx)
 	{
 		MyInven->Slots[Idx]->SetArmorItem();
 	}
-	ApplyPotion(Id);
+	ApplyPotion(MyPlayer, Id);
 
 	// 아이템 정보를 받아와서 
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("item Use!"));
@@ -200,12 +201,13 @@ bool Manager_Inven::DraggingSwap(UMyGameInstance* GInstance, int from, int to)
 	return true;
 }
 
-void Manager_Inven::ApplyPotion(int PotionId)
+void Manager_Inven::ApplyPotion(AMyPlayer* MyPlayer, int PotionId)
 {
+
 	switch (PotionId)
 	{
 	case 1:
-		// 체력회복
+		MyPlayer->Recovery(30);//30은 임시
 		break;
 	default:
 		break;

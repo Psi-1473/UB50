@@ -371,6 +371,13 @@ void AMyPlayer::OnDamaged()
 	AnimInst->PlayDamagedMontage();
 }
 
+void AMyPlayer::Recovery(int NumberToIncrease)
+{
+	Stat->SetHp(Stat->GetHp() + NumberToIncrease);
+	if (GameMode)
+		GameMode->UIUpdate_Hp(Stat->GetHpRatio());
+}
+
 void AMyPlayer::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 {
 	//IsAttacking = false;
