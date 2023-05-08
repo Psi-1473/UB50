@@ -28,6 +28,8 @@ public:
 	void RSkillUpdate(int Value);
 	void ESkillUpdate(int Value);
 
+	void UsePotion(int KeyNumber);
+
 	UPROPERTY(VisibleAnywhere)
 	TSubclassOf<UUserWidget> HUD_Class;
 

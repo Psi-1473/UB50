@@ -49,7 +49,6 @@ public:
 	void ChangeWeapon(int Id, class UMyGameInstance* GInstance);
 	void ChangeArmor(int Id, class UMyGameInstance* GInstance);
 
-
 	void SetInvenIndex(int ItemType, int Value);
 
 

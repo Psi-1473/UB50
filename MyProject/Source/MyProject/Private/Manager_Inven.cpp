@@ -62,6 +62,14 @@ void Manager_Inven::UseItem(UMyGameInstance* GInstance, int Id, int Idx)
 	if (GInstance->GetUseData(Id) == nullptr)
 		return;
 
+	UseItemList[Idx] = nullptr;
+	auto MyInven = Cast<UWidget_Inventory>(GInstance->UIManager->GetInven());
+	if (MyInven != nullptr)
+	{
+		MyInven->Slots[Idx]->SetArmorItem();
+	}
+	ApplyPotion(Id);
+
 	// 아이템 정보를 받아와서 
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("item Use!"));
 }
@@ -190,6 +198,18 @@ bool Manager_Inven::DraggingSwap(UMyGameInstance* GInstance, int from, int to)
 	}
 
 	return true;
+}
+
+void Manager_Inven::ApplyPotion(int PotionId)
+{
+	switch (PotionId)
+	{
+	case 1:
+		// 체력회복
+		break;
+	default:
+		break;
+	}
 }
 
 

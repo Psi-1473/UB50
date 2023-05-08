@@ -145,6 +145,8 @@ void UWidget_Inventory::ChangeArmor(int Id, UMyGameInstance* GInstance)
 	Img_EquipArmor->Brush = GInstance->GetArmorImage(Id)->Brush;
 }
 
+
+
 void UWidget_Inventory::SetInvenIndex(int ItemType, int Value)
 {
 	switch (ItemType)

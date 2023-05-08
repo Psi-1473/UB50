@@ -15,15 +15,18 @@ class MYPROJECT_API UWidget_CoolSlot : public UUserWidget
 	GENERATED_BODY()
 public:
 	virtual void NativeConstruct() override;
-	virtual void NativeTick(const FGeometry& Geometry, float DeltaSeconds) override;
-	void InitImage(class UImage* Img);
-	void ChangeCoolTime();
+	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
+
+	void SetId(int Id) { ItemId = Id; }
+	void SetImage();
+	void UseItem();
+
+public:
+	int ItemId = -1;
+	int InvenIndex;
+
 private:
-	int16 CoolTime;
-
 	UPROPERTY(meta = (BindWidget), EditAnywhere)
-		class UImage* Img_Skill;
+	class UImage* Img_Item;
 
-	UPROPERTY(meta = (BindWidget), EditAnywhere)
-		class UTextBlock* Txt_Cooltime;
 };

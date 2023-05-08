@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Manager_Inven.h"
 #include "GameFramework/PawnMovementComponent.h"
+#include "MyGameMode.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 void AMyPlayerController::BeginPlay()
@@ -33,6 +34,11 @@ void AMyPlayerController::SetupInputComponent()
 	InputComponent->BindAction(TEXT("Inventory"), EInputEvent::IE_Pressed, this, &AMyPlayerController::PopupInventory);
 	InputComponent->BindAction(TEXT("Quest"), EInputEvent::IE_Pressed, this, &AMyPlayerController::PopupQuest);
 	InputComponent->BindAction(TEXT("Interact"), EInputEvent::IE_Pressed, this, &AMyPlayerController::Interact);
+	InputComponent->BindAction(TEXT("ItemUse"), EInputEvent::IE_Pressed, this, &AMyPlayerController::Click1);
+	InputComponent->BindAction(TEXT("ItemUse1"), EInputEvent::IE_Pressed, this, &AMyPlayerController::Click2);
+	InputComponent->BindAction(TEXT("ItemUse2"), EInputEvent::IE_Pressed, this, &AMyPlayerController::Click3);
+	InputComponent->BindAction(TEXT("ItemUse3"), EInputEvent::IE_Pressed, this, &AMyPlayerController::Click4);
+	InputComponent->BindAction(TEXT("ItemUse4"), EInputEvent::IE_Pressed, this, &AMyPlayerController::Click5);
 }
 
 void AMyPlayerController::MoveForward(float Value)
@@ -141,6 +147,36 @@ void AMyPlayerController::Interact()
 	}
 	else
 		MyPlayer->GetInteractObj()->Interact(MyPlayer);
+}
+
+void AMyPlayerController::Click1()
+{
+	UseGameMode
+	GameMode->UsePotion(1);
+}
+
+void AMyPlayerController::Click2()
+{
+	UseGameMode
+	GameMode->UsePotion(2);
+}
+
+void AMyPlayerController::Click3()
+{
+	UseGameMode
+	GameMode->UsePotion(3);
+}
+
+void AMyPlayerController::Click4()
+{
+	UseGameMode
+	GameMode->UsePotion(4);
+}
+
+void AMyPlayerController::Click5()
+{
+	UseGameMode
+	GameMode->UsePotion(5);
 }
 
 void AMyPlayerController::PopupInventory()

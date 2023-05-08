@@ -29,6 +29,12 @@ private:
 	void PopupInventory();
 	void PopupQuest();
 	void Interact();
+
+	void Click1();
+	void Click2();
+	void Click3();
+	void Click4();
+	void Click5();
 	//void PopupInventory();
 
 public:

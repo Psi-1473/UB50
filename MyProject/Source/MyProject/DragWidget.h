@@ -18,6 +18,12 @@ public:
 	UPROPERTY(EditAnyWhere)
 	int DragIndex;
 
+	UPROPERTY(EditAnyWhere)
+	int DragItemType;
+
+	UPROPERTY(EditAnyWhere)
+	int DragItemId;
+
 	UPROPERTY(EditAnywhere)
 	UUserWidget* WidgetReference;
 

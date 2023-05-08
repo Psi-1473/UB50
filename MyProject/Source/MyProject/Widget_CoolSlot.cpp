@@ -5,6 +5,9 @@
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
 #include "Engine/Texture.h"
+#include "DragWidget.h"
+#include "DEFINE.H"
+#include "Manager_Inven.h"
 
 
 
@@ -13,39 +16,49 @@ void UWidget_CoolSlot::NativeConstruct()
 	UUserWidget::NativeConstruct();
 }
 
-void UWidget_CoolSlot::NativeTick(const FGeometry& Geometry, float DeltaSeconds)
+bool UWidget_CoolSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
-	UUserWidget::NativeTick(Geometry, DeltaSeconds);
-
-	if (CoolTime <= 0)
-		return;
-
+	Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
+	UDragWidget* DragOper = Cast<UDragWidget>(InOperation);
+	UseGInstance
 	
-}
 
-void UWidget_CoolSlot::InitImage(UImage* Img)
-{
-	Img_Skill->Brush = Img->Brush;
-	CoolTime = 0;
-}
-
-void UWidget_CoolSlot::ChangeCoolTime()
-{
-	CoolTime--;
-
-	FString strText;
-
-	if (CoolTime <= 0)
+	if (DragOper != nullptr)
 	{
-		CoolTime = 0;
-		strText = FString::Printf(TEXT(""));
+		if (DragOper->DragItemType == USEITEM)
+		{
+			SetId(DragOper->DragItemId);
+			InvenIndex = DragOper->DragIndex;
+			SetImage();
+			GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Quick Success"));
+			return true;
+		}
+		else
+			return false;
 	}
 	else
-		strText = FString::Printf(TEXT("%d"), CoolTime);
-	
-	
-	Txt_Cooltime->SetText(FText::FromString(strText));
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Draging false"));
+		return false;
+	}
 }
+
+void UWidget_CoolSlot::SetImage()
+{
+	UseGInstance
+	Img_Item->SetBrush(GInstance->GetUseImage(ItemId)->Brush);
+}
+
+void UWidget_CoolSlot::UseItem( )
+{
+	if (ItemId == -1)
+		return;
+	UseGInstance
+	GInstance->InvenManager->UseItem(GInstance, ItemId, InvenIndex);
+}
+
+
+
 
 
 

@@ -67,6 +67,8 @@ void UWidget_InvenSlot::NativeOnDragDetected(const FGeometry& InGeometry, const 
 		UDragWidget* DragOper = NewObject<UDragWidget>();
 		OutOperation = DragOper;
 		DragOper->DragIndex = this->SlotIndex;
+		DragOper->DragItemId = ItemId;
+		DragOper->DragItemType = ItemType;
 
 		
 		if (DragVisualClass != nullptr)

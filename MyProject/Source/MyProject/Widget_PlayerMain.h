@@ -23,6 +23,8 @@ public:
 
 	void SetImageAlpha(int Type, bool On);
 
+	void ClickQuickSlot(int Number);
+
 private:
 
 	// 텍스트 이름 확인
@@ -53,5 +55,21 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	class UProgressBar* PB_Exp;
+
+
+	UPROPERTY(meta = (BindWidget), EditAnywhere)
+	class UWidget_CoolSlot* QuickItem;
+	
+	UPROPERTY(meta = (BindWidget), EditAnywhere)
+	class UWidget_CoolSlot* QuickItem2;
+	
+	UPROPERTY(meta = (BindWidget), EditAnywhere)
+	class UWidget_CoolSlot* QuickItem3;
+	
+	UPROPERTY(meta = (BindWidget), EditAnywhere)
+	class UWidget_CoolSlot* QuickItem4;
+	
+	UPROPERTY(meta = (BindWidget), EditAnywhere)
+	class UWidget_CoolSlot* QuickItem5;
 	
 };

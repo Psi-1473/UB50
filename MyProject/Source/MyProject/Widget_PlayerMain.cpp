@@ -6,6 +6,7 @@
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/TextBlock.h"
 #include "Components/Image.h"
+#include "Widget_CoolSlot.h"
 
 
 void UWidget_PlayerMain::UpdateHp(float Percentage)
@@ -76,5 +77,29 @@ void UWidget_PlayerMain::SetImageAlpha(int Type, bool On)
 		break;
 	}
 	
+}
+
+void UWidget_PlayerMain::ClickQuickSlot(int Number)
+{
+	switch (Number)
+	{
+	case 1:
+		QuickItem->UseItem();
+		break;
+	case 2:
+		QuickItem2->UseItem();
+		break;
+	case 3:
+		QuickItem3->UseItem();
+		break;
+	case 4:
+		QuickItem4->UseItem();
+		break;
+	case 5:
+		QuickItem5->UseItem();
+		break;
+	default:
+		break;
+	}
 }
 

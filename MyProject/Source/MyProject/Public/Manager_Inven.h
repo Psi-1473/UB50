@@ -29,6 +29,9 @@ public:
 
 	bool DraggingSwap(UMyGameInstance* GInstance, int from, int to);
 
+
+	void ApplyPotion(int PotionId);
+
 public:
 	void SetGold(int Value) { Gold = Value; }
 	void SetOnInventory(bool Value) { bOnInventory = Value; }

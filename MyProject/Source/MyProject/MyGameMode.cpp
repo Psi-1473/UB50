@@ -5,6 +5,8 @@
 #include "MyGameMode.h"
 #include "Widget_PlayerMain.h"
 #include "Widget_Inventory.h"
+#include "Manager_Inven.h"
+#include "Widget_CoolSlot.h"
 
 AMyGameMode::AMyGameMode()
 {
@@ -59,7 +61,6 @@ void AMyGameMode::RSkillUpdate(int Value)
 
 	Hud->SetImageAlpha(1, true);
 	Hud->ChangeRText(Value);
-	
 }
 
 void AMyGameMode::ESkillUpdate(int Value)
@@ -68,5 +69,12 @@ void AMyGameMode::ESkillUpdate(int Value)
 
 	Hud->SetImageAlpha(2, true);
 	Hud->ChangeRText(Value);
+}
+
+void AMyGameMode::UsePotion(int KeyNumber)
+{
+	UWidget_PlayerMain* Hud = Cast<UWidget_PlayerMain>(CurrentWidget);
+
+	Hud->ClickQuickSlot(KeyNumber);
 }
 
