@@ -24,6 +24,12 @@ public:
 	UPROPERTY(EditAnyWhere)
 	int DragItemId;
 
+	UPROPERTY(EditAnyWhere)
+	int DragQuickIndex;
+
+	UPROPERTY(EditAnyWhere)
+	class UWidget_InvenSlot* DragSlot;
+	
 	UPROPERTY(EditAnywhere)
 	UUserWidget* WidgetReference;
 

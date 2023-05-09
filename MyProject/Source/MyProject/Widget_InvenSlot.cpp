@@ -13,6 +13,7 @@
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "../MyPlayer.h"
+#include "MyGameMode.h"
 
 
 void UWidget_InvenSlot::NativeConstruct()
@@ -73,7 +74,7 @@ void UWidget_InvenSlot::NativeOnDragDetected(const FGeometry& InGeometry, const 
 		DragOper->DragIndex = this->SlotIndex;
 		DragOper->DragItemId = ItemId;
 		DragOper->DragItemType = ItemType;
-
+		DragOper->DragSlot = this;
 		
 		if (DragVisualClass != nullptr)
 		{
@@ -110,6 +111,17 @@ bool UWidget_InvenSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDro
 			
 		// ½º¿Ò
 		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Draging Success"));
+
+		int DragQuick = GInstance->InvenManager->QuickSlot[DragOper->DragIndex];
+		GInstance->InvenManager->QuickSlot[DragOper->DragIndex] = GInstance->InvenManager->QuickSlot[SlotIndex];
+		GInstance->InvenManager->QuickSlot[SlotIndex] = DragQuick;
+
+		UseGameMode
+		if (GInstance->InvenManager->QuickSlot[DragOper->DragIndex] != -1)
+			GameMode->ChangeQuickIndex(GInstance->InvenManager->QuickSlot[DragOper->DragIndex], DragOper->DragIndex);
+
+		if (GInstance->InvenManager->QuickSlot[SlotIndex] != -1)
+			GameMode->ChangeQuickIndex(GInstance->InvenManager->QuickSlot[SlotIndex], SlotIndex);
 
 		GInstance->InvenManager->DraggingSwap(GInstance, DragOper->DragIndex, this->SlotIndex);
 		return true;
@@ -220,7 +232,8 @@ void UWidget_InvenSlot::ChangeImage(int TypeIndex, int Index, UMyGameInstance* I
 		Img_Item->SetBrush(Instance->GetArmorImage(Instance->InvenManager->GetArmorList()[SlotIndex]->Id)->Brush);
 		break;
 	case 2:
-		strText = FString::Printf(TEXT("%d"), Instance->InvenManager->GetUseItemList()[SlotIndex]->Id);
+
+		strText = FString::Printf(TEXT("%d"), Instance->InvenManager->GetUseCount()[SlotIndex]);
 		Img_Item->SetBrush(Instance->GetUseImage(Instance->InvenManager->GetUseItemList()[SlotIndex]->Id)->Brush);
 		break;
 	default:

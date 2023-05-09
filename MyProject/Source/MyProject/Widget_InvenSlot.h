@@ -25,11 +25,15 @@ public:
 	void SetWeaponItem();
 	void SetArmorItem();
 	void SetUseItem();
+	void UpItemCount(int Value = 1) { ItemCount += Value; }
+	void DownItemCount(int Value = 1) { ItemCount -= Value; }
 
 	void SetEmpty();
 	void RefreshSlot(UWidget_InvenSlot* FromSlot);
 	void ChangeImage(int TypeIndex, int Index, class UMyGameInstance* Instance, class AMyPlayer* PlayerInst);
+
 	//0 무기 1 방어구 2 소모품
+
 
 	UFUNCTION()
 	void ClickSlot();
@@ -51,8 +55,6 @@ private:
 
 	UPROPERTY()
 	FString ItemSub;
-
-	
 
 	// 필요하면 나중에 ItemId만 남겨도 될 듯?
 public:

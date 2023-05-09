@@ -24,7 +24,8 @@ public:
 	void SetImageAlpha(int Type, bool On);
 
 	void ClickQuickSlot(int Number);
-
+	void ChangeQuickIndex(int Number, int Idx);
+	void SetQuickId();
 private:
 
 	// 텍스트 이름 확인

@@ -18,10 +18,12 @@ public:
 	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 
 	void SetId(int Id) { ItemId = Id; }
+	void SetIdx(int Idx) {  InvenIndex = Idx; }
 	void SetImage();
 	void UseItem();
 
 public:
+	int QuickId;
 	int ItemId = -1;
 	int InvenIndex;
 

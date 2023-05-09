@@ -10,11 +10,14 @@
 #include "Manager_Quest.h"
 #include "../MyPlayer.h"
 
+
 Manager_Inven::Manager_Inven()
 {
 	WeaponList.Init(nullptr, 24);
 	ArmorList.Init(nullptr, 24);
 	UseItemList.Init(nullptr, 24);
+	UseCount.Init(0, 24);
+	QuickSlot.Init(-1, 24);
 }
 
 Manager_Inven::~Manager_Inven()
@@ -58,16 +61,28 @@ void Manager_Inven::EquipArmor(UMyGameInstance* GInstance, int Id, int Idx)
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Armor Equip!"));
 }
 
-void Manager_Inven::UseItem(AMyPlayer* MyPlayer, UMyGameInstance* GInstance, int Id, int Idx)
+void Manager_Inven::UseItem(AMyPlayer* MyPlayer, UMyGameInstance* GInstance, int Id, int Idx, int QuickIdx)
 {
 	if (GInstance->GetUseData(Id) == nullptr)
 		return;
 
-	UseItemList[Idx] = nullptr;
+	if (UseCount[Idx] <= 0)
+		return;
+	 
+	UseCount[Idx]--;
+
+	if (UseCount[Idx] <= 0)
+	{
+		UseCount[Idx] = 0;
+		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Use Item Count 0!"));
+		UseItemList[Idx] = nullptr;
+		
+	}
+
 	auto MyInven = Cast<UWidget_Inventory>(GInstance->UIManager->GetInven());
 	if (MyInven != nullptr)
 	{
-		MyInven->Slots[Idx]->SetArmorItem();
+		MyInven->Slots[Idx]->SetUseItem();
 	}
 	ApplyPotion(MyPlayer, Id);
 
@@ -94,8 +109,16 @@ void Manager_Inven::AddItemArmor(UMyGameInstance* GInstance, int Id)
 
 void Manager_Inven::AddItemUse(UMyGameInstance* GInstance, int Id)
 {
+	int Num = CheckUseItemIdx(Id);
+	if (Num != -1)
+	{
+		UseCount[Num]++;
+		return;
+	}
+
 	int Idx = FindNextInvenIndex(USEITEM);
 	UseItemList[Idx] = GInstance->GetUseData(Id);
+	UseCount[Idx]++;
 	if (bOnInventory)
 		GInstance->UIManager->UpdateInventory(FindNextInvenIndex(USEITEM));
 
@@ -142,6 +165,8 @@ bool Manager_Inven::DraggingSwap(UMyGameInstance* GInstance, int from, int to)
 	auto MyInven = Cast<UWidget_Inventory>(GInstance->UIManager->GetInven());
 	int FromId;
 	int ToId;
+	int FromCount;
+	int ToCount;
 
 	switch (MyInven->GetInvenType())
 	{
@@ -181,18 +206,22 @@ bool Manager_Inven::DraggingSwap(UMyGameInstance* GInstance, int from, int to)
 		break;
 	case USEITEM:
 		FromId = UseItemList[from]->Id;
-
+		FromCount = UseCount[from];
+		ToCount = UseCount[to];
 		if (UseItemList[to] == nullptr)
 		{
 			UseItemList[from] = nullptr;
+			UseCount[from] = 0;
 			UseItemIndex = from;
 		}
 		else
 		{
 			ToId = UseItemList[to]->Id;
+			UseCount[from] = ToCount;
 			UseItemList[from] = GInstance->GetUseData(ToId);
 		}
 		UseItemList[to] = GInstance->GetUseData(FromId);
+		UseCount[to] = FromCount;
 		MyInven->Slots[from]->SetUseItem();
 		MyInven->Slots[to]->SetUseItem();
 		break;
@@ -212,6 +241,25 @@ void Manager_Inven::ApplyPotion(AMyPlayer* MyPlayer, int PotionId)
 	default:
 		break;
 	}
+}
+
+
+int Manager_Inven::CheckUseItemIdx(int Id)
+{
+	for (int i = 0; i < UseItemList.Num(); i++)
+	{
+		if(UseItemList[i] == nullptr)
+			continue;
+
+		if (UseItemList[i]->Id != Id)
+			continue;
+
+		if (UseCount[i] >= 10)
+			continue;;
+
+		return i;
+	}
+	return -1;
 }
 
 

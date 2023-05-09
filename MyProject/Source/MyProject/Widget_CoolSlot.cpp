@@ -10,6 +10,7 @@
 #include "Manager_Inven.h"
 #include "Kismet/GameplayStatics.h"
 #include "../MyPlayer.h"
+#include "Widget_InvenSlot.h"
 
 
 void UWidget_CoolSlot::NativeConstruct()
@@ -30,6 +31,7 @@ bool UWidget_CoolSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
 		{
 			SetId(DragOper->DragItemId);
 			InvenIndex = DragOper->DragIndex;
+			GInstance->InvenManager->QuickSlot[InvenIndex] = QuickId;
 			SetImage();
 			GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Quick Success"));
 			return true;
@@ -59,7 +61,7 @@ void UWidget_CoolSlot::UseItem()
 	auto MyPlayer = Cast<AMyPlayer>(Char);
 
 	UseGInstance
-	GInstance->InvenManager->UseItem(MyPlayer, GInstance, ItemId, InvenIndex);
+	GInstance->InvenManager->UseItem(MyPlayer, GInstance, ItemId, InvenIndex, QuickId);
 }
 
 

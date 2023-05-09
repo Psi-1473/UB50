@@ -103,3 +103,36 @@ void UWidget_PlayerMain::ClickQuickSlot(int Number)
 	}
 }
 
+void UWidget_PlayerMain::ChangeQuickIndex(int Number, int Idx)
+{
+	switch (Number)
+	{
+	case 1:
+		QuickItem->SetIdx(Idx);
+		break;
+	case 2:
+		QuickItem2->SetIdx(Idx);
+		break;
+	case 3:
+		QuickItem3->SetIdx(Idx);
+		break;
+	case 4:
+		QuickItem4->SetIdx(Idx);
+		break;
+	case 5:
+		QuickItem5->SetIdx(Idx);
+		break;
+	default:
+		break;
+	}
+}
+
+void UWidget_PlayerMain::SetQuickId()
+{
+	QuickItem->QuickId = 1;
+	QuickItem2->QuickId = 2;
+	QuickItem3->QuickId = 3;
+	QuickItem4->QuickId = 4;
+	QuickItem5->QuickId = 5;
+}
+

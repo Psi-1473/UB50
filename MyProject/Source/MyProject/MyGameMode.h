@@ -29,6 +29,7 @@ public:
 	void ESkillUpdate(int Value);
 
 	void UsePotion(int KeyNumber);
+	void ChangeQuickIndex(int KeyNumber, int ChangedIndex);
 
 	UPROPERTY(VisibleAnywhere)
 	TSubclassOf<UUserWidget> HUD_Class;

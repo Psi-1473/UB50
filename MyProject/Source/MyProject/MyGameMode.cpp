@@ -36,6 +36,9 @@ void AMyGameMode::BeginPlay()
 	UseGInstance
 	GInstance->QuestManager->ClearNpc();
 	UE_LOG(LogTemp, Warning, TEXT("GameMode Begin!"));
+	UWidget_PlayerMain* Hud = Cast<UWidget_PlayerMain>(CurrentWidget);
+
+	Hud->SetQuickId();
 
 }
 
@@ -76,5 +79,12 @@ void AMyGameMode::UsePotion(int KeyNumber)
 	UWidget_PlayerMain* Hud = Cast<UWidget_PlayerMain>(CurrentWidget);
 
 	Hud->ClickQuickSlot(KeyNumber);
+}
+
+void AMyGameMode::ChangeQuickIndex(int KeyNumber, int ChangedIndex)
+{
+	UWidget_PlayerMain* Hud = Cast<UWidget_PlayerMain>(CurrentWidget);
+
+	Hud->ChangeQuickIndex(KeyNumber, ChangedIndex);
 }
 
