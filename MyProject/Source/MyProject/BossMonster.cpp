@@ -293,6 +293,7 @@ void ABossMonster::Skill2Fire()
 void ABossMonster::Skill3Targeting()
 {
 	Skill3Transform.Empty();
+	FVector TargetPlace = AttackTarget->GetActorLocation();
 
 	UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetNavigationSystem(GetWorld());
 
