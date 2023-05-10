@@ -20,6 +20,8 @@
 #include "GameFrameWork/Actor.h"
 #include "MyPlayerController.h"
 #include "GameFrameWork/CharacterMovementComponent.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"
 
 // Sets default values
 AMyPlayer::AMyPlayer()
@@ -47,7 +49,11 @@ AMyPlayer::AMyPlayer()
 	{
 		GetMesh()->SetSkeletalMesh(SM.Object);
 	}
-
+	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> PARTICLE(TEXT("NiagaraSystem'/Game/BlinkAndDashVFX/VFX_Niagara/NS_Curse_Blink.NS_Curse_Blink'"));
+	if (PARTICLE.Succeeded())
+	{
+		SkillREmitter = PARTICLE.Object;
+	}
 	Stat = CreateDefaultSubobject<UPlayerStatComponent>(TEXT("STAT"));
 	GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 
@@ -62,8 +68,9 @@ void AMyPlayer::BeginPlay()
 	{
 		GameMode->UIUpdate_Hp(Stat->GetHpRatio());
 	}
-
+	SpawnSpot = GetActorLocation();
 	UseGInstance
+	
 	//GInstance->SceneManager->LoadPlayerData(this); 나중에 HP 연동
 }
 
@@ -164,13 +171,16 @@ void AMyPlayer::AttackCheck()
 }
 float AMyPlayer::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	//Stat->OnAttacked(Damage);
-	//OnDamaged();
-	//SetState(DAMAGED);
-	//if (GameMode)
-	//{
-	//	GameMode->UIUpdate_Hp(Stat->GetHpRatio());
-	//}
+	if (GetState() == DIED)
+		return 0;
+
+	Stat->OnAttacked(Damage);
+	OnDamaged();
+	SetState(DAMAGED);
+	if (GameMode)
+	{
+		GameMode->UIUpdate_Hp(Stat->GetHpRatio());
+	}
 	return Damage;
 }
 
@@ -212,6 +222,8 @@ void AMyPlayer::SkillRAttackCheck()
 	float AttackY = 100.f;
 	float AttackZ = 200.f;
 
+	FVector Dir = GetActorForwardVector() * 100;
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), SkillREmitter, GetActorLocation() + Dir, GetActorRotation());
 	TArray<FHitResult> HitResults = BoxHitResults(AttackX, AttackY, AttackZ, false);
 
 	if (!HitResults.IsEmpty())
@@ -364,6 +376,13 @@ void AMyPlayer::CoolDownE()
 
 void AMyPlayer::OnDamaged()
 {
+	if (Stat->GetHp() <= 0)
+	{
+		SetState(DIED);
+		AnimInst->PlayDeathMontage();	
+		return;
+	}
+
 	SetState(DAMAGED);
 	bCombo = false;
 	AttackIndex = 0;
@@ -376,6 +395,12 @@ void AMyPlayer::Recovery(int NumberToIncrease)
 	Stat->SetHp(Stat->GetHp() + NumberToIncrease);
 	if (GameMode)
 		GameMode->UIUpdate_Hp(Stat->GetHpRatio());
+}
+
+void AMyPlayer::Respawn()
+{
+	SetActorLocation(SpawnSpot);
+	SetState(IDLE);
 }
 
 void AMyPlayer::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)

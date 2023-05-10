@@ -10,6 +10,7 @@ UMyAnimInstance::UMyAnimInstance()
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> DM(TEXT("AnimMontage'/Game/Blueprints/Animations/AM_Damaged.AM_Damaged'"));
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> SM(TEXT("AnimMontage'/Game/Blueprints/Animations/AM_Skill.AM_Skill'"));
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> LM(TEXT("AnimMontage'/Game/Blueprints/Animations/AM_Loot.AM_Loot'"));
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> DeathM(TEXT("AnimMontage'/Game/Blueprints/Animations/AM_Die.AM_Die'"));
 	if (AM.Succeeded())
 		AttackMontage = AM.Object;
 
@@ -21,6 +22,9 @@ UMyAnimInstance::UMyAnimInstance()
 
 	if (LM.Succeeded())
 		LootMontage = LM.Object;
+	
+	if (DeathM.Succeeded())
+		DeathMontage = DeathM.Object;
 }
 
 void UMyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -72,6 +76,14 @@ void UMyAnimInstance::PlayDamagedMontage()
 	if (!Montage_IsPlaying(DamagedMontage))
 	{
 		Montage_Play(DamagedMontage, 1.f);
+	}
+}
+
+void UMyAnimInstance::PlayDeathMontage()
+{
+	if (!Montage_IsPlaying(DeathMontage))
+	{
+		Montage_Play(DeathMontage, 1.f);
 	}
 }
 
@@ -164,6 +176,12 @@ void UMyAnimInstance::AnimNotify_LootEnded()
 	MyCharacter->SetState(IDLE);
 
 	MyCharacter->GetInteractObj()->EndInteract();
+}
+
+void UMyAnimInstance::AnimNotify_Respawn()
+{
+	auto MyCharacter = Cast<AMyPlayer>(TryGetPawnOwner());
+	MyCharacter->Respawn();
 }
 
 FName UMyAnimInstance::GetAttackMontageName(int32 SectionIndex)

@@ -57,6 +57,7 @@ private:
 	void OnDamaged();
 public:
 	void Recovery(int NumberToIncrease);
+	void Respawn();
 
 public:
 	void OpenUI(UIType MyUIType);
@@ -143,6 +144,9 @@ private:
 private:
 	TArray<int32> SkillCoolTimes;
 
+	UPROPERTY(EditAnywhere)
+	class UNiagaraSystem* SkillREmitter;
+
 public:
 
 	UPROPERTY()
@@ -160,5 +164,7 @@ private:
 	IInteractable* InteractObj;
 
 	STATE PlayerState;
+
+	FVector SpawnSpot;
 };
 

@@ -22,6 +22,7 @@ public:
 	void PlayAttackMontage();
 	void PlayLootMontage();
 	void PlayDamagedMontage();
+	void PlayDeathMontage();
 	void PlaySkillMontage(int32 SectionIndex);
 	void JumpToSection(int32 SectionIndex);
 	void JumpToSkillSection(int32 SectionIndex);
@@ -53,6 +54,9 @@ public:
 	UFUNCTION()
 	void AnimNotify_LootEnded();
 
+	UFUNCTION()
+	void AnimNotify_Respawn();
+
 	FName GetAttackMontageName(int32 SectionIndex);
 	FName GetSkillMontageName(int32 SectionIndex);
 
@@ -75,6 +79,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
 	UAnimMontage* DamagedMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
+	UAnimMontage* DeathMontage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
 	UAnimMontage* SkillMontage;

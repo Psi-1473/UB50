@@ -94,6 +94,12 @@ void ASpawnMonster::UpdatePatrol()
 	SetActorRotation(Rot);
 	AddMovementInput(MoveDir);
 
+	if (AttackTarget->GetState() == DIED)
+	{
+		SetState(IDLE);
+		return;
+	}
+
 	if (GetDistanceTo(AttackTarget) < 500)
 		SetState(MOVING);
 
@@ -109,7 +115,7 @@ void ASpawnMonster::UpdateMoving()
 	SetActorRotation(Rot);
 	AddMovementInput(MoveDir);
 
-	if (GetDistanceTo(AttackTarget) > 1000)
+	if (GetDistanceTo(AttackTarget) > 1000 || AttackTarget->GetState() == DIED)
 		SetState(IDLE);
 
 	if (GetDistanceTo(AttackTarget) < 170)
@@ -118,6 +124,11 @@ void ASpawnMonster::UpdateMoving()
 
 void ASpawnMonster::UpdateAttack()
 {
+	if (AttackTarget->GetState() == DIED)
+	{
+		SetState(IDLE);
+		return;
+	}
 	SetState(ATTACK);
 	GetWorldTimerManager().SetTimer(AttackTimerHandle, this, &ASpawnMonster::AttackStart, 0.3f, true);
 	
@@ -125,6 +136,11 @@ void ASpawnMonster::UpdateAttack()
 
 void ASpawnMonster::AttackStart()
 {
+	if (AttackTarget->GetState() == DIED)
+	{
+		SetState(IDLE);
+		return;
+	}
 	Attack(AttackTarget);
 	GetWorldTimerManager().ClearTimer(AttackTimerHandle);
 }
