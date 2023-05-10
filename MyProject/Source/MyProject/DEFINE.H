@@ -52,8 +52,10 @@ enum class UIType : uint8
 	QUEST = 4 UMETA(DisplayName = "Quest"),
 	PLAYERQUEST = 5 UMETA(DisplayName = "PlayerQuest"),
 	INVESTIGATION = 6 UMETA(DisplayName = "Investigation"),
+	BOSSHP = 6 UMETA(DisplayName = "BossHp"),
 
-	ALL
+	ALL,
+	END
 };
 const enum BossCoolTime
 {

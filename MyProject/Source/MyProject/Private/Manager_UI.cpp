@@ -14,8 +14,8 @@
 
 UManager_UI::UManager_UI()
 {
-	WidgetAssets.Init(nullptr, WIDGETCOUNT);
-	Widgets.Init(nullptr, WIDGETCOUNT);
+	WidgetAssets.Init(nullptr, (int)UIType::END);
+	Widgets.Init(nullptr, (int)UIType::END);
 	static ConstructorHelpers::FClassFinder<UUserWidget> INVEN(TEXT("WidgetBlueprint'/Game/UI/WBP_Inventory.WBP_Inventory_C'"));
 	static ConstructorHelpers::FClassFinder<UUserWidget> CONV(TEXT("WidgetBlueprint'/Game/UI/WBP_Conversation.WBP_Conversation_C'"));
 	static ConstructorHelpers::FClassFinder<UUserWidget> SHOP(TEXT("WidgetBlueprint'/Game/UI/WBP_Shop.WBP_Shop_C'"));
@@ -23,6 +23,7 @@ UManager_UI::UManager_UI()
 	static ConstructorHelpers::FClassFinder<UUserWidget> YESNO(TEXT("WidgetBlueprint'/Game/UI/WBP_YesOrNo.WBP_YesOrNo_C'"));
 	static ConstructorHelpers::FClassFinder<UUserWidget> PLAYERQUEST(TEXT("WidgetBlueprint'/Game/UI/WBP_PlayerQuest.WBP_PlayerQuest_C'"));
 	static ConstructorHelpers::FClassFinder<UUserWidget> INVEST(TEXT("WidgetBlueprint'/Game/UI/WBP_Investigation.WBP_Investigation_C'"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> BOSS(TEXT("WidgetBlueprint'/Game/UI/WBP_BossHp.WBP_BossHp_C'"));
 
 	if (INVEN.Succeeded())
 		WidgetAssets[(int)UIType::INVENTORY] = INVEN.Class;
@@ -44,6 +45,9 @@ UManager_UI::UManager_UI()
 
 	if (INVEST.Succeeded())
 		WidgetAssets[(int)UIType::INVESTIGATION] = INVEST.Class;
+
+	if (BOSS.Succeeded())
+		WidgetAssets[(int)UIType::BOSSHP] = BOSS.Class;
 }
 
 void UManager_UI::UpdateInventory(int NextSlot)

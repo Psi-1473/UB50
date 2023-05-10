@@ -41,6 +41,9 @@ public:
 	void AnimNotify_Skill2Fire();
 
 	UFUNCTION()
+	void AnimNotify_Skill3Targeting();
+
+	UFUNCTION()
 	void AnimNotify_Skill3Fire();
 
 	UFUNCTION()

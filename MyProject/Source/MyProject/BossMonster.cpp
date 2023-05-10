@@ -13,6 +13,9 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
+#include "MyGameInstance.h"
+#include "Manager_UI.h"
+#include "Widget_Hp.h"
 
 
 
@@ -62,7 +65,7 @@ void ABossMonster::PostInitializeComponents()
 	Stat->SetMonster(TEXT("Sevarog"));
 	AnimInst = Cast<UBossAnimInstance>(GetMesh()->GetAnimInstance());
 
-
+	
 }
 
 void ABossMonster::BeginPlay()
@@ -70,6 +73,13 @@ void ABossMonster::BeginPlay()
 	Super::BeginPlay();
 	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	auto MyPlayer = Cast<AMyPlayer>(Char);
+
+	UseGInstance
+		UUserWidget* BossWidget = GInstance->UIManager->PopupUI(GetWorld(), UIType::BOSSHP);
+
+	UWidget_Hp* HpWidget = Cast<UWidget_Hp>(BossWidget);
+	HpWidget->BindWidget_Enemy(Stat);
+	
 
 	AttackTarget = MyPlayer;
 }
@@ -282,7 +292,7 @@ void ABossMonster::Skill2Fire()
 
 void ABossMonster::Skill3Targeting()
 {
-	FVector TargetPlace = GetActorLocation();
+	Skill3Transform.Empty();
 
 	UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetNavigationSystem(GetWorld());
 
@@ -290,11 +300,9 @@ void ABossMonster::Skill3Targeting()
 
 	for (int i = 0; i < 5; i++)
 	{
-		NavSystem->GetRandomPointInNavigableRadius(TargetPlace, 1000.f, RandomLocation);
+		NavSystem->GetRandomPointInNavigableRadius(GetActorLocation(), 500.f, RandomLocation);
 		RandomLocation.Location.Z += 50;
 		Skill3Transform.Add(RandomLocation.Location);
-		FTransform Trans(RandomLocation.Location);
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Skill3Emitter, Trans);
 	}
 }
 
@@ -310,19 +318,21 @@ void ABossMonster::Skill3Fire()
 
 	for (int i = 0; i < 5; i++)
 	{
-		FTransform Trans(Skill3Transform.Top());
+		FVector SkillLocation = Skill3Transform.Pop();
+		FTransform Trans(SkillLocation);
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Skill3Emitter, Trans);
+		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Skill go"));
 		bool bResult = GetWorld()->SweepSingleByChannel(
 			OUT HitResult,
-			Skill3Transform.Top(),
-			Skill3Transform.Top() + GetActorForwardVector() * AttackX,
+			SkillLocation,
+			SkillLocation + GetActorForwardVector() * AttackX,
 			FQuat::Identity,
 			ECollisionChannel::ECC_GameTraceChannel6,
 			FCollisionShape::MakeBox(BoxVector),
 			Params);
 
 		FVector Vec = GetActorForwardVector() * AttackX;
-		FVector Center = Skill3Transform[i] + Vec * 0.5f;
+		FVector Center = SkillLocation + Vec * 0.5f;
 		FQuat Rotation = FRotationMatrix::MakeFromZ(Vec).ToQuat();
 		FColor DrawColor;
 
@@ -340,8 +350,7 @@ void ABossMonster::Skill3Fire()
 			////HitPlayer->OnStun(2.f);
 		}
 
-		DrawDebugBox(GetWorld(), Center, BoxVector, Rotation, DrawColor, false, 2.f);
-		Skill3Transform.Pop();
+		DrawDebugBox(GetWorld(), Center, BoxVector, Rotation, DrawColor, false, 2.f);	
 	}
 }
 

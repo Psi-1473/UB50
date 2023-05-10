@@ -39,13 +39,13 @@ private:
 
 	TArray<TSubclassOf<UUserWidget>> WidgetAssets;
 	
-	TSubclassOf<UUserWidget> YesNo;
-	TSubclassOf<UUserWidget> Inventory;
-	TSubclassOf<UUserWidget> Conversation;
-	TSubclassOf<UUserWidget> ShopUi;
-	TSubclassOf<UUserWidget> QuestUi;
-	TSubclassOf<UUserWidget> PlayerQuest;
-	TSubclassOf<UUserWidget> Investigation;
+	//TSubclassOf<UUserWidget> YesNo;
+	//TSubclassOf<UUserWidget> Inventory;
+	//TSubclassOf<UUserWidget> Conversation;
+	//TSubclassOf<UUserWidget> ShopUi;
+	//TSubclassOf<UUserWidget> QuestUi;
+	//TSubclassOf<UUserWidget> PlayerQuest;
+	//TSubclassOf<UUserWidget> Investigation;
 
 	TArray<UUserWidget*> Widgets;
 };
