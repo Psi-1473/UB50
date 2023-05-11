@@ -34,6 +34,11 @@ bool UWidget_CoolSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
 			GInstance->InvenManager->QuickSlot[InvenIndex] = QuickId;
 			SetImage();
 			GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Quick Success"));
+
+			auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+			auto MyPlayer = Cast<AMyPlayer>(Char);
+
+			MyPlayer->PlayEquipSound();
 			return true;
 		}
 		else

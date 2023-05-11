@@ -52,7 +52,13 @@ void UWidget_YesOrNo::ClickYesButton()
 void UWidget_YesOrNo::ClickNoButton()
 {
 	UseGInstance
-	GInstance->UIManager->CloseUI(UIType::YESNO);
+	GInstance->UIManager->CloseUI(UIType::ALL);
+	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	auto MyPlayer = Cast<AMyPlayer>(Char);
+	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);
+	MyPlayer->SetState(IDLE);
+	MyPlayer->CloseCursorInGame();
+	MyPlayer->SetInteracting(false);
 }
 
 void UWidget_YesOrNo::TakeQuest()
@@ -61,13 +67,13 @@ void UWidget_YesOrNo::TakeQuest()
 	GInstance->QuestManager->PlayerTakesQuest(QuestId);
 	GInstance->UIManager->CloseUI(UIType::ALL);
 	GInstance->UIManager->RefreshUI();
-	UE_LOG(LogTemp, Warning, TEXT(" Take Quest! "));
 
 	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	auto MyPlayer = Cast<AMyPlayer>(Char);
 	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);
 	MyPlayer->SetState(IDLE);
 	MyPlayer->CloseCursorInGame();
+	MyPlayer->SetInteracting(false);
 	
 }
 
@@ -83,6 +89,7 @@ void UWidget_YesOrNo::ClearQuest()
 	auto MyPlayer = Cast<AMyPlayer>(Char);
 	MyPlayer->SetState(IDLE);
 	MyPlayer->CloseCursorInGame();
+	MyPlayer->SetInteracting(false);
 }
 
 void UWidget_YesOrNo::ChangeText(FString NewText)

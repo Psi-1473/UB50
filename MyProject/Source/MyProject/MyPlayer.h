@@ -67,7 +67,9 @@ public:
 
 	void StopMoving();
 	void CloseCursorInGame();
-	
+	void PlayUiSound();
+	void PlayQuestClearSound();
+	void PlayEquipSound();
 
 public:
 	void SetNpc(ANpc* NewNpc = nullptr){ CanInteractNpc = NewNpc; }
@@ -171,5 +173,10 @@ private:
 	STATE PlayerState;
 
 	FVector SpawnSpot;
+
+	class USoundCue* UICue;
+	class USoundWave* EquipCue;
+	class USoundCue* QuestClearCue;
+
 };
 

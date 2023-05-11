@@ -123,6 +123,7 @@ UUserWidget* UManager_UI::PopupUI(UWorld* World, UIType MyUIType)
 	PopupUi->AddToViewport();
 	Widgets[(int)MyUIType] = PopupUi;
 	UiNumber++;
+	UE_LOG(LogTemp, Warning, TEXT("Open UI! : %d"), UiNumber);
 	return PopupUi;
 }
 
@@ -154,9 +155,13 @@ void UManager_UI::RemoveUI(int MyUIType)
 	if (Widgets[MyUIType] == nullptr)
 		return;
 
-	UiNumber--;
 	Widgets[MyUIType]->RemoveFromViewport();
 	Widgets[MyUIType] = nullptr;
+	
+	UiNumber--;
+	UE_LOG(LogTemp, Warning, TEXT("Close UI! : %d"), UiNumber);
+	if (UiNumber <= 0)
+		UiNumber = 0;
 	
 }
 

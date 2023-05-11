@@ -23,6 +23,8 @@
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
 #include "PlayerAudioComponent.h"
+#include "Sound/SoundCue.h"
+#include "Sound/SoundWave.h"
 
 
 // Sets default values
@@ -58,6 +60,21 @@ AMyPlayer::AMyPlayer()
 	{
 		SkillREmitter = PARTICLE.Object;
 	}
+
+	static ConstructorHelpers::FObjectFinder<USoundCue> Click(TEXT("SoundCue'/Game/Sound/UI/InvenClick.InvenClick'"));
+	static ConstructorHelpers::FObjectFinder<USoundWave> Equip(TEXT("SoundWave'/Game/Sound/UI/ItemEquip.ItemEquip'"));
+	static ConstructorHelpers::FObjectFinder<USoundCue> QClear(TEXT("SoundCue'/Game/Sound/UI/QuestComplete.QuestComplete'"));
+
+
+	if (Click.Succeeded())
+		UICue = Click.Object;
+	if (Equip.Succeeded())
+		EquipCue = Equip.Object;
+	if (QClear.Succeeded())
+		QuestClearCue = QClear.Object;
+
+
+
 	Stat = CreateDefaultSubobject<UPlayerStatComponent>(TEXT("STAT"));
 	GameMode = Cast<AMyGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 
@@ -425,6 +442,8 @@ void AMyPlayer::OnAttackMontageStarted(UAnimMontage* Montage, bool bInterrupted)
 void AMyPlayer::OpenUI(UIType MyUIType)
 {
 	UseGInstance
+
+	PlayUiSound();
 	GInstance->UIManager->PopupUI(GetWorld(), MyUIType);
 	auto PlayerController = Cast<AMyPlayerController>(GetController());
 	PlayerController->SetInputMode(FInputModeGameAndUI());
@@ -434,6 +453,7 @@ void AMyPlayer::OpenUI(UIType MyUIType)
 void AMyPlayer::CloseUI(UIType MyUIType)
 {
 	UseGInstance
+	PlayUiSound();
 	GInstance->UIManager->CloseUI(MyUIType);
 
 	CloseCursorInGame();
@@ -455,6 +475,22 @@ void AMyPlayer::CloseCursorInGame()
 		PlayerController->SetInputMode(FInputModeGameOnly());
 		PlayerController->bShowMouseCursor = false;
 	}
+}
+
+void AMyPlayer::PlayUiSound()
+{
+	UGameplayStatics::PlaySound2D(this, UICue);
+}
+
+void AMyPlayer::PlayQuestClearSound()
+{
+	UGameplayStatics::PlaySound2D(this, QuestClearCue);
+}
+
+
+void AMyPlayer::PlayEquipSound()
+{
+	UGameplayStatics::PlaySound2D(this, EquipCue);
 }
 
 

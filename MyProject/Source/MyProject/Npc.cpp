@@ -8,6 +8,7 @@
 #include "MyGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "Manager_Quest.h"
+#include "Sound/SoundCue.h"
 
 
 
@@ -64,8 +65,7 @@ ANpc::ANpc()
 
 	InteractBox->SetCollisionObjectType(ECollisionChannel::ECC_EngineTraceChannel2);
 
-
-
+	
 
 	UE_LOG(LogTemp, Warning, TEXT("Npc On"));
 
@@ -168,6 +168,14 @@ void ANpc::AddScriptData(FNpcScriptData Data)
 	}
 
 	ScriptData[Data.QuestId].Scripts.Add(Data);
+}
+
+void ANpc::PlayQuestClearCue()
+{
+	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	auto MyPlayer = Cast<AMyPlayer>(Char);
+
+	MyPlayer->PlayQuestClearSound();
 }
 
 int ANpc::GetTotalItemNum()

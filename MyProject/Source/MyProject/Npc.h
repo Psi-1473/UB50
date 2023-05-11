@@ -48,6 +48,7 @@ public:
 	void AddToCanClearQuest(int QuestId);
 
 	void AddScriptData(FNpcScriptData Data);
+	void PlayQuestClearCue();
 
 	int GetTotalItemNum();
 	int GetItem(int Id);
@@ -106,4 +107,5 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	class UBoxComponent* InteractBox;
+
 };

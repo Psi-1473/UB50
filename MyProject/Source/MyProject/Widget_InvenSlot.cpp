@@ -124,6 +124,11 @@ bool UWidget_InvenSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDro
 			GameMode->ChangeQuickIndex(GInstance->InvenManager->QuickSlot[SlotIndex], SlotIndex);
 
 		GInstance->InvenManager->DraggingSwap(GInstance, DragOper->DragIndex, this->SlotIndex);
+
+		auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+		auto MyPlayer = Cast<AMyPlayer>(Char);
+
+		MyPlayer->PlayEquipSound();
 		return true;
 	}
 	else

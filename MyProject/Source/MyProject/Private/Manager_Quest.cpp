@@ -116,6 +116,7 @@ void UManager_Quest::ClearQuest(int QuestId)
 	ClearedQuests.Add(Quests[QuestId]);
 	StartedQuests.RemoveAt(Idx);
 	GetNpcById(NpcId)->RemoveCanClearQuest(QuestId);
+	GetNpcById(NpcId)->PlayQuestClearCue();
 	GetNpcById(NpcId)->SetQuestMark();
 	Quests[QuestId].Cleared = true;
 	UnlockNextQuest(QuestId);
