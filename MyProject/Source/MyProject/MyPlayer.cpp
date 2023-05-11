@@ -460,6 +460,10 @@ void AMyPlayer::OpenUI(UIType MyUIType)
 	PlayUiSound();
 	GInstance->UIManager->PopupUI(GetWorld(), MyUIType);
 	auto PlayerController = Cast<AMyPlayerController>(GetController());
+
+	if (MyUIType == UIType::INVESTIGATION)
+		return;
+
 	PlayerController->SetInputMode(FInputModeGameAndUI());
 	PlayerController->bShowMouseCursor = true;
 }
@@ -469,7 +473,8 @@ void AMyPlayer::CloseUI(UIType MyUIType)
 	UseGInstance
 	PlayUiSound();
 	GInstance->UIManager->CloseUI(MyUIType);
-
+	if (MyUIType == UIType::INVESTIGATION)
+		return;
 	CloseCursorInGame();
 
 }
