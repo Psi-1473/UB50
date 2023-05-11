@@ -51,5 +51,7 @@ public:
 
 public:
 	FonAttackHit OnAttackHit;
+
+
 	
 };

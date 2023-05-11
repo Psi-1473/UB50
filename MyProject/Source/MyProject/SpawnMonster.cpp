@@ -71,8 +71,8 @@ void ASpawnMonster::Die(AMyPlayer* Player)
 
 void ASpawnMonster::OnStun(float Tick)
 {
-	Super::OnStun(Tick);
 	AnimInst->StopAllMontages(0.f);
+	Super::OnStun(Tick);
 }
 
 void ASpawnMonster::UpdateIdle()

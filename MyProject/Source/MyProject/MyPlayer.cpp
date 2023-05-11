@@ -32,6 +32,7 @@ AMyPlayer::AMyPlayer()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	AudioPlayer = CreateDefaultSubobject<UPlayerAudioComponent>(TEXT("AudioPlayer"));
@@ -195,7 +196,7 @@ float AMyPlayer::TakeDamage(float Damage, FDamageEvent const& DamageEvent, ACont
 
 	Stat->OnAttacked(Damage);
 	OnDamaged();
-	SetState(DAMAGED);
+
 	if (GameMode)
 	{
 		GameMode->UIUpdate_Hp(Stat->GetHpRatio());
@@ -262,9 +263,9 @@ void AMyPlayer::SkillRAttackCheck()
 
 void AMyPlayer::SkillEAttackCheck()
 {
-	float AttackX = 1000.f;
-	float AttackY = 1000.f;
-	float AttackZ = 1000.f;
+	float AttackX = 200.f;
+	float AttackY = 200.f;
+	float AttackZ = 200.f;
 
 	TArray<FHitResult> HitResults = BoxHitResults(AttackX, AttackY, AttackZ, true);
 	if (!HitResults.IsEmpty())
@@ -276,7 +277,18 @@ void AMyPlayer::SkillEAttackCheck()
 			FDamageEvent DamageEvent;
 			if (Enemy == nullptr)
 				return;
-			Enemy->OnStun(2.f);
+			if (SkillRCombo >= 3)
+			{
+				Enemy->OnStun(1.5f);
+				SkillRCombo = 0;
+			}
+			else
+			{
+				Enemy->TakeDamage(5, DamageEvent, GetController(), this);
+				SkillRCombo++;
+			}
+
+
 		}
 	}
 }
@@ -402,10 +414,12 @@ void AMyPlayer::OnDamaged()
 		return;
 	}
 
+	if (GetState() == SKILL)
+		return;
+
 	SetState(DAMAGED);
 	bCombo = false;
 	AttackIndex = 0;
-
 	AnimInst->PlayDamagedMontage();
 }
 

@@ -27,13 +27,8 @@ void UEnemyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	Super::NativeUpdateAnimation(DeltaSeconds);
 
 	auto pawn = TryGetPawnOwner();
-
-	if (IsValid(pawn))
-	{
-		Speed = pawn->GetVelocity().Size();
-	}
-
 	auto Character = Cast<AMonster>(pawn);
+
 	if (Character)
 	{
 		if (Character->GetState() == STUNED)
@@ -41,6 +36,14 @@ void UEnemyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		else
 			bStuned = false;
 	}
+
+	if (IsValid(pawn))
+	{
+		Speed = pawn->GetVelocity().Size();
+	}
+
+	
+	
 }
 
 void UEnemyAnimInstance::PlayAttackMontage()
@@ -55,6 +58,7 @@ void UEnemyAnimInstance::PlayDamagedMontage()
 {
 	if (Montage_IsPlaying(AttackMontage))
 		StopAllMontages(0.f);
+
 	Montage_Play(DamagedMontage, 1.f);
 }
 

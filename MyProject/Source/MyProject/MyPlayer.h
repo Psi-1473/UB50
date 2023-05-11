@@ -115,6 +115,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	bool bCombo = false;
 
+	UPROPERTY()
+	int SkillRCombo = 0;
+
 	UPROPERTY(EditAnywhere)
 	int32 AttackIndex = 0;
 
