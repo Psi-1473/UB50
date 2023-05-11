@@ -22,6 +22,8 @@
 #include "GameFrameWork/CharacterMovementComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
+#include "PlayerAudioComponent.h"
+
 
 // Sets default values
 AMyPlayer::AMyPlayer()
@@ -30,8 +32,10 @@ AMyPlayer::AMyPlayer()
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	AudioPlayer = CreateDefaultSubobject<UPlayerAudioComponent>(TEXT("AudioPlayer"));
 
 	SpringArm->SetupAttachment(GetCapsuleComponent());
+	AudioPlayer->SetupAttachment(GetCapsuleComponent());
 	Camera->SetupAttachment(SpringArm);
 
 
@@ -70,8 +74,6 @@ void AMyPlayer::BeginPlay()
 	}
 	SpawnSpot = GetActorLocation();
 	UseGInstance
-	
-	//GInstance->SceneManager->LoadPlayerData(this); 나중에 HP 연동
 }
 
 void AMyPlayer::PostInitializeComponents()
@@ -403,6 +405,11 @@ void AMyPlayer::Respawn()
 	SetState(IDLE);
 }
 
+void AMyPlayer::PlaySound(int Number)
+{
+	AudioPlayer->PlaySound(Number);
+}
+
 void AMyPlayer::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 {
 	//IsAttacking = false;
@@ -419,15 +426,18 @@ void AMyPlayer::OpenUI(UIType MyUIType)
 {
 	UseGInstance
 	GInstance->UIManager->PopupUI(GetWorld(), MyUIType);
-	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
+	auto PlayerController = Cast<AMyPlayerController>(GetController());
+	PlayerController->SetInputMode(FInputModeGameAndUI());
+	PlayerController->bShowMouseCursor = true;
 }
 
 void AMyPlayer::CloseUI(UIType MyUIType)
 {
 	UseGInstance
 	GInstance->UIManager->CloseUI(MyUIType);
-	
-	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);
+
+	CloseCursorInGame();
+
 }
 
 
@@ -435,4 +445,17 @@ void AMyPlayer::StopMoving()
 {
 	GetCharacterMovement()->StopMovementImmediately();
 }
+
+void AMyPlayer::CloseCursorInGame()
+{
+	UseGInstance
+	if (GInstance->UIManager->GetUiNumber() <= 0)
+	{
+		auto PlayerController = Cast<AMyPlayerController>(GetController());
+		PlayerController->SetInputMode(FInputModeGameOnly());
+		PlayerController->bShowMouseCursor = false;
+	}
+}
+
+
 

@@ -33,19 +33,14 @@ private:
 
 public:
 	UUserWidget* GetInven() { return Widgets[(int)UIType::INVENTORY]; }
+	int GetUiNumber() { return UiNumber; }
 
 private:
 	int InvenNum = -1;
 
 	TArray<TSubclassOf<UUserWidget>> WidgetAssets;
 	
-	//TSubclassOf<UUserWidget> YesNo;
-	//TSubclassOf<UUserWidget> Inventory;
-	//TSubclassOf<UUserWidget> Conversation;
-	//TSubclassOf<UUserWidget> ShopUi;
-	//TSubclassOf<UUserWidget> QuestUi;
-	//TSubclassOf<UUserWidget> PlayerQuest;
-	//TSubclassOf<UUserWidget> Investigation;
+	int UiNumber = 0;
 
 	TArray<UUserWidget*> Widgets;
 };

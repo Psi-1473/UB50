@@ -20,6 +20,23 @@ const int PLAYERSKILL_E = 2;
 
 const int INVENTORYNUMBER = 24;
 
+const enum UISound
+{
+	CLICKSOUND,
+	QUESTCLEARSOUND,
+};
+const enum PlayerSound
+{
+	FOOT,
+	WEAPONSOUND,
+	SKILLSOUNDQ,
+	SKILLSOUNDE,
+	SKILLSOUNDR,
+	DAMAGEDSOUND,
+
+	SOUNDEND,
+};
+
 const enum PlayerItemType
 {
 	WEAPON = 0,

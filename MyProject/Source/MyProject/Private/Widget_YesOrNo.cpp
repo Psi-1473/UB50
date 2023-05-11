@@ -67,6 +67,7 @@ void UWidget_YesOrNo::TakeQuest()
 	auto MyPlayer = Cast<AMyPlayer>(Char);
 	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);
 	MyPlayer->SetState(IDLE);
+	MyPlayer->CloseCursorInGame();
 	
 }
 
@@ -81,6 +82,7 @@ void UWidget_YesOrNo::ClearQuest()
 	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);
 	auto MyPlayer = Cast<AMyPlayer>(Char);
 	MyPlayer->SetState(IDLE);
+	MyPlayer->CloseCursorInGame();
 }
 
 void UWidget_YesOrNo::ChangeText(FString NewText)

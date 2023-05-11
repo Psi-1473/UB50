@@ -59,12 +59,14 @@ public:
 	void Recovery(int NumberToIncrease);
 	void Respawn();
 
+	void PlaySound(int Number);
+
 public:
 	void OpenUI(UIType MyUIType);
 	void CloseUI(UIType MyUIType);
 
 	void StopMoving();
-
+	void CloseCursorInGame();
 	
 
 public:
@@ -129,6 +131,9 @@ private:
 
 	UPROPERTY()
 	class AMyGameMode* GameMode;
+
+	UPROPERTY()
+	class UPlayerAudioComponent* AudioPlayer;
 
 	UPROPERTY()
 	bool bOnQuest = false; //임시 나중에 UI 매니저에서 관리

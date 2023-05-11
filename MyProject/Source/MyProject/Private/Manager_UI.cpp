@@ -122,6 +122,7 @@ UUserWidget* UManager_UI::PopupUI(UWorld* World, UIType MyUIType)
 	PopupUi = CreateWidget(World, WidgetAssets[(int)MyUIType]);
 	PopupUi->AddToViewport();
 	Widgets[(int)MyUIType] = PopupUi;
+	UiNumber++;
 	return PopupUi;
 }
 
@@ -153,13 +154,15 @@ void UManager_UI::RemoveUI(int MyUIType)
 	if (Widgets[MyUIType] == nullptr)
 		return;
 
+	UiNumber--;
 	Widgets[MyUIType]->RemoveFromViewport();
 	Widgets[MyUIType] = nullptr;
+	
 }
 
 void UManager_UI::RemoveAllUi()
 {
-	for (int i = 0; i < WIDGETCOUNT; i++)
+	for (int i = 0; i < (int)UIType::ALL; i++)
 	{
 		if(Widgets[i] == nullptr)
 			continue;
