@@ -15,6 +15,8 @@ class MYPROJECT_API UManager_UI
 public:
 	UManager_UI();
 
+	void Init();
+
 	UUserWidget* PopupUI(UWorld* World, UIType MyUIType);
 	void CloseUI(UIType MyUIType);
 	void RefreshUI(); // 나중에 타입 추가하기

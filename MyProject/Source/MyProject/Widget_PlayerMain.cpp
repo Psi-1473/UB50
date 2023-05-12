@@ -7,6 +7,7 @@
 #include "Components/TextBlock.h"
 #include "Components/Image.h"
 #include "Widget_CoolSlot.h"
+#include "DEFINE.H"
 
 
 void UWidget_PlayerMain::UpdateHp(float Percentage)
@@ -20,7 +21,7 @@ void UWidget_PlayerMain::ChangeQText(int Value)
 	if (Value == 0)
 	{
 		strText = FString::Printf(TEXT(""));
-		SetImageAlpha(0, false);
+		SetImageAlpha(PLAYERSKILL_R, false);
 	}
 	else
 		strText = FString::Printf(TEXT("%d"), Value);
@@ -35,7 +36,7 @@ void UWidget_PlayerMain::ChangeRText(int Value)
 	if (Value == 0)
 	{
 		strText = FString::Printf(TEXT(""));
-		SetImageAlpha(1, false);
+		SetImageAlpha(PLAYERSKILL_Q, false);
 	}
 	else
 		strText = FString::Printf(TEXT("%d"), Value);
@@ -47,7 +48,10 @@ void UWidget_PlayerMain::ChangeEText(int Value)
 {
 	FString strText;
 	if (Value == 0)
+	{
 		strText = FString::Printf(TEXT(""));
+		SetImageAlpha(PLAYERSKILL_E, false);
+	}
 	else
 		strText = FString::Printf(TEXT("%d"), Value);
 

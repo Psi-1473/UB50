@@ -17,9 +17,13 @@ UBossAnimInstance::UBossAnimInstance()
 		DamagedMontage = DM.Object;
 
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> Death(TEXT("AnimMontage'/Game/Blueprints/Animations/Enemy/AM_BossDie.AM_BossDie'"));
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> Start(TEXT("AnimMontage'/Game/Blueprints/Animations/Enemy/AM_BossStart.AM_BossStart'"));
 
 	if (AM.Succeeded())
 		DeathMontage = Death.Object;
+
+	if (Start.Succeeded())
+		StartMontage = Start.Object;
 }
 
 void UBossAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -53,6 +57,14 @@ void UBossAnimInstance::PlayDeathMontage()
 	if (!Montage_IsPlaying(DeathMontage))
 	{
 		Montage_Play(DeathMontage, 1.f);
+	}
+}
+
+void UBossAnimInstance::PlayStartMontage()
+{
+	if (!Montage_IsPlaying(StartMontage))
+	{
+		Montage_Play(StartMontage, 1.f);
 	}
 }
 

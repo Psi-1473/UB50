@@ -141,7 +141,7 @@
       "NpcId": 3,
       "CompleteNpcId": 3,
       "Type": "Investigation",
-      "Name": "강력한 적의 흔적 찾기",
+      "Name": "적의 흔적 찾기",
       "Sub": "흔적을 찾아라",
       "ConditionSub": "퀘스트9",
       "Gold": 500,
@@ -168,7 +168,7 @@
       "TargetId": 2,
       "TargetNum": 1,
       "NowNum": 0,
-      "Next": 9
+      "Next": -1
     }
 
   ]

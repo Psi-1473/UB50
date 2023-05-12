@@ -34,6 +34,7 @@ void AMyGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 	UseGInstance
+		GInstance->UIManager->Init();
 	GInstance->QuestManager->ClearNpc();
 	UE_LOG(LogTemp, Warning, TEXT("GameMode Begin!"));
 	UWidget_PlayerMain* Hud = Cast<UWidget_PlayerMain>(CurrentWidget);
@@ -71,7 +72,7 @@ void AMyGameMode::ESkillUpdate(int Value)
 	UWidget_PlayerMain* Hud = Cast<UWidget_PlayerMain>(CurrentWidget);
 
 	Hud->SetImageAlpha(2, true);
-	Hud->ChangeRText(Value);
+	Hud->ChangeEText(Value);
 }
 
 void AMyGameMode::UsePotion(int KeyNumber)

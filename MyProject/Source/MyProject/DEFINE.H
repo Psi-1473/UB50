@@ -46,6 +46,7 @@ const enum PlayerItemType
 
 const enum STATE
 {
+	START,
 	IDLE,
 	PATROL,
 	MOVING,
@@ -70,6 +71,7 @@ enum class UIType : uint8
 	PLAYERQUEST = 5 UMETA(DisplayName = "PlayerQuest"),
 	INVESTIGATION = 6 UMETA(DisplayName = "Investigation"),
 	BOSSHP = 7 UMETA(DisplayName = "BossHp"),
+	LOADING = 8 UMETA(DisplayName = "Loading"),
 
 	ALL,
 	END

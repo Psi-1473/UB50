@@ -90,6 +90,8 @@ void AMyPlayer::BeginPlay()
 	{
 		GameMode->UIUpdate_Hp(Stat->GetHpRatio());
 	}
+	auto PlayerController = Cast<AMyPlayerController>(GetController());
+	PlayerController->SetInputMode(FInputModeGameOnly());
 	SpawnSpot = GetActorLocation();
 	UseGInstance
 }
@@ -347,7 +349,7 @@ void AMyPlayer::StartCoolDown(int Type)
 		GetWorldTimerManager().SetTimer(QTimerHandle, this, &AMyPlayer::CoolDownQ, 1.f, true);
 		break;
 	case PLAYERSKILL_E:
-		SkillCoolTimes[PLAYERSKILL_E] = 6;
+		SkillCoolTimes[PLAYERSKILL_E] = 11;
 		GetWorldTimerManager().SetTimer(ETimerHandle, this, &AMyPlayer::CoolDownE, 1.f, true);
 		break;
 	}
@@ -473,9 +475,9 @@ void AMyPlayer::CloseUI(UIType MyUIType)
 	UseGInstance
 	PlayUiSound();
 	GInstance->UIManager->CloseUI(MyUIType);
-	if (MyUIType == UIType::INVESTIGATION)
-		return;
-	CloseCursorInGame();
+
+	if (MyUIType != UIType::INVESTIGATION)
+		CloseCursorInGame();
 
 }
 

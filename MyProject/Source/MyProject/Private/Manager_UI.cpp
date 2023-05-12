@@ -15,7 +15,7 @@
 UManager_UI::UManager_UI()
 {
 	WidgetAssets.Init(nullptr, (int)UIType::END);
-	Widgets.Init(nullptr, (int)UIType::END);
+	
 	static ConstructorHelpers::FClassFinder<UUserWidget> INVEN(TEXT("WidgetBlueprint'/Game/UI/WBP_Inventory.WBP_Inventory_C'"));
 	static ConstructorHelpers::FClassFinder<UUserWidget> CONV(TEXT("WidgetBlueprint'/Game/UI/WBP_Conversation.WBP_Conversation_C'"));
 	static ConstructorHelpers::FClassFinder<UUserWidget> SHOP(TEXT("WidgetBlueprint'/Game/UI/WBP_Shop.WBP_Shop_C'"));
@@ -24,6 +24,7 @@ UManager_UI::UManager_UI()
 	static ConstructorHelpers::FClassFinder<UUserWidget> PLAYERQUEST(TEXT("WidgetBlueprint'/Game/UI/WBP_PlayerQuest.WBP_PlayerQuest_C'"));
 	static ConstructorHelpers::FClassFinder<UUserWidget> INVEST(TEXT("WidgetBlueprint'/Game/UI/WBP_Investigation.WBP_Investigation_C'"));
 	static ConstructorHelpers::FClassFinder<UUserWidget> BOSS(TEXT("WidgetBlueprint'/Game/UI/WBP_BossHp.WBP_BossHp_C'"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> LOADING(TEXT("WidgetBlueprint'/Game/UI/WBP_Loading.WBP_Loading_C'"));
 
 	if (INVEN.Succeeded())
 		WidgetAssets[(int)UIType::INVENTORY] = INVEN.Class;
@@ -48,6 +49,15 @@ UManager_UI::UManager_UI()
 
 	if (BOSS.Succeeded())
 		WidgetAssets[(int)UIType::BOSSHP] = BOSS.Class;
+
+	if (LOADING.Succeeded())
+		WidgetAssets[(int)UIType::LOADING] = LOADING.Class;
+}
+
+void UManager_UI::Init()
+{
+	Widgets.Init(nullptr, (int)UIType::END);
+	UiNumber = 0;
 }
 
 void UManager_UI::UpdateInventory(int NextSlot)
@@ -123,7 +133,7 @@ UUserWidget* UManager_UI::PopupUI(UWorld* World, UIType MyUIType)
 	PopupUi->AddToViewport();
 	Widgets[(int)MyUIType] = PopupUi;
 	UiNumber++;
-	UE_LOG(LogTemp, Warning, TEXT("Open UI! : %d"), UiNumber);
+
 	return PopupUi;
 }
 
@@ -159,7 +169,7 @@ void UManager_UI::RemoveUI(int MyUIType)
 	Widgets[MyUIType] = nullptr;
 	
 	UiNumber--;
-	UE_LOG(LogTemp, Warning, TEXT("Close UI! : %d"), UiNumber);
+
 	if (UiNumber <= 0)
 		UiNumber = 0;
 	

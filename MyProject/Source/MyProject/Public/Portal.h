@@ -31,6 +31,7 @@ protected:
 public:
 	virtual void Interact(class AMyPlayer* Player) override;
 	virtual void EndInteract() override {};
+	void PopupLoadingUI();
 	void MoveToOtherLevel();
 
 private:
@@ -42,4 +43,8 @@ private:
 
 	UPROPERTY()
 	class AMyPlayer* PlayerInfo;
+
+	UPROPERTY()
+	FTimerHandle NextLevelTimer;
+	
 };

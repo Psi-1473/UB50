@@ -8,6 +8,8 @@
 #include "Manager_Scene.h"
 #include "../MyGameInstance.h"
 #include "Kismet/GameplayStatics.h"
+#include "Manager_UI.h"
+
 
 // Sets default values
 APortal::APortal()
@@ -59,18 +61,23 @@ void APortal::NotifyActorEndOverlap(AActor* OtherActor)
 
 void APortal::Interact(AMyPlayer* Player)
 {
-	MoveToOtherLevel();
+	PopupLoadingUI();
 }
 
-void APortal::MoveToOtherLevel()
+void APortal::PopupLoadingUI()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Move Level"));
-
 	if (PlayerInfo == nullptr)
 		return;
 
 	UseGInstance
-	//GInstance->SceneManager->SavePlayerData(PlayerInfo);
+	GInstance->UIManager->PopupUI(GetWorld(), UIType::LOADING);
+
+	GetWorldTimerManager().SetTimer(NextLevelTimer, this, &APortal::MoveToOtherLevel, 2.f, true);
+}
+
+void APortal::MoveToOtherLevel()
+{
 	UGameplayStatics::OpenLevel(this, TransferLevelName);
 }
+
 

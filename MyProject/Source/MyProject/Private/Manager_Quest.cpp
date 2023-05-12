@@ -118,9 +118,19 @@ void UManager_Quest::ClearQuest(int QuestId)
 	GetNpcById(NpcId)->RemoveCanClearQuest(QuestId);
 	GetNpcById(NpcId)->PlayQuestClearCue();
 	GetNpcById(NpcId)->SetQuestMark();
-	Quests[QuestId].Cleared = true;
+
+	for (int i = 0; i < QuestsByNpcId[NpcId].NpcQuestList.Num(); i++)
+	{
+		if (QuestId == QuestsByNpcId[NpcId].NpcQuestList[i].Id)
+			QuestsByNpcId[NpcId].NpcQuestList[i].Cleared = true;
+
+	}
 	UnlockNextQuest(QuestId);
-	UE_LOG(LogTemp, Warning, TEXT(" StartedQuest Num : %d"), StartedQuests.Num());
+	
+	if (QuestId == 9)
+	{
+		// 게임 종료 UI
+	}
 }
 
 void UManager_Quest::UnlockNextQuest(int QuestId)

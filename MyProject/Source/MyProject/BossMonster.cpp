@@ -71,12 +71,14 @@ void ABossMonster::PostInitializeComponents()
 void ABossMonster::BeginPlay()
 {
 	Super::BeginPlay();
+	SetState(START);
 	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	auto MyPlayer = Cast<AMyPlayer>(Char);
 
 	UseGInstance
-		UUserWidget* BossWidget = GInstance->UIManager->PopupUI(GetWorld(), UIType::BOSSHP);
+	UUserWidget* BossWidget = GInstance->UIManager->PopupUI(GetWorld(), UIType::BOSSHP);
 
+	AnimInst->PlayStartMontage();
 	UWidget_Hp* HpWidget = Cast<UWidget_Hp>(BossWidget);
 	HpWidget->BindWidget_Enemy(Stat);
 	
