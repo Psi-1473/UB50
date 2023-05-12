@@ -26,6 +26,9 @@ public:
 	void ClickQuickSlot(int Number);
 	void ChangeQuickIndex(int Number, int Idx);
 	void SetQuickId();
+	void SaveQuickSlot();
+	void LoadQuickSlot();
+
 private:
 
 	// 텍스트 이름 확인

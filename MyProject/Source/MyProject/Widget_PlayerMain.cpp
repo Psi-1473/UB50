@@ -140,3 +140,31 @@ void UWidget_PlayerMain::SetQuickId()
 	QuickItem5->QuickId = 5;
 }
 
+void UWidget_PlayerMain::SaveQuickSlot()
+{
+	UseGInstance
+	GInstance->QuickedId[0] = QuickItem->GetItemId();
+	GInstance->QuickedId[1] = QuickItem2->GetItemId();
+	GInstance->QuickedId[2] = QuickItem3->GetItemId();
+	GInstance->QuickedId[3] = QuickItem4->GetItemId();
+	GInstance->QuickedId[4] = QuickItem5->GetItemId();
+
+}
+
+void UWidget_PlayerMain::LoadQuickSlot()
+{
+	UseGInstance
+
+	QuickItem->SetId(GInstance->QuickedId[0]);
+	QuickItem2->SetId(GInstance->QuickedId[1]);
+	QuickItem3->SetId(GInstance->QuickedId[2]);
+	QuickItem4->SetId(GInstance->QuickedId[3]);
+	QuickItem5->SetId(GInstance->QuickedId[4]);
+
+	if (QuickItem->GetItemId() != -1) QuickItem->SetImage();
+	if (QuickItem2->GetItemId() != -1) QuickItem2->SetImage();
+	if (QuickItem3->GetItemId() != -1) QuickItem3->SetImage();
+	if (QuickItem4->GetItemId() != -1) QuickItem4->SetImage();
+	if (QuickItem5->GetItemId() != -1) QuickItem5->SetImage();
+}
+

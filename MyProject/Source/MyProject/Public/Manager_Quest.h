@@ -56,7 +56,7 @@ public:
 
 	void PlayerTakesQuest(int QuestId);
 	void StartedToClear(int QuestId);
-	void ClearQuest(int QuestId);
+	void ClearQuest(class UMyGameInstance* GInstance, UWorld* World, int QuestId);
 	void UnlockNextQuest(int QuestId);
 
 	void AddQuestTargetNum(FString QType, int TargetId);

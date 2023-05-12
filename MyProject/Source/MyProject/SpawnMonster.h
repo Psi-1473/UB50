@@ -36,6 +36,7 @@ protected:
 	void AttackStart();
 	void SetPatrolPos();
 	bool ArriveToPatrolPos();
+	void SetCanMoveTrue() { bCanMove = true; }
 
 protected:
 	FVector PatrolPosition;

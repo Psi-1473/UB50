@@ -16,6 +16,7 @@ class MYPROJECT_API UWidget_CoolSlot : public UUserWidget
 public:
 	virtual void NativeConstruct() override;
 	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
+	int GetItemId() { return ItemId; }
 
 	void SetId(int Id) { ItemId = Id; }
 	void SetIdx(int Idx) {  InvenIndex = Idx; }

@@ -9,6 +9,7 @@
 #include "../MyGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "Manager_UI.h"
+#include "../MyGameMode.h"
 
 
 // Sets default values
@@ -70,7 +71,10 @@ void APortal::PopupLoadingUI()
 		return;
 
 	UseGInstance
+	UseGameMode
 	GInstance->UIManager->PopupUI(GetWorld(), UIType::LOADING);
+	GameMode->SaveQuick();
+
 
 	GetWorldTimerManager().SetTimer(NextLevelTimer, this, &APortal::MoveToOtherLevel, 2.f, true);
 }

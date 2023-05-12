@@ -5,7 +5,9 @@
 #include "../MyPlayer.h"
 #include "Kismet/GameplayStatics.h"
 #include "Dom/JsonValue.h"
+#include "../MyGameInstance.h"
 #include "InvestigationObj.h"
+#include "Manager_UI.h"
 
 
 UManager_Quest::UManager_Quest()
@@ -106,7 +108,7 @@ void UManager_Quest::StartedToClear(int QuestId)
 
 }
 
-void UManager_Quest::ClearQuest(int QuestId)
+void UManager_Quest::ClearQuest(UMyGameInstance* GInstance, UWorld* World, int QuestId)
 {
 	int Idx = FindQuestIndexById(StartedQuests, QuestId);
 	if (Idx == -1)
@@ -127,10 +129,7 @@ void UManager_Quest::ClearQuest(int QuestId)
 	}
 	UnlockNextQuest(QuestId);
 	
-	if (QuestId == 9)
-	{
-		// 게임 종료 UI
-	}
+
 }
 
 void UManager_Quest::UnlockNextQuest(int QuestId)

@@ -228,4 +228,6 @@ public:
 	class UManager_Scene* SceneManager;
 
 	
+	TArray<int> QuickedId;
+	int PlayerHp;
 };

@@ -54,6 +54,7 @@ void ASpawnMonster::OnDamaged()
 	Super::OnDamaged();
 	HpBar->SetVisibility(true);
 	SetState(DAMAGED);
+	bCanMove = true;
 	AnimInst->PlayDamagedMontage();
 }
 
@@ -84,6 +85,10 @@ void ASpawnMonster::UpdateIdle()
 		SetState(MOVING);
 	else
 	{
+		
+		if (bCanMove == false)
+			return;
+
 		HpBar->SetVisibility(false);
 		SetPatrolPos();
 		Rot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), PatrolPosition);
@@ -94,6 +99,7 @@ void ASpawnMonster::UpdateIdle()
 void ASpawnMonster::UpdatePatrol()
 {
 	FVector MoveDir = PatrolPosition - GetActorLocation();
+	Rot.Pitch = GetActorRotation().Pitch;
 
 	SetActorRotation(Rot);
 	AddMovementInput(MoveDir);
@@ -108,7 +114,11 @@ void ASpawnMonster::UpdatePatrol()
 		SetState(MOVING);
 
 	if (ArriveToPatrolPos())
+	{
 		SetState(IDLE);
+		bCanMove = false;
+		GetWorldTimerManager().SetTimer(AttackTimerHandle, this, &ASpawnMonster::SetCanMoveTrue, 3.f, true);
+	}
 }
 
 void ASpawnMonster::UpdateMoving()
@@ -158,7 +168,7 @@ void ASpawnMonster::SetPatrolPos()
 
 	UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetNavigationSystem(GetWorld());
 
-	NavSystem->GetRandomPointInNavigableRadius(SpawnerLocation, 500.f, RandomLocation);
+	NavSystem->GetRandomPointInNavigableRadius(SpawnerLocation, 700.f, RandomLocation);
 	PatrolPosition = RandomLocation.Location;
 }
 

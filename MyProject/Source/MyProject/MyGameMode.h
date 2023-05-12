@@ -30,6 +30,7 @@ public:
 
 	void UsePotion(int KeyNumber);
 	void ChangeQuickIndex(int KeyNumber, int ChangedIndex);
+	void SaveQuick();
 
 	UPROPERTY(VisibleAnywhere)
 	TSubclassOf<UUserWidget> HUD_Class;

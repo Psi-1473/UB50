@@ -79,17 +79,23 @@ void UWidget_YesOrNo::TakeQuest()
 
 void UWidget_YesOrNo::ClearQuest()
 {
+	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	auto MyPlayer = Cast<AMyPlayer>(Char);
 	UseGInstance
-	GInstance->QuestManager->ClearQuest(QuestId);
+	GInstance->QuestManager->ClearQuest(GInstance, MyPlayer->GetWorld(),QuestId);
 	GInstance->UIManager->CloseUI(UIType::ALL);
 	GInstance->UIManager->RefreshUI();
 	UE_LOG(LogTemp, Warning, TEXT(" Clear Quest! "));
-	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	
 	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);
-	auto MyPlayer = Cast<AMyPlayer>(Char);
 	MyPlayer->SetState(IDLE);
 	MyPlayer->CloseCursorInGame();
 	MyPlayer->SetInteracting(false);
+
+	if (QuestId == 9)
+	{
+		GInstance->UIManager->PopupUI(MyPlayer->GetWorld(), UIType::CLEAR);
+	}
 }
 
 void UWidget_YesOrNo::ChangeText(FString NewText)

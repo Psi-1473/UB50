@@ -42,6 +42,7 @@ void UMyGameInstance::Init()
 {
 	UGameInstance::Init();
 	QuestManager->LoadQuestData();
+	QuickedId.Init(-1, 5);
 	UE_LOG(LogTemp, Warning, TEXT("MyGameInstance %d"), GetStatData(1)->Attack);
 
 	UE_LOG(LogTemp, Warning, TEXT("MyGameInstance %s"), *GetEnemyData(TEXT("Kwang"))->Name);

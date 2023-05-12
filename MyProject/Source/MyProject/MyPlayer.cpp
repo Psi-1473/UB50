@@ -187,6 +187,8 @@ void AMyPlayer::AttackCheck()
 			UE_LOG(LogTemp, Log, TEXT("Hit Actor : %s"), *HitResult.GetActor()->GetName());
 			AMonster* Enemy = Cast<AMonster>(HitResult.GetActor());
 			FDamageEvent DamageEvent;
+			if (Enemy == nullptr)
+				return;
 			Enemy->TakeDamage(Stat->GetAttack(), DamageEvent, GetController(), this);
 		}
 	}
@@ -435,6 +437,7 @@ void AMyPlayer::Recovery(int NumberToIncrease)
 void AMyPlayer::Respawn()
 {
 	SetActorLocation(SpawnSpot);
+	Stat->SetHp(100);
 	SetState(IDLE);
 }
 

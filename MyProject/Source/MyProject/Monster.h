@@ -61,6 +61,7 @@ public:
 
 	UAnimMontage* AttackMontage;
 protected:
+	bool bCanMove = true;
 	UPROPERTY()
 	class AMyPlayer* AttackTarget;
 
@@ -72,6 +73,9 @@ protected:
 
 	UPROPERTY()
 	float Speed;
+
+	UPROPERTY()
+	FTimerHandle MoveTimerHandle;
 
 	UPROPERTY()
 	FTimerHandle AttackTimerHandle;

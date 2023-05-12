@@ -40,6 +40,7 @@ void AMyGameMode::BeginPlay()
 	UWidget_PlayerMain* Hud = Cast<UWidget_PlayerMain>(CurrentWidget);
 
 	Hud->SetQuickId();
+	Hud->LoadQuickSlot();
 
 }
 
@@ -87,5 +88,13 @@ void AMyGameMode::ChangeQuickIndex(int KeyNumber, int ChangedIndex)
 	UWidget_PlayerMain* Hud = Cast<UWidget_PlayerMain>(CurrentWidget);
 
 	Hud->ChangeQuickIndex(KeyNumber, ChangedIndex);
+}
+
+void AMyGameMode::SaveQuick()
+{
+	UWidget_PlayerMain* Hud = Cast<UWidget_PlayerMain>(CurrentWidget);
+
+	Hud->SaveQuickSlot();
+
 }
 
