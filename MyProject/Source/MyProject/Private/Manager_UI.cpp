@@ -25,6 +25,7 @@ UManager_UI::UManager_UI()
 	static ConstructorHelpers::FClassFinder<UUserWidget> INVEST(TEXT("WidgetBlueprint'/Game/UI/WBP_Investigation.WBP_Investigation_C'"));
 	static ConstructorHelpers::FClassFinder<UUserWidget> BOSS(TEXT("WidgetBlueprint'/Game/UI/WBP_BossHp.WBP_BossHp_C'"));
 	static ConstructorHelpers::FClassFinder<UUserWidget> LOADING(TEXT("WidgetBlueprint'/Game/UI/WBP_Loading.WBP_Loading_C'"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> CLEAR(TEXT("WidgetBlueprint'/Game/UI/WBP_Clear.WBP_Clear_C'"));
 
 	if (INVEN.Succeeded())
 		WidgetAssets[(int)UIType::INVENTORY] = INVEN.Class;
@@ -52,6 +53,9 @@ UManager_UI::UManager_UI()
 
 	if (LOADING.Succeeded())
 		WidgetAssets[(int)UIType::LOADING] = LOADING.Class;
+
+	if (CLEAR.Succeeded())
+		WidgetAssets[(int)UIType::CLEAR] = CLEAR.Class;
 }
 
 void UManager_UI::Init()

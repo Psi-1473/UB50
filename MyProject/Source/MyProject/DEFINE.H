@@ -72,6 +72,7 @@ enum class UIType : uint8
 	INVESTIGATION = 6 UMETA(DisplayName = "Investigation"),
 	BOSSHP = 7 UMETA(DisplayName = "BossHp"),
 	LOADING = 8 UMETA(DisplayName = "Loading"),
+	CLEAR = 8 UMETA(DisplayName = "Clear"),
 
 	ALL,
 	END

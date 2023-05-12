@@ -40,6 +40,8 @@ void ASpawnMonster::PostInitializeComponents()
 	
 	auto Bar = Cast<UWidget_Hp>(HpBar->GetUserWidgetObject());
 	Bar->BindWidget_Enemy(Stat);
+
+	HpBar->SetVisibility(false);
 }
 
 void ASpawnMonster::SetSpawner(AMonsterSpawner* Spawner)
@@ -50,6 +52,7 @@ void ASpawnMonster::SetSpawner(AMonsterSpawner* Spawner)
 void ASpawnMonster::OnDamaged()
 {
 	Super::OnDamaged();
+	HpBar->SetVisibility(true);
 	SetState(DAMAGED);
 	AnimInst->PlayDamagedMontage();
 }
@@ -81,6 +84,7 @@ void ASpawnMonster::UpdateIdle()
 		SetState(MOVING);
 	else
 	{
+		HpBar->SetVisibility(false);
 		SetPatrolPos();
 		Rot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), PatrolPosition);
 		SetState(PATROL);
@@ -116,7 +120,9 @@ void ASpawnMonster::UpdateMoving()
 	AddMovementInput(MoveDir);
 
 	if (GetDistanceTo(AttackTarget) > 1000 || AttackTarget->GetState() == DIED)
+	{
 		SetState(IDLE);
+	}
 
 	if (GetDistanceTo(AttackTarget) < 170)
 		SetState(ATTACKREADY);
