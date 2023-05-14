@@ -141,7 +141,6 @@ UUserWidget* UManager_UI::PopupUI(UWorld* World, UIType MyUIType)
 	return PopupUi;
 }
 
-
 void UManager_UI::CloseUI(UIType MyUIType)
 {
 	if (MyUIType == UIType::ALL)
@@ -156,13 +155,6 @@ void UManager_UI::CloseUI(UIType MyUIType)
 	RemoveUI((int)MyUIType);
 }
 
-void UManager_UI::RefreshUI()
-{
-	if (Widgets[(int)UIType::QUEST] == nullptr)
-		return;
-
-	Cast<UWidget_Quest>(Widgets[(int)UIType::QUEST])->Refresh();
-}
 
 void UManager_UI::RemoveUI(int MyUIType)
 {
@@ -188,5 +180,14 @@ void UManager_UI::RemoveAllUi()
 
 		RemoveUI(i);
 	}
+}
+
+
+void UManager_UI::RefreshUI()
+{
+	if (Widgets[(int)UIType::QUEST] == nullptr)
+		return;
+
+	Cast<UWidget_Quest>(Widgets[(int)UIType::QUEST])->Refresh();
 }
 

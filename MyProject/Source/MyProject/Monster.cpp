@@ -135,6 +135,7 @@ void AMonster::Die(AMyPlayer* Player)
 	UE_LOG(LogTemp, Warning, TEXT("Die"));
 	IsDied = true;
 	
+	SetState(DIED);
 	UseGameMode
 	UseGInstance
 	GInstance->QuestManager->AddQuestTargetNum("Hunting", Stat->GetId());

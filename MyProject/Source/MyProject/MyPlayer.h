@@ -115,6 +115,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	bool bCombo = false;
 
+	UPROPERTY(EditAnywhere)
+	bool bOnUI = false;
+
 	UPROPERTY()
 	int SkillRCombo = 0;
 

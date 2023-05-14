@@ -33,7 +33,7 @@ bool UWidget_CoolSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
 			InvenIndex = DragOper->DragIndex;
 			GInstance->InvenManager->QuickSlot[InvenIndex] = QuickId;
 			SetImage();
-			GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Quick Success"));
+			//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Quick Success"));
 
 			auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 			auto MyPlayer = Cast<AMyPlayer>(Char);
@@ -46,7 +46,7 @@ bool UWidget_CoolSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Draging false"));
+		//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Draging false"));
 		return false;
 	}
 }

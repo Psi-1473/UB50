@@ -40,7 +40,7 @@ void Manager_Inven::EquipWeapon(UMyGameInstance* GInstance, int Id, int Idx)
 	MyInven->Slots[Idx]->SetWeaponItem();
 	MyInven->ChangeWeapon(Id, GInstance);
 	EquipWeaponId = Id;
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Weapon Equip!"));
+	//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Weapon Equip!"));
 }
 
 void Manager_Inven::EquipArmor(UMyGameInstance* GInstance, int Id, int Idx)
@@ -58,7 +58,7 @@ void Manager_Inven::EquipArmor(UMyGameInstance* GInstance, int Id, int Idx)
 	MyInven->Slots[Idx]->SetArmorItem();
 	MyInven->ChangeArmor(Id, GInstance);
 	EquipArmorId = Id;
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Armor Equip!"));
+	//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Armor Equip!"));
 }
 
 void Manager_Inven::UseItem(AMyPlayer* MyPlayer, UMyGameInstance* GInstance, int Id, int Idx, int QuickIdx)
@@ -74,7 +74,7 @@ void Manager_Inven::UseItem(AMyPlayer* MyPlayer, UMyGameInstance* GInstance, int
 	if (UseCount[Idx] <= 0)
 	{
 		UseCount[Idx] = 0;
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Use Item Count 0!"));
+		//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Use Item Count 0!"));
 		UseItemList[Idx] = nullptr;
 		
 	}
@@ -87,7 +87,7 @@ void Manager_Inven::UseItem(AMyPlayer* MyPlayer, UMyGameInstance* GInstance, int
 	ApplyPotion(MyPlayer, Id);
 
 	// 아이템 정보를 받아와서 
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("item Use!"));
+	//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("item Use!"));
 }
 
 

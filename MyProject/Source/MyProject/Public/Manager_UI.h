@@ -39,10 +39,8 @@ public:
 
 private:
 	int InvenNum = -1;
-
-	TArray<TSubclassOf<UUserWidget>> WidgetAssets;
-	
 	int UiNumber = 0;
 
+	TArray<TSubclassOf<UUserWidget>> WidgetAssets;
 	TArray<UUserWidget*> Widgets;
 };

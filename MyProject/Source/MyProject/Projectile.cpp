@@ -53,7 +53,7 @@ void AProjectile::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Ot
 			auto Enemy = Cast<AMonster>(OtherActor);
 			if (Enemy)
 			{
-				GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Fire : Skill Q Hit"));
+				//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Fire : Skill Q Hit"));
 				FDamageEvent DamageEvent;
 				if (OwnerPlayer == nullptr)
 				{
@@ -68,7 +68,7 @@ void AProjectile::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Ot
 			auto TargetPlayer = Cast<AMyPlayer>(OtherActor);
 			if (TargetPlayer)
 			{
-				GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Player : Skill Hit "));
+				//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Player : Skill Hit "));
 				FDamageEvent DamageEvent;
 				//TargetPlayer->TakeDamage(10, DamageEvent, OwnerPlayer->GetController(), OwnerPlayer);
 			}

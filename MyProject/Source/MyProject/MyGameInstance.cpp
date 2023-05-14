@@ -91,20 +91,5 @@ FRichImageRow* UMyGameInstance::GetUseImage(int32 Id)
 
 void UMyGameInstance::SetPlayerData(AMyPlayer* MyPlayer)
 {
-	//PData.WIndex = MyPlayer->WeaponIndex;
-	//PData.AIndex = MyPlayer->ArmorIndex;
-	//PData.UIndex = MyPlayer->UseItemIndex;
-	//
-	//PData.WData.Init(nullptr, 24);
-	//PData.AData.Init(nullptr, 24);
-	//PData.UData.Init(nullptr, 24);
-	//
-	//for (int i = 0; i < 24; i++)
-	//{
-	//	PData.WData[i] = MyPlayer->WeaponList[i];
-	//	PData.AData[i] = MyPlayer->ArmorList[i];
-	//	PData.UData[i] = MyPlayer->UseItemList[i];
-	//}
-	//
-	//PData.Gold = MyPlayer->Gold;
+	
 }

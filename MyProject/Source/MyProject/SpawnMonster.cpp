@@ -168,7 +168,7 @@ void ASpawnMonster::SetPatrolPos()
 
 	UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetNavigationSystem(GetWorld());
 
-	NavSystem->GetRandomPointInNavigableRadius(SpawnerLocation, 700.f, RandomLocation);
+	NavSystem->GetRandomPointInNavigableRadius(SpawnerLocation, 500.f, RandomLocation);
 	PatrolPosition = RandomLocation.Location;
 }
 

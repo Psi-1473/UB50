@@ -104,6 +104,8 @@ void AMyPlayerController::ClickAttack()
 
 void AMyPlayerController::ClickRSkill()
 {
+	if (MyPlayer->bOnUI)
+		return;
 	if (MyPlayer->GetState() == ATTACK)
 		return;
 

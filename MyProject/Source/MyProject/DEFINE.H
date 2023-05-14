@@ -10,14 +10,11 @@
 /**
  * 
  */
-const int WIDGETCOUNT = 10;
 
 const int ID_NONE = -1;
-
 const int PLAYERSKILL_R = 0;
 const int PLAYERSKILL_Q = 1;
 const int PLAYERSKILL_E = 2;
-
 const int INVENTORYNUMBER = 24;
 
 const enum UISound
@@ -80,10 +77,10 @@ enum class UIType : uint8
 const enum BossCoolTime
 {
 	ALLSKILL = 5,
-	SKILL1 = 20,
-	SKILL2 = 1,
-	SKILL3 = 30,
-	SKILL4 = 40,
+	SKILL1 = 15,
+	SKILL2 = 10,
+	SKILL3 = 15,
+	SKILL4 = 20,
 };
 
 const enum BossSkill

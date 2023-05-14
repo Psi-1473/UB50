@@ -52,7 +52,7 @@ FReply UWidget_InvenSlot::NativeOnMouseButtonDown(const FGeometry& InGeometry, c
 	}
 	else if (InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton) == true)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Left Button Down"));
+		//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Left Button Down"));
 
 		Reply = UWidgetBlueprintLibrary::DetectDragIfPressed(InMouseEvent, this, EKeys::LeftMouseButton);
 		
@@ -67,7 +67,7 @@ void UWidget_InvenSlot::NativeOnDragDetected(const FGeometry& InGeometry, const 
 
 	if (OutOperation == nullptr)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Draging Start"));
+		//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Draging Start"));
 
 		UDragWidget* DragOper = NewObject<UDragWidget>();
 		OutOperation = DragOper;
@@ -78,7 +78,7 @@ void UWidget_InvenSlot::NativeOnDragDetected(const FGeometry& InGeometry, const 
 		
 		if (DragVisualClass != nullptr)
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Widget Created"));
+			//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Widget Created"));
 			UWidget_InvenSlot* VisualWidget = CreateWidget<UWidget_InvenSlot>(GetWorld(), DragVisualClass);
 			VisualWidget->SetVisibility(ESlateVisibility::Visible);
 			
@@ -90,7 +90,7 @@ void UWidget_InvenSlot::NativeOnDragDetected(const FGeometry& InGeometry, const 
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Draging Again"));
+		//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Draging Again"));
 	}
 }
 
@@ -99,7 +99,7 @@ bool UWidget_InvenSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDro
 	Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
 	UDragWidget* DragOper = Cast<UDragWidget>(InOperation);
 	UseGInstance
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Draging End"));
+	//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Draging End"));
 
 	if (DragOper != nullptr)
 	{
@@ -110,7 +110,7 @@ bool UWidget_InvenSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDro
 		}
 			
 		// ½º¿Ò
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Draging Success"));
+		//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Draging Success"));
 
 		int DragQuick = GInstance->InvenManager->QuickSlot[DragOper->DragIndex];
 		GInstance->InvenManager->QuickSlot[DragOper->DragIndex] = GInstance->InvenManager->QuickSlot[SlotIndex];
@@ -133,7 +133,7 @@ bool UWidget_InvenSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDro
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Draging false"));
+		//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag : Draging false"));
 		return false;
 	}
 }

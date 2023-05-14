@@ -113,6 +113,7 @@ void ABossMonster::Attack(AMyPlayer* Target)
 void ABossMonster::Die(AMyPlayer* Player)
 {
 	Super::Die(Player);
+	AnimInst->StopAllMontages(0.f);
 	AnimInst->PlayDeathMontage();
 }
 
@@ -135,7 +136,7 @@ int ABossMonster::PickUsableSkill()
 		if (UsableSkills[i] == true)
 		{
 			SkillIndex.Add(i);
-			GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Blue, TEXT("Skill ADD"));
+			//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Blue, TEXT("Skill ADD"));
 		}
 	}
 	
@@ -179,7 +180,7 @@ void ABossMonster::Skill1()
 	CanBeStiffed = false;
 	GetWorldTimerManager().SetTimer(Skill1TimerHandle, this, &ABossMonster::CoolTimeZero1, BossCoolTime::SKILL1, true);
 	GetWorldTimerManager().SetTimer(SkillTimerHandle, this, &ABossMonster::ActionCoolTimeZero, BossCoolTime::ALLSKILL, true);
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Skill 1"));
+	//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Skill 1"));
 }
 
 void ABossMonster::Skill2()
@@ -192,7 +193,7 @@ void ABossMonster::Skill2()
 	CanBeStiffed = false;
 	GetWorldTimerManager().SetTimer(Skill2TimerHandle, this, &ABossMonster::CoolTimeZero2, BossCoolTime::SKILL2, true);
 	GetWorldTimerManager().SetTimer(SkillTimerHandle, this, &ABossMonster::ActionCoolTimeZero, BossCoolTime::ALLSKILL, true);
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Skill 2"));
+	//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Skill 2"));
 }
 
 void ABossMonster::Skill3()
@@ -205,7 +206,7 @@ void ABossMonster::Skill3()
 	CanBeStiffed = false;
 	GetWorldTimerManager().SetTimer(Skill3TimerHandle, this, &ABossMonster::CoolTimeZero3, BossCoolTime::SKILL3, true);
 	GetWorldTimerManager().SetTimer(SkillTimerHandle, this, &ABossMonster::ActionCoolTimeZero, BossCoolTime::ALLSKILL, true);
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Skill 3"));
+	//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Skill 3"));
 }
 
 void ABossMonster::Skill4()
@@ -218,7 +219,7 @@ void ABossMonster::Skill4()
 	CanBeStiffed = false;
 	GetWorldTimerManager().SetTimer(Skill4TimerHandle, this, &ABossMonster::CoolTimeZero4, BossCoolTime::SKILL4, true);
 	GetWorldTimerManager().SetTimer(SkillTimerHandle, this, &ABossMonster::ActionCoolTimeZero, BossCoolTime::ALLSKILL, true);
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Skill 4"));
+	//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Skill 4"));
 }
 
 void ABossMonster::Skill1Fire()
@@ -234,7 +235,7 @@ void ABossMonster::Skill1Fire()
 
 	if (Projectile)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Boss : Skill Fire"));
+		//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Boss : Skill Fire"));
 		FVector LaunchDirection = GetActorForwardVector();
 		Projectile->SetIsOwnerPlayer(false);
 		Projectile->FireInDirection(LaunchDirection);
@@ -285,11 +286,14 @@ void ABossMonster::Skill2Fire()
 		AMyPlayer* HitPlayer = Cast<AMyPlayer>(HitResult.GetActor());
 		FDamageEvent DamageEvent;
 		//HitPlayer->OnStun(2.f);
-		if(HitPlayer)
-			GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Player Hit"));
+		if (HitPlayer)
+		{
+
+		}
+			//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Player Hit"));
 	}
 
-	DrawDebugBox(GetWorld(), Center, BoxVector, Rotation, DrawColor, false, 2.f);
+	//DrawDebugBox(GetWorld(), Center, BoxVector, Rotation, DrawColor, false, 2.f);
 }
 
 void ABossMonster::Skill3Targeting()
@@ -324,7 +328,7 @@ void ABossMonster::Skill3Fire()
 		FVector SkillLocation = Skill3Transform.Pop();
 		FTransform Trans(SkillLocation);
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Skill3Emitter, Trans);
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Skill go"));
+		//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Skill go"));
 		bool bResult = GetWorld()->SweepSingleByChannel(
 			OUT HitResult,
 			SkillLocation,
@@ -348,12 +352,15 @@ void ABossMonster::Skill3Fire()
 		{
 			AMyPlayer* HitPlayer = Cast<AMyPlayer>(HitResult.GetActor());
 			if (HitPlayer)
-				GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Player Hit"));
+			{
+
+			}
+				//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Player Hit"));
 			//FDamageEvent DamageEvent;
 			////HitPlayer->OnStun(2.f);
 		}
 
-		DrawDebugBox(GetWorld(), Center, BoxVector, Rotation, DrawColor, false, 2.f);	
+		//DrawDebugBox(GetWorld(), Center, BoxVector, Rotation, DrawColor, false, 2.f);	
 	}
 }
 
@@ -401,31 +408,31 @@ void ABossMonster::SkillCoolTimeZero(BossSkill SkillType)
 void ABossMonster::CoolTimeZero1()
 {
 	UsableSkills[1] = true;
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("1 CoolTime Reset"));
+	//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("1 CoolTime Reset"));
 }
 
 void ABossMonster::CoolTimeZero2()
 {
 	UsableSkills[2] = true;
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("2 CoolTime Reset"));
+	//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("2 CoolTime Reset"));
 }
 
 void ABossMonster::CoolTimeZero3()
 {
 	UsableSkills[3] = true;
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("3 CoolTime Reset"));
+	//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("3 CoolTime Reset"));
 }
 
 void ABossMonster::CoolTimeZero4()
 {
 	UsableSkills[4] = true;
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("4 CoolTime Reset"));
+	//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("4 CoolTime Reset"));
 }
 
 void ABossMonster::ActionCoolTimeZero()
 {
 	CanSkills = true;
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Action CoolTime Reset"));
+	//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Action CoolTime Reset"));
 }
 
 void ABossMonster::UpdateIdle()

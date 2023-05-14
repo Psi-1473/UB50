@@ -232,7 +232,7 @@ void AMyPlayer::Fire()
 	
 	if (Projectile)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Fire : Skill Q Fire"));
+		//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Fire : Skill Q Fire"));
 		FVector LaunchDirection = GetActorForwardVector();
 		Projectile->SetPlayer(this);
 		Projectile->SetIsOwnerPlayer(true);
@@ -421,7 +421,7 @@ void AMyPlayer::OnDamaged()
 	if (GetState() == SKILL)
 		return;
 
-	SetState(DAMAGED);
+	//SetState(DAMAGED);
 	bCombo = false;
 	AttackIndex = 0;
 	AnimInst->PlayDamagedMontage();
@@ -439,6 +439,7 @@ void AMyPlayer::Respawn()
 	SetActorLocation(SpawnSpot);
 	Stat->SetHp(100);
 	SetState(IDLE);
+	GameMode->UIUpdate_Hp(100);
 }
 
 void AMyPlayer::PlaySound(int Number)
@@ -471,6 +472,7 @@ void AMyPlayer::OpenUI(UIType MyUIType)
 
 	PlayerController->SetInputMode(FInputModeGameAndUI());
 	PlayerController->bShowMouseCursor = true;
+	bOnUI = true;
 }
 
 void AMyPlayer::CloseUI(UIType MyUIType)
@@ -495,6 +497,7 @@ void AMyPlayer::CloseCursorInGame()
 	UseGInstance
 	if (GInstance->UIManager->GetUiNumber() <= 0)
 	{
+		bOnUI = false;
 		auto PlayerController = Cast<AMyPlayerController>(GetController());
 		PlayerController->SetInputMode(FInputModeGameOnly());
 		PlayerController->bShowMouseCursor = false;
