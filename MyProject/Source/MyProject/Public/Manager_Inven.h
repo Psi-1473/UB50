@@ -53,6 +53,7 @@ private:
 	TArray<FWeaponData*>	WeaponList;
 	TArray<FArmorData*>		ArmorList;
 	TArray<FUseItemData*>	UseItemList;
+
 	TArray<int> UseCount;
 public:
 	TArray<int> QuickSlot;

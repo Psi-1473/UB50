@@ -77,13 +77,14 @@ void ANpc::BeginPlay()
 {
 	Super::BeginPlay();
 	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
+	GInstance->QuestManager->AddNpc(NpcId, this);
 	GInstance->ScriptManager->LoadScriptData(GInstance, NpcId);
 
 	InitQuestInfo();
 	SetQuestMark();
 
 	
-	GInstance->QuestManager->AddNpc(NpcId, this);
+
 	GInstance->QuestManager->CheckCanClear(NpcId);
 	
 	UE_LOG(LogTemp, Warning, TEXT("Npc : %s"), *BaseScript);

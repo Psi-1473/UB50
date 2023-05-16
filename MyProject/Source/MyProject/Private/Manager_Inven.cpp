@@ -13,9 +13,10 @@
 
 Manager_Inven::Manager_Inven()
 {
-	WeaponList.Init(nullptr, 24);
-	ArmorList.Init(nullptr, 24);
-	UseItemList.Init(nullptr, 24);
+	WeaponList.Init(nullptr, INVENTORYNUMBER);
+	ArmorList.Init(nullptr, INVENTORYNUMBER);
+	UseItemList.Init(nullptr, INVENTORYNUMBER);
+
 	UseCount.Init(0, 24);
 	QuickSlot.Init(-1, 24);
 }

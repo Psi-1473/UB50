@@ -152,8 +152,8 @@ void UWidget_InvenSlot::SetWeaponItem()
 	auto Char = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	auto MyPlayer = Cast<AMyPlayer>(Char);
 	UMyGameInstance* GInstance = Cast<UMyGameInstance>(GetGameInstance());
-	ItemType = 0;
 
+	ItemType = 0;
 	if (GInstance->InvenManager->GetWeaponList()[SlotIndex] != nullptr)
 	{
 		ChangeImage(0, GInstance->InvenManager->GetWeaponList()[SlotIndex]->Id, GInstance, MyPlayer);
