@@ -64,15 +64,15 @@ void UWidget_Inventory::RefreshSlot(int8 ItemType)
 {
 	switch (ItemType)
 	{
-	case 0:
+	case WEAPON:
 		TypeIndex = -1;
 		RefreshToWeapon();
 		break;
-	case 1:
+	case ARMOR:
 		TypeIndex = -1;
 		RefreshToArmor();
 		break;
-	case 2:
+	case USEITEM:
 		TypeIndex = -1;
 		RefreshToUse();
 		break;

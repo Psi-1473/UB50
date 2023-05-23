@@ -1091,6 +1091,7 @@
       "name": "AWS CloudFormation Serverless Application Model (SAM)",
       "description": "The AWS Serverless Application Model (AWS SAM, previously known as Project Flourish) extends AWS CloudFormation to provide a simplified way of defining the Amazon API Gateway APIs, AWS Lambda functions, and Amazon DynamoDB tables needed by your serverless application.",
       "fileMatch": [
+        "template.yaml",
         "serverless.template",
         "*.sam.json",
         "*.sam.yml",
@@ -1882,7 +1883,7 @@
         "hz-*.yaml",
         "hz-*.json"
       ],
-      "url": "https://hazelcast.com/schema/config/hazelcast-config-5.2.json"
+      "url": "https://hazelcast.com/schema/config/hazelcast-config-5.3.json"
     },
     {
       "name": "host.json",
@@ -3079,6 +3080,18 @@
       "url": "https://json.schemastore.org/rust-toolchain.json"
     },
     {
+      "name": "samt",
+      "description": "JSON schema for SAMT configuration files",
+      "fileMatch": ["samt.yaml"],
+      "url": "https://json.schemastore.org/samt.json"
+    },
+    {
+      "name": "samtrc",
+      "description": "JSON schema for SAMT linter configuration files",
+      "fileMatch": [".samtrc.yaml"],
+      "url": "https://json.schemastore.org/samtrc.json"
+    },
+    {
       "name": "Sapphire CLI Config",
       "description": "Scheme for Sapphire CLI Config (@sapphire/cli)",
       "fileMatch": [".sapphirerc.json", ".sapphirerc.yml"],
@@ -3898,7 +3911,12 @@
     {
       "name": ".lintstagedrc",
       "description": "JSON schema for lint-staged config",
-      "fileMatch": [".lintstagedrc", ".lintstagedrc.json"],
+      "fileMatch": [
+        ".lintstagedrc",
+        ".lintstagedrc.json",
+        ".lintstagedrc.yaml",
+        ".lintstagedrc.yml"
+      ],
       "url": "https://json.schemastore.org/lintstagedrc.schema.json"
     },
     {
@@ -4542,7 +4560,7 @@
     },
     {
       "name": "Butane Config",
-      "description": "Schema to validate butane files for Fedora CoreOS",
+      "description": "Fedora CoreOS Butane config file schema",
       "fileMatch": ["*.bu"],
       "url": "https://raw.githubusercontent.com/Relativ-IT/Butane-Schemas/Release/Butane-Schema.json"
     },
@@ -4871,6 +4889,18 @@
       "description": "Bashly strings",
       "fileMatch": ["bashly-strings.yml", "bashly-strings.yaml"],
       "url": "https://raw.githubusercontent.com/DannyBen/bashly/master/schemas/strings.json"
+    },
+    {
+      "name": "micro-settings.json",
+      "description": "Micro settings",
+      "fileMatch": ["**/.config/micro/settings.json"],
+      "url": "https://raw.githubusercontent.com/zyedidia/micro/master/data/micro.json"
+    },
+    {
+      "name": "quilt.mod.json",
+      "description": "Metadata file used by the QuiltMC mod loader",
+      "fileMatch": ["quilt.mod.json"],
+      "url": "https://raw.githubusercontent.com/QuiltMC/quilt-json-schemas/main/quilt.mod.json/schemas/main.json"
     }
   ],
   "version": 1
